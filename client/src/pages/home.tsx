@@ -273,70 +273,88 @@ export default function Home() {
 
               {/* Mode Specific Outputs */}
               <AnimatePresence>
-                {/* Tutor Chat Bubble */}
-                {mode === 'tutor' && tutorResponse && !isListening && (
-                  <motion.div 
-                    initial={{ opacity: 0, y: 20, scale: 0.9 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    className="absolute bottom-12 bg-neutral-900/90 backdrop-blur-xl p-6 rounded-3xl border border-white/10 max-w-xl text-center shadow-2xl z-30"
-                  >
-                    <span className="text-primary text-xs font-bold uppercase tracking-widest mb-2 block">Tutor says:</span>
-                    <p className="text-xl text-white leading-relaxed">"{tutorResponse}"</p>
-                  </motion.div>
-                )}
-
-                {/* Analyze Button (Check Mode) */}
-                {mode === 'check' && !isListening && transcript.length > 5 && (
-                   <motion.div 
-                     initial={{ opacity: 0, y: 20 }}
-                     animate={{ opacity: 1, y: 0 }}
-                     className="absolute -bottom-20 z-30"
-                   >
-                     <button 
-                        onClick={handleAnalyze}
-                        disabled={isProcessing}
-                        className="bg-white text-black px-10 py-4 rounded-full font-bold text-xl hover:scale-105 transition-transform shadow-xl flex items-center gap-3"
-                     >
-                       {isProcessing ? <Sparkles className="w-6 h-6 animate-spin" /> : <Play className="w-6 h-6 fill-current" />}
-                       Analyze Now
-                     </button>
-                   </motion.div>
-                )}
+                {/* Analyze Button (Check Mode) - Absolutely positioned but lower */}
+                {/* REMOVED: Analyze button is now in the right column */}
               </AnimatePresence>
            </div>
         </div>
 
         {/* RIGHT: Big Feedback Panel */}
-        {mode === 'check' && (
-          <motion.div 
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="lg:w-[400px] xl:w-[500px] h-full flex flex-col"
-          >
-             <div className="flex justify-between items-center mb-6 px-2">
-               <h3 className="text-lg font-bold text-white">Results</h3>
-               <button 
-                  onClick={handleGenerateQuiz}
-                  disabled={isQuizLoading || images.length === 0}
-                  className="text-sm text-neutral-400 hover:text-white transition-colors flex items-center gap-2"
-               >
-                  <GraduationCap className="w-4 h-4" />
-                  {isQuizLoading ? "Making Quiz..." : "Pop Quiz"}
-               </button>
-             </div>
-             
-             <div className="flex-1 bg-neutral-900/20 border border-white/5 rounded-[2.5rem] overflow-hidden backdrop-blur-sm">
-               <FeedbackDisplay 
-                  response={aiResponse}
-                  isProcessing={isProcessing}
-                  error={error}
-                />
-             </div>
-          </motion.div>
-        )}
-
-        {/* Placeholder for Tutor Mode Right Side (Empty for minimalism or history later) */}
-        {mode === 'tutor' && <div className="lg:w-[400px] xl:w-[500px] hidden lg:block" />}
+        <motion.div 
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="lg:w-[400px] xl:w-[500px] h-full flex flex-col"
+        >
+           <div className="flex justify-between items-center mb-6 px-2">
+             <h3 className="text-lg font-bold text-white">
+               {mode === 'check' ? 'Results' : 'Tutor Chat'}
+             </h3>
+             <button 
+                onClick={handleGenerateQuiz}
+                disabled={isQuizLoading || images.length === 0}
+                className="text-sm text-neutral-400 hover:text-white transition-colors flex items-center gap-2"
+             >
+                <GraduationCap className="w-4 h-4" />
+                {isQuizLoading ? "Making Quiz..." : "Pop Quiz"}
+             </button>
+           </div>
+           
+           <div className="flex-1 bg-neutral-900/20 border border-white/5 rounded-[2.5rem] overflow-hidden backdrop-blur-sm flex flex-col">
+             {mode === 'check' ? (
+               <>
+                 <div className="flex-1 overflow-hidden">
+                    <FeedbackDisplay 
+                      response={aiResponse}
+                      isProcessing={isProcessing}
+                      error={error}
+                    />
+                 </div>
+                 {/* Analyze Button - Placed Here */}
+                 {!isListening && transcript.length > 5 && (
+                    <div className="p-6 border-t border-white/5">
+                       <button 
+                          onClick={handleAnalyze}
+                          disabled={isProcessing}
+                          className="w-full bg-white text-black py-4 rounded-full font-bold text-xl hover:scale-105 transition-transform shadow-xl flex items-center justify-center gap-3"
+                       >
+                         {isProcessing ? <Sparkles className="w-6 h-6 animate-spin" /> : <Play className="w-6 h-6 fill-current" />}
+                         Analyze Now
+                       </button>
+                    </div>
+                 )}
+               </>
+             ) : (
+               /* Tutor Mode Chat Display */
+               <div className="flex-1 p-8 flex flex-col justify-end">
+                  {tutorResponse ? (
+                    <motion.div 
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="space-y-4"
+                    >
+                      <div className="bg-white/5 rounded-3xl p-6 border border-white/10">
+                        <span className="text-primary text-xs font-bold uppercase tracking-widest mb-2 block">Tutor says:</span>
+                        <p className="text-xl text-white leading-relaxed">"{tutorResponse}"</p>
+                      </div>
+                    </motion.div>
+                  ) : (
+                    <div className="text-center text-neutral-600">
+                       <MessageCircle className="w-12 h-12 mx-auto mb-4 opacity-20" />
+                       <p>Ask me anything about the study material.</p>
+                    </div>
+                  )}
+                  
+                  {isProcessing && (
+                    <div className="flex items-center justify-center gap-2 text-neutral-500 mt-4">
+                       <span className="w-2 h-2 bg-primary rounded-full animate-bounce" />
+                       <span className="w-2 h-2 bg-primary rounded-full animate-bounce delay-75" />
+                       <span className="w-2 h-2 bg-primary rounded-full animate-bounce delay-150" />
+                    </div>
+                  )}
+               </div>
+             )}
+           </div>
+        </motion.div>
         
       </main>
 

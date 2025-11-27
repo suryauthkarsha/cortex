@@ -33,15 +33,15 @@ export function QuizModal({
   const question = quiz[currentQuestion];
 
   return (
-    <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 backdrop-blur-sm overflow-y-auto">
+    <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4 backdrop-blur-sm overflow-y-auto">
       <motion.div 
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 20 }}
-        className="glass-panel w-full max-w-3xl relative rounded-2xl overflow-hidden flex flex-col max-h-[90vh]"
+        className="bg-[#111] w-full max-w-3xl relative rounded-2xl overflow-hidden flex flex-col max-h-[90vh] border border-white/10 shadow-2xl"
       >
         {/* Header */}
-        <div className="p-6 border-b border-white/10 flex justify-between items-center bg-white/5">
+        <div className="p-6 border-b border-white/10 flex justify-between items-center bg-[#151515]">
           <div>
              <h3 className="text-2xl font-bold text-white tracking-tight">Knowledge Check</h3>
              <p className="text-neutral-400 text-sm">Test your understanding</p>
@@ -76,13 +76,13 @@ export function QuizModal({
 
               <div className="space-y-3 mb-8">
                 {question.options.map((option, idx) => {
-                  let btnClass = "glass-button border-white/10 text-neutral-300 hover:bg-white/10";
+                  let btnClass = "bg-[#1a1a1a] border-white/5 text-neutral-300 hover:bg-[#222]";
                   
                   if (selectedOption !== null) {
                     if (idx === question.correctAnswer) {
-                      btnClass = "bg-green-500/20 border-green-500/50 text-green-200 shadow-[0_0_15px_rgba(34,197,94,0.2)]";
+                      btnClass = "bg-green-900/20 border-green-500/30 text-green-200";
                     } else if (idx === selectedOption) {
-                      btnClass = "bg-red-500/20 border-red-500/50 text-red-200";
+                      btnClass = "bg-red-900/20 border-red-500/30 text-red-200";
                     } else {
                       btnClass = "opacity-40 border-transparent";
                     }
@@ -93,7 +93,7 @@ export function QuizModal({
                       key={idx}
                       onClick={() => handleQuizAnswer(idx)}
                       disabled={selectedOption !== null}
-                      className={`w-full text-left p-5 rounded-xl transition-all flex justify-between items-center group relative overflow-hidden ${btnClass}`}
+                      className={`w-full text-left p-5 rounded-xl border transition-all flex justify-between items-center group relative overflow-hidden ${btnClass}`}
                     >
                       <span className="text-lg relative z-10">{option}</span>
                       {selectedOption !== null && idx === question.correctAnswer && (
@@ -110,7 +110,7 @@ export function QuizModal({
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
                     exit={{ opacity: 0, height: 0 }}
-                    className="bg-white/5 rounded-xl p-5 border border-white/10 mb-6 overflow-hidden"
+                    className="bg-[#1a1a1a] rounded-xl p-5 border border-white/5 mb-6 overflow-hidden"
                   >
                     <p className="text-md text-neutral-200">
                       <span className="text-primary font-bold uppercase text-xs block mb-2 tracking-widest">Explanation</span>
@@ -140,7 +140,7 @@ export function QuizModal({
         </div>
 
         {/* Footer Controls */}
-        <div className="p-6 border-t border-white/10 bg-white/5 flex justify-between items-center">
+        <div className="p-6 border-t border-white/10 bg-[#151515] flex justify-between items-center">
           {!quizCompleted ? (
             <>
               <button 
