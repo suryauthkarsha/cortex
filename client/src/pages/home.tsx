@@ -295,7 +295,7 @@ export default function Home() {
                   <motion.div 
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="absolute -bottom-20 z-30"
+                    className="relative mt-12 z-30"
                   >
                     <button 
                        onClick={handleAnalyze}
