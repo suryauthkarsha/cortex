@@ -4,7 +4,7 @@ import { useMedia } from '@/hooks/use-media';
 import { analyzeExplanation, generateQuiz, askTutor, type QuizQuestion, type GeminiResponse } from '@/lib/gemini';
 import { QuizModal } from '@/components/modules/quiz-modal';
 import { FeedbackDisplay } from '@/components/modules/feedback-display';
-import { Mic, Square, Play, VolumeX, Sparkles, Upload, X, Video, Image as ImageIcon, MessageCircle, GraduationCap, StopCircle } from 'lucide-react';
+import { Mic, Square, Play, VolumeX, Sparkles, Upload, X, Video, Image as ImageIcon, MessageCircle, GraduationCap, StopCircle, Brain } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 type Mode = 'check' | 'tutor';
