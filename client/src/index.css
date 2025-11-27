@@ -23,58 +23,48 @@
   --color-border: hsl(var(--border));
   --color-input: hsl(var(--input));
   --color-ring: hsl(var(--ring));
-  --color-chart-1: hsl(var(--chart-1));
-  --color-chart-2: hsl(var(--chart-2));
-  --color-chart-3: hsl(var(--chart-3));
-  --color-chart-4: hsl(var(--chart-4));
-  --color-chart-5: hsl(var(--chart-5));
+  
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
   
   --font-sans: 'Inter', sans-serif;
-  --font-display: 'Oswald', sans-serif;
+  --font-display: 'Inter', sans-serif; /* Cleaner, modern sans for glass theme */
 }
 
-/* NY Black & Yellow Theme */
+/* Glassmorphism Theme */
 :root {
-  --background: 0 0% 5%; /* #0d0d0d */
-  --foreground: 0 0% 95%; /* #f2f2f2 */
+  --background: 220 40% 2%; /* Deep dark blue/black */
+  --foreground: 210 40% 98%;
   
-  --card: 0 0% 8%; /* #141414 */
-  --card-foreground: 0 0% 95%;
+  --card: 220 30% 10%; /* Semi-transparent later */
+  --card-foreground: 210 40% 98%;
   
-  --popover: 0 0% 8%;
-  --popover-foreground: 0 0% 95%;
+  --popover: 220 30% 10%;
+  --popover-foreground: 210 40% 98%;
   
-  /* Taxi Yellow */
-  --primary: 48 90% 50%; /* #f2c018 - Adjusted for better contrast/vibrancy */
-  --primary-foreground: 0 0% 0%; /* Black text on yellow */
+  /* Electric Blue / Cyan for modern glass feel */
+  --primary: 190 90% 50%; 
+  --primary-foreground: 220 40% 10%;
   
-  --secondary: 0 0% 15%;
-  --secondary-foreground: 0 0% 98%;
+  --secondary: 217 30% 15%;
+  --secondary-foreground: 210 40% 98%;
   
-  --muted: 0 0% 15%;
-  --muted-foreground: 0 0% 60%;
+  --muted: 217 30% 15%;
+  --muted-foreground: 215 20% 65%;
   
-  --accent: 48 90% 50%;
-  --accent-foreground: 0 0% 0%;
+  --accent: 190 90% 50%;
+  --accent-foreground: 220 40% 10%;
   
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 98%;
 
-  --border: 0 0% 20%;
-  --input: 0 0% 20%;
-  --ring: 48 90% 50%;
+  --border: 217 30% 20%;
+  --input: 217 30% 20%;
+  --ring: 190 90% 50%;
 
-  --radius: 0rem; /* Sharp corners for that brutalist/industrial feel */
-  
-  --chart-1: 48 90% 50%;
-  --chart-2: 0 0% 40%;
-  --chart-3: 0 0% 60%;
-  --chart-4: 0 0% 80%;
-  --chart-5: 0 0% 100%;
+  --radius: 1rem; /* Soft rounded corners for glass */
 }
 
 @layer base {
@@ -83,10 +73,24 @@
   }
   body {
     @apply font-sans antialiased bg-background text-foreground;
-    background-image: url('/attached_assets/concrete-texture.jpg'); /* Will use if generated */
-    background-blend-mode: overlay;
+    background: radial-gradient(circle at 50% 0%, hsl(220, 40%, 15%), hsl(220, 40%, 2%));
+    min-height: 100vh;
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply font-display uppercase tracking-tight;
+    @apply font-display tracking-tight;
+  }
+}
+
+@layer components {
+  .glass-panel {
+    @apply bg-white/5 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.36)];
+  }
+  
+  .glass-button {
+    @apply bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all active:scale-95;
+  }
+  
+  .neon-text {
+    text-shadow: 0 0 10px theme('colors.primary.DEFAULT'), 0 0 20px theme('colors.primary.DEFAULT');
   }
 }

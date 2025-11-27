@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, CheckCircle2, AlertTriangle } from 'lucide-react';
+import { X, CheckCircle2, ArrowLeft, ArrowRight } from 'lucide-react';
 import type { QuizQuestion } from '@/lib/gemini';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -13,6 +13,7 @@ interface QuizModalProps {
   quizCompleted: boolean;
   handleQuizAnswer: (index: number) => void;
   nextQuestion: () => void;
+  prevQuestion?: () => void; // Added optional previous handler
 }
 
 export function QuizModal({
@@ -24,46 +25,67 @@ export function QuizModal({
   selectedOption,
   quizCompleted,
   handleQuizAnswer,
-  nextQuestion
+  nextQuestion,
+  prevQuestion
 }: QuizModalProps) {
   if (!isOpen || !quiz) return null;
 
   const question = quiz[currentQuestion];
 
   return (
-    <div className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4 backdrop-blur-md">
+    <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 backdrop-blur-sm overflow-y-auto">
       <motion.div 
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.95 }}
-        className="bg-neutral-900 border border-primary/30 w-full max-w-2xl relative shadow-[0_0_50px_rgba(242,192,24,0.1)]"
+        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.95, y: 20 }}
+        className="glass-panel w-full max-w-3xl relative rounded-2xl overflow-hidden flex flex-col max-h-[90vh]"
       >
-        <button 
-          onClick={onClose} 
-          className="absolute top-4 right-4 text-neutral-500 hover:text-primary transition-colors"
-        >
-          <X className="w-6 h-6" />
-        </button>
+        {/* Header */}
+        <div className="p-6 border-b border-white/10 flex justify-between items-center bg-white/5">
+          <div>
+             <h3 className="text-2xl font-bold text-white tracking-tight">Knowledge Check</h3>
+             <p className="text-neutral-400 text-sm">Test your understanding</p>
+          </div>
+          <button 
+            onClick={onClose} 
+            className="p-2 rounded-full hover:bg-white/10 text-neutral-400 hover:text-white transition-colors"
+          >
+            <X className="w-6 h-6" />
+          </button>
+        </div>
         
-        <div className="p-8">
+        {/* Scrollable Content */}
+        <div className="p-6 md:p-8 overflow-y-auto flex-1 custom-scrollbar">
           {!quizCompleted ? (
             <>
-              <div className="flex justify-between items-end mb-6 border-b border-neutral-800 pb-4">
-                <h3 className="text-3xl font-display font-bold text-white tracking-tight uppercase">Street Smarts Check</h3>
-                <span className="text-primary font-mono text-xl">Q.{currentQuestion + 1}/{quiz.length}</span>
+              <div className="flex items-center gap-4 mb-8">
+                <div className="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
+                  <div 
+                    className="h-full bg-primary transition-all duration-500 ease-out"
+                    style={{ width: `${((currentQuestion) / quiz.length) * 100}%` }}
+                  />
+                </div>
+                <span className="text-primary font-mono text-lg font-bold whitespace-nowrap">
+                  Q {currentQuestion + 1} <span className="text-neutral-500">/ {quiz.length}</span>
+                </span>
               </div>
               
-              <p className="text-xl text-neutral-200 mb-8 font-medium leading-relaxed">
+              <h4 className="text-2xl text-white mb-8 font-medium leading-relaxed">
                 {question.question}
-              </p>
+              </h4>
 
               <div className="space-y-3 mb-8">
                 {question.options.map((option, idx) => {
-                  let btnClass = "border-neutral-700 hover:border-primary/50 hover:bg-neutral-800 text-neutral-300";
+                  let btnClass = "glass-button border-white/10 text-neutral-300 hover:bg-white/10";
+                  
                   if (selectedOption !== null) {
-                    if (idx === question.correctAnswer) btnClass = "bg-green-500/20 border-green-500 text-green-400";
-                    else if (idx === selectedOption) btnClass = "bg-red-500/20 border-red-500 text-red-400";
-                    else btnClass = "border-neutral-800 opacity-50";
+                    if (idx === question.correctAnswer) {
+                      btnClass = "bg-green-500/20 border-green-500/50 text-green-200 shadow-[0_0_15px_rgba(34,197,94,0.2)]";
+                    } else if (idx === selectedOption) {
+                      btnClass = "bg-red-500/20 border-red-500/50 text-red-200";
+                    } else {
+                      btnClass = "opacity-40 border-transparent";
+                    }
                   }
 
                   return (
@@ -71,61 +93,80 @@ export function QuizModal({
                       key={idx}
                       onClick={() => handleQuizAnswer(idx)}
                       disabled={selectedOption !== null}
-                      className={`w-full text-left p-5 border rounded-none transition-all flex justify-between items-center group ${btnClass}`}
+                      className={`w-full text-left p-5 rounded-xl transition-all flex justify-between items-center group relative overflow-hidden ${btnClass}`}
                     >
-                      <span className="text-lg">{option}</span>
-                      {selectedOption !== null && idx === question.correctAnswer && <CheckCircle2 className="w-5 h-5" />}
+                      <span className="text-lg relative z-10">{option}</span>
+                      {selectedOption !== null && idx === question.correctAnswer && (
+                        <CheckCircle2 className="w-5 h-5 text-green-400 relative z-10" />
+                      )}
                     </button>
                   );
                 })}
               </div>
 
-              <AnimatePresence>
+              <AnimatePresence mode="wait">
                 {selectedOption !== null && (
                   <motion.div 
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="bg-neutral-800 p-5 border-l-4 border-primary mb-6"
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="bg-white/5 rounded-xl p-5 border border-white/10 mb-6 overflow-hidden"
                   >
-                    <p className="text-md text-neutral-300">
-                      <span className="text-primary font-bold uppercase text-xs block mb-2 tracking-widest">Look...</span>
+                    <p className="text-md text-neutral-200">
+                      <span className="text-primary font-bold uppercase text-xs block mb-2 tracking-widest">Explanation</span>
                       {question.explanation}
                     </p>
                   </motion.div>
                 )}
               </AnimatePresence>
+            </>
+          ) : (
+            <div className="text-center py-12">
+              <div className="w-32 h-32 mx-auto mb-6 relative flex items-center justify-center">
+                 <div className="absolute inset-0 bg-primary/20 blur-3xl rounded-full" />
+                 <CheckCircle2 className="w-24 h-24 text-primary relative z-10" />
+              </div>
+              <h2 className="text-4xl font-bold text-white mb-2">Quiz Complete</h2>
+              <p className="text-neutral-400 text-lg mb-8">You scored {quizScore} out of {quiz.length}</p>
+              
+              <div className="w-full bg-white/10 h-4 mb-8 rounded-full overflow-hidden max-w-md mx-auto">
+                <div 
+                  className="bg-primary h-full transition-all duration-1000 ease-out shadow-[0_0_20px_theme('colors.primary.DEFAULT')]"
+                  style={{ width: `${(quizScore / quiz.length) * 100}%` }}
+                />
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Footer Controls */}
+        <div className="p-6 border-t border-white/10 bg-white/5 flex justify-between items-center">
+          {!quizCompleted ? (
+            <>
+              <button 
+                onClick={prevQuestion}
+                disabled={currentQuestion === 0}
+                className="text-neutral-400 hover:text-white disabled:opacity-30 flex items-center gap-2 transition-colors font-medium px-4 py-2 rounded-lg hover:bg-white/5"
+              >
+                <ArrowLeft className="w-4 h-4" /> Previous
+              </button>
 
               {selectedOption !== null && (
                 <button 
                   onClick={nextQuestion}
-                  className="w-full bg-primary hover:bg-yellow-400 text-black font-bold text-lg py-4 uppercase tracking-wider flex items-center justify-center gap-2 transition-colors"
+                  className="bg-primary hover:bg-primary/90 text-black font-bold px-8 py-3 rounded-xl flex items-center gap-2 transition-all shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_30px_rgba(6,182,212,0.5)]"
                 >
-                  Next Question
+                  Next Question <ArrowRight className="w-4 h-4" />
                 </button>
               )}
             </>
           ) : (
-            <div className="text-center py-12">
-              <h2 className="text-5xl font-display font-bold text-primary mb-4 uppercase">Quiz Done</h2>
-              <p className="text-2xl text-white mb-8">You got {quizScore} out of {quiz.length} right.</p>
-              <div className="w-full bg-neutral-800 h-4 mb-8 overflow-hidden">
-                <div 
-                  className="bg-primary h-full transition-all duration-1000 ease-out"
-                  style={{ width: `${(quizScore / quiz.length) * 100}%` }}
-                />
-              </div>
-              <p className="text-neutral-400 mb-8">
-                {quizScore === quiz.length ? "You're a genius. Get outta here." : 
-                 quizScore > quiz.length / 2 ? "Not bad, but you ain't perfect." : 
-                 "You kiddin' me? Hit the books."}
-              </p>
-              <button 
+             <button 
                 onClick={onClose}
-                className="bg-white hover:bg-neutral-200 text-black font-bold py-3 px-8 uppercase tracking-wider"
+                className="w-full bg-white text-black hover:bg-neutral-200 font-bold py-4 rounded-xl uppercase tracking-wider transition-colors"
               >
-                Close
+                Close Results
               </button>
-            </div>
           )}
         </div>
       </motion.div>

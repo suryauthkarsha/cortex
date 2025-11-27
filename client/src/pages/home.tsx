@@ -3,11 +3,9 @@ import { useSpeech } from '@/hooks/use-speech';
 import { useMedia } from '@/hooks/use-media';
 import { analyzeExplanation, generateQuiz, type QuizQuestion, type GeminiResponse } from '@/lib/gemini';
 import { QuizModal } from '@/components/modules/quiz-modal';
-import { MediaControls } from '@/components/modules/media-controls';
 import { FeedbackDisplay } from '@/components/modules/feedback-display';
-import { Mic, Square, Play, Volume2, VolumeX, Brain, Sparkles } from 'lucide-react';
-import { motion } from 'framer-motion';
-import generatedBg from '@assets/generated_images/dark_gritty_concrete_texture_for_background.png';
+import { Mic, Square, Play, Volume2, VolumeX, Brain, Sparkles, Camera, Upload, X, Video } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Home() {
   // Hooks
@@ -28,7 +26,6 @@ export default function Home() {
     videoRef,
     handleFileUpload,
     removeImage,
-    capturePhoto,
     error: mediaError
   } = useMedia();
 
@@ -36,6 +33,7 @@ export default function Home() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [aiResponse, setAiResponse] = useState<GeminiResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isSelfieMode, setIsSelfieMode] = useState(false);
 
   // Quiz State
   const [quiz, setQuiz] = useState<QuizQuestion[] | null>(null);
@@ -49,7 +47,7 @@ export default function Home() {
   // Actions
   const handleAnalyze = async () => {
     if (images.length === 0 || transcript.length < 10) {
-      setError("Yo, I need images and an explanation before I can work here.");
+      setError("I need images and some explanation first.");
       return;
     }
     setIsProcessing(true);
@@ -58,11 +56,25 @@ export default function Home() {
     try {
       const result = await analyzeExplanation(transcript, images);
       setAiResponse(result);
-      speakText(`Alright, listen up. You scored ${result.score}. ${result.summary}`);
+      speakText(`Here's the deal. You scored ${result.score}. ${result.summary}`);
     } catch (err: any) {
       setError("Analysis failed. " + err.message);
     } finally {
       setIsProcessing(false);
+    }
+  };
+
+  const handleVoiceInteraction = () => {
+    if (isListening) {
+      // Stop listening
+      toggleListening();
+      // Optional: Could auto-trigger analysis here, but user might want to review or re-record.
+      // For "One Big Button" feel, let's make a secondary small button appear for "Analyze" 
+      // or make the main button transform.
+    } else {
+      // Start listening
+      toggleListening();
+      setAiResponse(null); // Reset previous analysis
     }
   };
 
@@ -107,116 +119,174 @@ export default function Home() {
     }
   };
 
+  const prevQuestion = () => {
+    if (currentQuestion > 0) {
+      setCurrentQuestion(prev => prev - 1);
+      setSelectedOption(null); // Reset selection when going back? Or keep state? Simple reset for now.
+    }
+  };
+
   return (
-    <div 
-      className="min-h-screen bg-background text-foreground flex flex-col relative overflow-hidden"
-      style={{
-        backgroundImage: `url(${generatedBg})`,
-        backgroundBlendMode: 'overlay',
-        backgroundSize: 'cover'
-      }}
-    >
-      {/* Overlay for darkening */}
-      <div className="absolute inset-0 bg-black/80 pointer-events-none" />
+    <div className="min-h-screen bg-background text-foreground flex flex-col relative overflow-hidden selection:bg-primary/30">
+      
+      {/* Ambient Background Effects */}
+      <div className="fixed top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-primary/10 blur-[120px] pointer-events-none" />
+      <div className="fixed bottom-[-20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-purple-900/20 blur-[120px] pointer-events-none" />
 
       {/* Header */}
-      <header className="relative z-10 border-b border-white/10 bg-black/50 backdrop-blur-sm">
-        <div className="container mx-auto px-4 py-6 flex justify-between items-center">
-          <div>
-            <h1 className="text-4xl font-display font-bold text-white tracking-tighter uppercase leading-none">
-              Study<span className="text-primary">Companion</span>
-            </h1>
-            <p className="text-xs text-neutral-400 font-mono tracking-widest uppercase mt-1">New York Edition v1.0</p>
+      <header className="relative z-10 px-6 py-6 flex justify-between items-center">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center border border-primary/50">
+            <Brain className="w-5 h-5 text-primary" />
           </div>
-          <div className="flex items-center gap-4">
-            {isSpeaking && (
-              <button onClick={stopSpeaking} className="text-primary animate-pulse hover:text-white">
-                <VolumeX className="w-6 h-6" />
-              </button>
-            )}
-            {!isSpeaking && (
-              <div className="text-neutral-600">
-                <Volume2 className="w-6 h-6" />
-              </div>
-            )}
-          </div>
+          <span className="text-xl font-bold tracking-tight">Study<span className="text-primary">Sync</span></span>
+        </div>
+        
+        <div className="flex items-center gap-4">
+          {isSpeaking && (
+            <button onClick={stopSpeaking} className="glass-button rounded-full p-3 text-primary animate-pulse">
+              <VolumeX className="w-5 h-5" />
+            </button>
+          )}
         </div>
       </header>
 
-      <main className="relative z-10 flex-1 container mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <main className="relative z-10 flex-1 container mx-auto px-4 py-4 flex flex-col lg:flex-row gap-6 overflow-hidden h-[calc(100vh-100px)]">
         
-        {/* LEFT COLUMN: Inputs */}
-        <div className="lg:col-span-5 space-y-6 flex flex-col h-full">
-          {/* Media Section */}
-          <section className="bg-neutral-900/80 border border-white/10 p-6 backdrop-blur-sm">
-            <h2 className="text-sm font-bold text-neutral-400 uppercase tracking-widest mb-4 flex items-center gap-2">
-              <Brain className="w-4 h-4" /> Input Materials
-            </h2>
-            <MediaControls 
-              images={images}
-              useCamera={useCamera}
-              videoRef={videoRef}
-              setUseCamera={setUseCamera}
-              capturePhoto={capturePhoto}
-              handleFileUpload={handleFileUpload}
-              removeImage={removeImage}
-            />
-          </section>
+        {/* LEFT COLUMN: Interaction Area */}
+        <div className="lg:w-1/2 flex flex-col gap-6 h-full">
+          
+          {/* Main "Stage" - Camera or Visualizer */}
+          <div className="flex-1 glass-panel rounded-3xl relative overflow-hidden flex flex-col items-center justify-center min-h-[400px]">
+             {/* Camera Feed */}
+             {isSelfieMode && (
+               <div className="absolute inset-0 z-0">
+                 <video 
+                   ref={videoRef} 
+                   autoPlay 
+                   playsInline 
+                   muted
+                   className="w-full h-full object-cover opacity-80"
+                 />
+                 <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
+               </div>
+             )}
 
-          {/* Transcript Section */}
-          <section className="bg-neutral-900/80 border border-white/10 p-6 backdrop-blur-sm flex-1 flex flex-col min-h-[300px]">
-            <div className="flex justify-between items-center mb-4">
-               <h2 className="text-sm font-bold text-neutral-400 uppercase tracking-widest">Your Explanation</h2>
-               {isListening && <span className="flex items-center gap-2 text-red-500 text-xs font-bold uppercase animate-pulse"><span className="w-2 h-2 bg-red-500 rounded-full"/> Recording</span>}
-            </div>
-            
-            <div className="flex-1 bg-black/50 border border-neutral-800 p-4 font-mono text-sm text-neutral-300 overflow-y-auto mb-4 relative group">
-              {transcript || <span className="text-neutral-600 italic">Start speaking to explain the concept...</span>}
-              <div className="absolute bottom-0 left-0 w-full h-8 bg-gradient-to-t from-black/50 to-transparent pointer-events-none" />
-            </div>
+             {!isSelfieMode && images.length > 0 && (
+                <div className="absolute inset-0 p-8 grid place-items-center opacity-30">
+                   <img src={images[images.length - 1]} className="max-h-full max-w-full object-contain rounded-lg" alt="Study material" />
+                </div>
+             )}
 
-            <div className="flex gap-4">
-              <button 
-                onClick={toggleListening}
-                className={`flex-1 py-4 font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all ${
-                  isListening 
-                    ? 'bg-red-600 text-white hover:bg-red-700' 
-                    : 'bg-neutral-800 text-white hover:bg-neutral-700 border border-neutral-700'
-                }`}
-              >
-                {isListening ? <><Square className="fill-current w-4 h-4" /> Stop</> : <><Mic className="w-4 h-4" /> Speak</>}
-              </button>
-              
-              <button 
-                onClick={handleAnalyze}
-                disabled={isProcessing || transcript.length < 5}
-                className="flex-1 bg-primary text-black font-bold uppercase tracking-wider hover:bg-yellow-400 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-              >
-                {isProcessing ? <Sparkles className="w-4 h-4 animate-spin" /> : <Play className="fill-current w-4 h-4" />}
-                Analyze
-              </button>
+             {/* Center Interaction */}
+             <div className="relative z-20 flex flex-col items-center gap-8">
+                {/* Voice Button */}
+                <div className="relative group">
+                  {isListening && (
+                    <div className="absolute inset-0 bg-red-500/50 rounded-full blur-2xl animate-pulse" />
+                  )}
+                  <button
+                    onClick={handleVoiceInteraction}
+                    className={`w-32 h-32 rounded-full flex items-center justify-center transition-all duration-300 border-4 ${
+                      isListening 
+                        ? 'bg-red-500 border-red-400 scale-110 shadow-[0_0_50px_rgba(239,68,68,0.4)]' 
+                        : 'glass-panel border-white/20 hover:border-primary/50 hover:shadow-[0_0_30px_rgba(6,182,212,0.2)]'
+                    }`}
+                  >
+                    {isListening ? (
+                      <Square className="w-12 h-12 fill-white text-white" />
+                    ) : (
+                      <Mic className="w-12 h-12 text-white" />
+                    )}
+                  </button>
+                </div>
+
+                {/* Status Text (Replaces Transcript) */}
+                <div className="text-center space-y-2">
+                  <h2 className="text-2xl font-bold text-white">
+                    {isListening ? "Listening..." : "Tap to Explain"}
+                  </h2>
+                  <p className="text-neutral-400 text-sm max-w-xs mx-auto">
+                    {isListening 
+                      ? "Explain the concept in your own words. I'm listening." 
+                      : "Record your explanation and I'll grade your understanding."}
+                  </p>
+                </div>
+
+                {/* Analyze Action (Appears when not listening but has transcript) */}
+                <AnimatePresence>
+                  {!isListening && transcript.length > 5 && (
+                    <motion.button
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 10 }}
+                      onClick={handleAnalyze}
+                      disabled={isProcessing}
+                      className="bg-primary text-black px-8 py-3 rounded-full font-bold text-lg flex items-center gap-2 hover:scale-105 transition-transform shadow-[0_0_20px_rgba(6,182,212,0.4)]"
+                    >
+                      {isProcessing ? <Sparkles className="w-5 h-5 animate-spin" /> : <Play className="w-5 h-5 fill-current" />}
+                      Analyze Explanation
+                    </motion.button>
+                  )}
+                </AnimatePresence>
+             </div>
+
+             {/* Bottom Controls */}
+             <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-4 z-20">
+                <button 
+                  onClick={() => {
+                    const newState = !isSelfieMode;
+                    setIsSelfieMode(newState);
+                    setUseCamera(newState);
+                  }}
+                  className={`p-4 rounded-full border transition-all ${isSelfieMode ? 'bg-white text-black border-white' : 'glass-button text-neutral-400 border-white/10'}`}
+                  title="Toggle Camera"
+                >
+                  {isSelfieMode ? <Video className="w-5 h-5" /> : <Video className="w-5 h-5 opacity-50" />}
+                </button>
+
+                <label className="p-4 rounded-full glass-button border-white/10 text-neutral-400 hover:text-white cursor-pointer transition-all">
+                  <Upload className="w-5 h-5" />
+                  <input type="file" multiple accept="image/*" onChange={handleFileUpload} className="hidden" />
+                </label>
+             </div>
+          </div>
+
+          {/* Mini Image Strip */}
+          {images.length > 0 && (
+            <div className="h-24 flex gap-3 overflow-x-auto pb-2 px-2 snap-x">
+              {images.map((img, idx) => (
+                <div key={idx} className="h-full aspect-square rounded-xl overflow-hidden border border-white/10 relative group shrink-0 snap-center">
+                  <img src={img} alt="Mini" className="w-full h-full object-cover" />
+                  <button 
+                    onClick={() => removeImage(idx)}
+                    className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity"
+                  >
+                    <X className="w-5 h-5 text-white" />
+                  </button>
+                </div>
+              ))}
             </div>
-            {error && <p className="text-red-500 text-xs mt-2 font-bold text-center">{error}</p>}
-            {(speechError || mediaError) && <p className="text-red-500 text-xs mt-2 font-bold text-center">{speechError || mediaError}</p>}
-          </section>
+          )}
         </div>
 
-        {/* RIGHT COLUMN: Feedback */}
-        <div className="lg:col-span-7 h-full flex flex-col gap-6">
-           <section className="bg-neutral-900/80 border border-white/10 p-6 backdrop-blur-sm h-[600px] lg:h-auto lg:flex-1 flex flex-col">
-              <div className="flex justify-between items-center mb-6 border-b border-neutral-800 pb-4">
-                <h2 className="text-xl font-display font-bold text-white uppercase tracking-wide">
-                  Tutor Feedback
-                </h2>
+        {/* RIGHT COLUMN: Feedback & Quiz */}
+        <div className="lg:w-1/2 h-full">
+           <div className="h-full glass-panel rounded-3xl p-6 flex flex-col overflow-hidden relative">
+              <div className="flex justify-between items-center mb-6 shrink-0">
+                <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                  <Sparkles className="w-5 h-5 text-primary" />
+                  Feedback
+                </h3>
                 <button 
                   onClick={handleGenerateQuiz}
                   disabled={isQuizLoading || images.length === 0}
-                  className="text-xs border border-primary text-primary px-4 py-2 hover:bg-primary hover:text-black transition-colors uppercase font-bold tracking-wider flex items-center gap-2 disabled:opacity-50"
+                  className="text-xs border border-white/20 text-neutral-300 px-4 py-2 rounded-full hover:bg-white/10 hover:text-white transition-colors font-bold flex items-center gap-2 disabled:opacity-30"
                 >
-                   {isQuizLoading ? "Generating..." : "Pop Quiz"}
+                   {isQuizLoading ? "Generating..." : "Take Pop Quiz"}
                 </button>
               </div>
-              
+
               <div className="flex-1 overflow-hidden">
                 <FeedbackDisplay 
                   response={aiResponse}
@@ -224,22 +294,27 @@ export default function Home() {
                   error={error}
                 />
               </div>
-           </section>
+           </div>
         </div>
       </main>
 
       {/* Quiz Modal */}
-      <QuizModal 
-        isOpen={showQuizModal}
-        onClose={() => setShowQuizModal(false)}
-        quiz={quiz}
-        currentQuestion={currentQuestion}
-        quizScore={quizScore}
-        selectedOption={selectedOption}
-        quizCompleted={quizCompleted}
-        handleQuizAnswer={handleQuizAnswer}
-        nextQuestion={nextQuestion}
-      />
+      <AnimatePresence>
+        {showQuizModal && (
+          <QuizModal 
+            isOpen={showQuizModal}
+            onClose={() => setShowQuizModal(false)}
+            quiz={quiz}
+            currentQuestion={currentQuestion}
+            quizScore={quizScore}
+            selectedOption={selectedOption}
+            quizCompleted={quizCompleted}
+            handleQuizAnswer={handleQuizAnswer}
+            nextQuestion={nextQuestion}
+            prevQuestion={prevQuestion}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
