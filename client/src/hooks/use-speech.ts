@@ -78,26 +78,38 @@ export function useSpeech() {
   }, [isListening]);
 
   const speakText = useCallback((text: string) => {
-    if (synthRef.current.speaking) {
-      synthRef.current.cancel();
-      setIsSpeaking(false);
-      // If we want to stop, we just return. If we want to speak new text, we continue.
-      if (!text) return; 
-    }
-    
     if (!text) return;
 
-    const utterance = new SpeechSynthesisUtterance(text);
-    const voices = synthRef.current.getVoices();
-    // Prioritize US English voices for the "New York" text style
-    const preferredVoice = voices.find(v => v.lang === 'en-US' && !v.name.includes('Microsoft')) || voices.find(v => v.lang === 'en-US') || voices[0];
-    if (preferredVoice) utterance.voice = preferredVoice;
+    // Always cancel any ongoing speech
+    if (synthRef.current.speaking) {
+      synthRef.current.cancel();
+    }
     
-    utterance.pitch = 0.9; // Slightly lower pitch for authority
-    utterance.rate = 1.1; // Faster rate
-    utterance.onstart = () => setIsSpeaking(true);
-    utterance.onend = () => setIsSpeaking(false);
-    synthRef.current.speak(utterance);
+    try {
+      const utterance = new SpeechSynthesisUtterance(text);
+      const voices = synthRef.current.getVoices();
+      
+      // Use default voice if available
+      if (voices.length > 0) {
+        utterance.voice = voices[0];
+      }
+      
+      utterance.pitch = 1.0;
+      utterance.rate = 1.0;
+      utterance.volume = 1.0;
+      
+      utterance.onstart = () => setIsSpeaking(true);
+      utterance.onend = () => setIsSpeaking(false);
+      utterance.onerror = (event: any) => {
+        console.warn("TTS error:", event.error);
+        setIsSpeaking(false);
+      };
+      
+      synthRef.current.speak(utterance);
+    } catch (e) {
+      console.warn("TTS error:", e);
+      setIsSpeaking(false);
+    }
   }, []);
 
   const stopSpeaking = useCallback(() => {
