@@ -320,25 +320,6 @@ export default function Home() {
                     </button>
                   </motion.div>
                 )}
-
-                {/* Tutor Response or Error (Only in Tutor Mode) */}
-                {mode === 'tutor' && !isListening && (tutorResponse || error) && (
-                    <motion.div 
-                      initial={{ opacity: 0, y: 20, scale: 0.9 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      className={`absolute bottom-12 backdrop-blur-xl p-6 rounded-3xl border max-w-xl text-center shadow-2xl z-30 ${error ? 'bg-red-900/90 border-red-500/30' : 'bg-neutral-900/90 border-white/10'}`}
-                    >
-                      {tutorResponse && (
-                        <>
-                          <span className="text-primary text-xs font-bold uppercase tracking-widest mb-2 block">Tutor says:</span>
-                          <p className="text-xl text-white leading-relaxed">"{tutorResponse}"</p>
-                        </>
-                      )}
-                      {error && !tutorResponse && (
-                        <p className="text-lg text-red-200">{error}</p>
-                      )}
-                    </motion.div>
-                  )}
              </div>
           </div>
         )}
@@ -401,10 +382,30 @@ export default function Home() {
                  </div>
                </>
              ) : (
-               /* Tutor Mode Placeholder */
-               <div className="flex-1 p-8 flex flex-col justify-center items-center text-center text-neutral-600">
-                  <MessageCircle className="w-12 h-12 mb-4 opacity-20" />
-                  <p>Your chat history appears here.</p>
+               /* Tutor Mode - Chat History */
+               <div className="flex-1 p-8 flex flex-col">
+                  {tutorResponse || error ? (
+                    <motion.div 
+                      initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      className={`p-6 rounded-2xl border ${error && !tutorResponse ? 'bg-red-900/30 border-red-500/30' : 'bg-neutral-800/50 border-white/10'}`}
+                    >
+                      {tutorResponse && (
+                        <>
+                          <span className="text-primary text-xs font-bold uppercase tracking-widest mb-3 block">Tutor says:</span>
+                          <p className="text-lg text-white leading-relaxed">{tutorResponse}</p>
+                        </>
+                      )}
+                      {error && !tutorResponse && (
+                        <p className="text-base text-red-200">{error}</p>
+                      )}
+                    </motion.div>
+                  ) : (
+                    <div className="flex-1 flex flex-col justify-center items-center text-center text-neutral-600">
+                      <MessageCircle className="w-12 h-12 mb-4 opacity-20" />
+                      <p>Your chat history appears here.</p>
+                    </div>
+                  )}
                </div>
              )}
            </div>
