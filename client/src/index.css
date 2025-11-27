@@ -30,41 +30,41 @@
   --radius-xl: calc(var(--radius) + 4px);
   
   --font-sans: 'Inter', sans-serif;
-  --font-display: 'Inter', sans-serif; /* Cleaner, modern sans for glass theme */
+  --font-display: 'Oswald', sans-serif; /* Back to Oswald for that bold NY look */
 }
 
-/* Glassmorphism Theme */
+/* Modern Black & Yellow Theme */
 :root {
-  --background: 220 40% 2%; /* Deep dark blue/black */
-  --foreground: 210 40% 98%;
+  --background: 0 0% 0%; /* Pure Black */
+  --foreground: 0 0% 100%;
   
-  --card: 220 30% 10%; /* Semi-transparent later */
-  --card-foreground: 210 40% 98%;
+  --card: 0 0% 7%; /* Very dark grey for cards */
+  --card-foreground: 0 0% 100%;
   
-  --popover: 220 30% 10%;
-  --popover-foreground: 210 40% 98%;
+  --popover: 0 0% 7%;
+  --popover-foreground: 0 0% 100%;
   
-  /* Electric Blue / Cyan for modern glass feel */
-  --primary: 190 90% 50%; 
-  --primary-foreground: 220 40% 10%;
+  /* Vivid Yellow */
+  --primary: 48 100% 50%; /* #FFD700 Gold/Yellow */
+  --primary-foreground: 0 0% 0%;
   
-  --secondary: 217 30% 15%;
-  --secondary-foreground: 210 40% 98%;
+  --secondary: 0 0% 15%;
+  --secondary-foreground: 0 0% 100%;
   
-  --muted: 217 30% 15%;
-  --muted-foreground: 215 20% 65%;
+  --muted: 0 0% 15%;
+  --muted-foreground: 0 0% 60%;
   
-  --accent: 190 90% 50%;
-  --accent-foreground: 220 40% 10%;
+  --accent: 48 100% 50%;
+  --accent-foreground: 0 0% 0%;
   
   --destructive: 0 84% 60%;
-  --destructive-foreground: 0 0% 98%;
+  --destructive-foreground: 0 0% 100%;
 
-  --border: 217 30% 20%;
-  --input: 217 30% 20%;
-  --ring: 190 90% 50%;
+  --border: 0 0% 20%;
+  --input: 0 0% 20%;
+  --ring: 48 100% 50%;
 
-  --radius: 1rem; /* Soft rounded corners for glass */
+  --radius: 0.5rem; /* Slightly rounded, modern industrial */
 }
 
 @layer base {
@@ -73,24 +73,33 @@
   }
   body {
     @apply font-sans antialiased bg-background text-foreground;
-    background: radial-gradient(circle at 50% 0%, hsl(220, 40%, 15%), hsl(220, 40%, 2%));
-    min-height: 100vh;
+    /* Subtle grid pattern for depth */
+    background-image: 
+      linear-gradient(to right, #1a1a1a 1px, transparent 1px),
+      linear-gradient(to bottom, #1a1a1a 1px, transparent 1px);
+    background-size: 40px 40px;
+    background-color: #050505;
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply font-display tracking-tight;
+    @apply font-display uppercase tracking-wider;
   }
 }
 
 @layer components {
   .glass-panel {
-    @apply bg-white/5 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.36)];
+    @apply bg-neutral-900/80 backdrop-blur-md border border-white/10 shadow-2xl;
   }
   
   .glass-button {
-    @apply bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all active:scale-95;
+    @apply bg-white/5 border border-white/10 hover:bg-white/10 transition-all active:scale-95;
   }
   
-  .neon-text {
-    text-shadow: 0 0 10px theme('colors.primary.DEFAULT'), 0 0 20px theme('colors.primary.DEFAULT');
+  /* Yellow Glow Effects */
+  .glow-primary {
+    box-shadow: 0 0 20px theme('colors.primary.DEFAULT'), inset 0 0 10px theme('colors.primary.DEFAULT');
+  }
+  
+  .text-glow {
+    text-shadow: 0 0 10px theme('colors.primary.DEFAULT');
   }
 }

@@ -75,7 +75,8 @@ export const generateQuiz = async (images: string[]): Promise<QuizQuestion[]> =>
         "options": ["Option A", "Option B", "Option C", "Option D"],
         "correctAnswer": 0, // index of correct option (0-3)
         "explanation": "Why this is the correct answer (NY style)"
-      }
+      },
+      ... (Total of 5 questions)
     ]
   `;
   return callGemini(prompt, images);
