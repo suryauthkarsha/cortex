@@ -4,10 +4,11 @@ import { useMedia } from '@/hooks/use-media';
 import { analyzeExplanation, generateQuiz, askTutor, type QuizQuestion, type GeminiResponse } from '@/lib/gemini';
 import { QuizModal } from '@/components/modules/quiz-modal';
 import { FeedbackDisplay } from '@/components/modules/feedback-display';
-import { Mic, Square, Play, VolumeX, Sparkles, Upload, X, Video, Image as ImageIcon, MessageCircle, GraduationCap, StopCircle, Brain } from 'lucide-react';
+import { Mic, Square, Play, VolumeX, Sparkles, Upload, X, Video, Image as ImageIcon, MessageCircle, GraduationCap, StopCircle, Brain, ArrowLeft } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 type Mode = 'check' | 'tutor';
+type ViewState = 'idle' | 'analyzing' | 'results';
 
 export default function Home() {
   // Hooks
@@ -32,6 +33,7 @@ export default function Home() {
 
   // App State
   const [mode, setMode] = useState<Mode>('check');
+  const [viewState, setViewState] = useState<ViewState>('idle');
   const [isProcessing, setIsProcessing] = useState(false);
   const [aiResponse, setAiResponse] = useState<GeminiResponse | null>(null);
   const [tutorResponse, setTutorResponse] = useState<string | null>(null);
@@ -49,10 +51,11 @@ export default function Home() {
 
   // Actions
   const handleAnalyze = async () => {
-    if (transcript.length < 10) {
+    if (transcript.length < 5) {
       setError("Say something first.");
       return;
     }
+    setViewState('analyzing');
     setIsProcessing(true);
     setError(null);
 
@@ -60,18 +63,20 @@ export default function Home() {
       const result = await analyzeExplanation(transcript, images);
       setAiResponse(result);
       speakText(`Score: ${result.score}. ${result.summary}`);
+      setViewState('results');
     } catch (err: any) {
       setError(err.message);
+      setViewState('idle'); // Reset on error
     } finally {
       setIsProcessing(false);
     }
   };
 
-  const handleTutorChat = async () => {
-    if (transcript.length < 3) return;
+  const handleTutorChat = async (currentTranscript: string) => {
+    if (currentTranscript.length < 3) return;
     setIsProcessing(true);
     try {
-       const response = await askTutor(transcript, images);
+       const response = await askTutor(currentTranscript, images);
        setTutorResponse(response);
        speakText(response);
        setTranscript(''); // Clear transcript after sending to tutor
@@ -86,8 +91,10 @@ export default function Home() {
     if (isListening) {
       toggleListening();
       if (mode === 'tutor') {
-        // In tutor mode, stopping recording automatically sends the message
-        setTimeout(() => handleTutorChat(), 500); 
+        // Pass the current transcript directly to avoid state update lag
+        // We use a small delay to ensure the final transcript bit is captured by the hook
+        // ideally the hook would return the final transcript on stop, but for now:
+        setTimeout(() => handleTutorChat(transcript), 100); 
       }
     } else {
       toggleListening();
@@ -145,6 +152,12 @@ export default function Home() {
     }
   };
 
+  const resetView = () => {
+    setViewState('idle');
+    setAiResponse(null);
+    setTranscript('');
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col relative overflow-hidden font-sans selection:bg-white/20">
       
@@ -160,13 +173,13 @@ export default function Home() {
         {/* Mode Switcher */}
         <div className="flex bg-neutral-900/50 rounded-full p-1 border border-white/5 backdrop-blur-xl">
           <button 
-            onClick={() => setMode('check')}
+            onClick={() => { setMode('check'); resetView(); }}
             className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${mode === 'check' ? 'bg-white text-black shadow-lg' : 'text-neutral-400 hover:text-white'}`}
           >
             Check Me
           </button>
           <button 
-            onClick={() => setMode('tutor')}
+            onClick={() => { setMode('tutor'); resetView(); }}
             className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${mode === 'tutor' ? 'bg-primary text-black shadow-[0_0_20px_theme("colors.primary.DEFAULT")]' : 'text-neutral-400 hover:text-white'}`}
           >
             Gen Z Tutor
@@ -184,173 +197,196 @@ export default function Home() {
 
       <main className="relative z-10 flex-1 container mx-auto px-6 py-4 flex flex-col lg:flex-row gap-8 h-[calc(100vh-100px)]">
         
-        {/* LEFT COLUMN: Tools (Collapsible/Minimal) */}
-        <div className="hidden lg:flex flex-col gap-4 w-20 items-center py-8 bg-neutral-900/30 rounded-full border border-white/5 h-fit self-center backdrop-blur-xl">
-           <label className="p-4 rounded-full hover:bg-white/10 text-neutral-400 hover:text-white cursor-pointer transition-all relative group">
-              <Upload className="w-6 h-6" />
-              <input type="file" multiple accept="image/*" onChange={handleFileUpload} className="hidden" />
-              <span className="absolute left-14 bg-black px-2 py-1 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity border border-white/10 pointer-events-none">
-                Upload Material
-              </span>
-           </label>
-           
-           <button 
-             onClick={() => {
-                const newState = !isSelfieMode;
-                setIsSelfieMode(newState);
-                setUseCamera(newState);
-             }}
-             className={`p-4 rounded-full transition-all relative group ${isSelfieMode ? 'bg-white text-black' : 'hover:bg-white/10 text-neutral-400 hover:text-white'}`}
-           >
-              <Video className="w-6 h-6" />
-              <span className="absolute left-14 bg-black px-2 py-1 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity border border-white/10 pointer-events-none">
-                Toggle Camera
-              </span>
-           </button>
+        {/* LEFT COLUMN: Tools (Collapsible/Minimal) - Hidden in Results Mode */}
+        {viewState !== 'results' && (
+          <motion.div 
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            className="hidden lg:flex flex-col gap-4 w-20 items-center py-8 bg-neutral-900/30 rounded-full border border-white/5 h-fit self-center backdrop-blur-xl"
+          >
+             <label className="p-4 rounded-full hover:bg-white/10 text-neutral-400 hover:text-white cursor-pointer transition-all relative group">
+                <Upload className="w-6 h-6" />
+                <input type="file" multiple accept="image/*" onChange={handleFileUpload} className="hidden" />
+                <span className="absolute left-14 bg-black px-2 py-1 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity border border-white/10 pointer-events-none">
+                  Upload Material
+                </span>
+             </label>
+             
+             <button 
+               onClick={() => {
+                  const newState = !isSelfieMode;
+                  setIsSelfieMode(newState);
+                  setUseCamera(newState);
+               }}
+               className={`p-4 rounded-full transition-all relative group ${isSelfieMode ? 'bg-white text-black' : 'hover:bg-white/10 text-neutral-400 hover:text-white'}`}
+             >
+                <Video className="w-6 h-6" />
+                <span className="absolute left-14 bg-black px-2 py-1 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity border border-white/10 pointer-events-none">
+                  Toggle Camera
+                </span>
+             </button>
 
-           <div className="w-8 h-[1px] bg-white/10 my-2" />
+             <div className="w-8 h-[1px] bg-white/10 my-2" />
 
-           {images.map((img, idx) => (
-             <div key={idx} className="w-12 h-12 rounded-xl overflow-hidden border border-white/10 relative group">
-               <img src={img} alt="" className="w-full h-full object-cover opacity-50 group-hover:opacity-100 transition-opacity" />
-               <button onClick={() => removeImage(idx)} className="absolute inset-0 bg-red-500/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
-                 <X className="w-4 h-4 text-white" />
+             {images.map((img, idx) => (
+               <div key={idx} className="w-12 h-12 rounded-xl overflow-hidden border border-white/10 relative group">
+                 <img src={img} alt="" className="w-full h-full object-cover opacity-50 group-hover:opacity-100 transition-opacity" />
+                 <button onClick={() => removeImage(idx)} className="absolute inset-0 bg-red-500/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                   <X className="w-4 h-4 text-white" />
+                 </button>
+               </div>
+             ))}
+          </motion.div>
+        )}
+
+        {/* MIDDLE: Stage - Shrinks/Disappears in Results Mode */}
+        {viewState !== 'results' && (
+          <div className="flex-1 flex flex-col gap-8 justify-center relative">
+             
+             {/* Central Visualizer */}
+             <div className="relative flex-1 flex flex-col items-center justify-center min-h-[400px]">
+                
+                {/* Background Layer */}
+                <div className="absolute inset-0 rounded-[3rem] overflow-hidden bg-neutral-900/20 border border-white/5">
+                   {isSelfieMode && (
+                     <video ref={videoRef} autoPlay playsInline muted className="w-full h-full object-cover opacity-50" />
+                   )}
+                   {!isSelfieMode && (
+                      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/20" />
+                   )}
+                </div>
+
+                {/* Voice Button */}
+                <div className="relative z-20 flex flex-col items-center gap-8">
+                   <motion.button
+                     onClick={handleVoiceInteraction}
+                     whileHover={{ scale: 1.05 }}
+                     whileTap={{ scale: 0.95 }}
+                     className={`w-48 h-48 rounded-full flex items-center justify-center transition-all duration-500 relative ${
+                       isListening 
+                         ? 'bg-red-500 shadow-[0_0_100px_rgba(239,68,68,0.4)]' 
+                         : mode === 'tutor' 
+                            ? 'bg-primary text-black shadow-[0_0_60px_rgba(255,215,0,0.2)]' 
+                            : 'bg-white text-black shadow-[0_0_60px_rgba(255,255,255,0.1)]'
+                     }`}
+                   >
+                      {isListening ? (
+                        <StopCircle className="w-20 h-20 fill-current text-white animate-pulse" />
+                      ) : (
+                        <Mic className="w-20 h-20" />
+                      )}
+                   </motion.button>
+
+                   <div className="text-center space-y-2 relative z-20">
+                     <h2 className="text-4xl font-bold text-white tracking-tight">
+                       {isListening ? "Listening..." : mode === 'tutor' ? "Ask Gen Z Tutor" : "Explain Concept"}
+                     </h2>
+                     <p className="text-neutral-500 text-lg font-medium">
+                       {isListening 
+                         ? "I'm all ears." 
+                         : mode === 'tutor' 
+                           ? "Ask me anything, no cap." 
+                           : "Tap to record your explanation."}
+                     </p>
+                   </div>
+                </div>
+
+                {/* Analyze Button (Check Mode) - Only shows when NOT in results mode */}
+                {!isListening && transcript.length > 5 && mode === 'check' && viewState === 'idle' && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="absolute -bottom-20 z-30"
+                  >
+                    <button 
+                       onClick={handleAnalyze}
+                       disabled={isProcessing}
+                       className="bg-white text-black px-10 py-4 rounded-full font-bold text-xl hover:scale-105 transition-transform shadow-xl flex items-center gap-3"
+                    >
+                      {isProcessing ? <Sparkles className="w-6 h-6 animate-spin" /> : <Play className="w-6 h-6 fill-current" />}
+                      Analyze Now
+                    </button>
+                  </motion.div>
+                )}
+
+                {/* Tutor Response (Only in Tutor Mode) */}
+                {mode === 'tutor' && tutorResponse && !isListening && (
+                    <motion.div 
+                      initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      className="absolute bottom-12 bg-neutral-900/90 backdrop-blur-xl p-6 rounded-3xl border border-white/10 max-w-xl text-center shadow-2xl z-30"
+                    >
+                      <span className="text-primary text-xs font-bold uppercase tracking-widest mb-2 block">Tutor says:</span>
+                      <p className="text-xl text-white leading-relaxed">"{tutorResponse}"</p>
+                    </motion.div>
+                  )}
+             </div>
+          </div>
+        )}
+
+        {/* RIGHT: Big Feedback Panel OR Expanded Results */}
+        <motion.div 
+          layout
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ 
+            opacity: 1, 
+            x: 0,
+            width: viewState === 'results' ? '100%' : undefined, // Expand to full width
+            flex: viewState === 'results' ? 1 : undefined
+          }}
+          className={`h-full flex flex-col transition-all duration-500 ${viewState === 'results' ? 'w-full max-w-4xl mx-auto' : 'lg:w-[400px] xl:w-[500px]'}`}
+        >
+           {/* Only show "Results" title if NOT in tutor mode (or if desired) */}
+           {mode === 'check' && (
+             <div className="flex justify-between items-center mb-6 px-2">
+               <div className="flex items-center gap-4">
+                  {viewState === 'results' && (
+                    <button 
+                      onClick={resetView}
+                      className="p-2 hover:bg-white/10 rounded-full transition-colors text-white"
+                    >
+                      <ArrowLeft className="w-6 h-6" />
+                    </button>
+                  )}
+                  <h3 className="text-lg font-bold text-white">Results</h3>
+               </div>
+               <button 
+                  onClick={handleGenerateQuiz}
+                  disabled={isQuizLoading || images.length === 0}
+                  className="text-sm text-neutral-400 hover:text-white transition-colors flex items-center gap-2"
+               >
+                  <GraduationCap className="w-4 h-4" />
+                  {isQuizLoading ? "Making Quiz..." : "Pop Quiz"}
                </button>
              </div>
-           ))}
-        </div>
-
-        {/* MIDDLE: Stage */}
-        <div className="flex-1 flex flex-col gap-8 justify-center relative">
+           )}
            
-           {/* Central Visualizer */}
-           <div className="relative flex-1 flex flex-col items-center justify-center min-h-[400px]">
-              
-              {/* Background Layer */}
-              <div className="absolute inset-0 rounded-[3rem] overflow-hidden bg-neutral-900/20 border border-white/5">
-                 {isSelfieMode && (
-                   <video ref={videoRef} autoPlay playsInline muted className="w-full h-full object-cover opacity-50" />
-                 )}
-                 {!isSelfieMode && (
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/20" />
-                 )}
-              </div>
-
-              {/* Voice Button */}
-              <div className="relative z-20 flex flex-col items-center gap-8">
-                 <motion.button
-                   onClick={handleVoiceInteraction}
-                   whileHover={{ scale: 1.05 }}
-                   whileTap={{ scale: 0.95 }}
-                   className={`w-48 h-48 rounded-full flex items-center justify-center transition-all duration-500 relative ${
-                     isListening 
-                       ? 'bg-red-500 shadow-[0_0_100px_rgba(239,68,68,0.4)]' 
-                       : mode === 'tutor' 
-                          ? 'bg-primary text-black shadow-[0_0_60px_rgba(255,215,0,0.2)]' 
-                          : 'bg-white text-black shadow-[0_0_60px_rgba(255,255,255,0.1)]'
-                   }`}
-                 >
-                    {isListening ? (
-                      <StopCircle className="w-20 h-20 fill-current text-white animate-pulse" />
-                    ) : (
-                      <Mic className="w-20 h-20" />
-                    )}
-                 </motion.button>
-
-                 <div className="text-center space-y-2 relative z-20">
-                   <h2 className="text-4xl font-bold text-white tracking-tight">
-                     {isListening ? "Listening..." : mode === 'tutor' ? "Ask Gen Z Tutor" : "Explain Concept"}
-                   </h2>
-                   <p className="text-neutral-500 text-lg font-medium">
-                     {isListening 
-                       ? "I'm all ears." 
-                       : mode === 'tutor' 
-                         ? "Ask me anything, no cap." 
-                         : "Tap to record your explanation."}
-                   </p>
-                 </div>
-              </div>
-
-              {/* Mode Specific Outputs */}
-              <AnimatePresence>
-                {/* Analyze Button (Check Mode) - Absolutely positioned but lower */}
-                {/* REMOVED: Analyze button is now in the right column */}
-              </AnimatePresence>
-           </div>
-        </div>
-
-        {/* RIGHT: Big Feedback Panel */}
-        <motion.div 
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="lg:w-[400px] xl:w-[500px] h-full flex flex-col"
-        >
-           <div className="flex justify-between items-center mb-6 px-2">
-             <h3 className="text-lg font-bold text-white">
-               {mode === 'check' ? 'Results' : 'Tutor Chat'}
-             </h3>
-             <button 
-                onClick={handleGenerateQuiz}
-                disabled={isQuizLoading || images.length === 0}
-                className="text-sm text-neutral-400 hover:text-white transition-colors flex items-center gap-2"
-             >
-                <GraduationCap className="w-4 h-4" />
-                {isQuizLoading ? "Making Quiz..." : "Pop Quiz"}
-             </button>
-           </div>
-           
-           <div className="flex-1 bg-neutral-900/20 border border-white/5 rounded-[2.5rem] overflow-hidden backdrop-blur-sm flex flex-col">
+           {/* Main Content Area */}
+           <div className="flex-1 bg-neutral-900/20 border border-white/5 rounded-[2.5rem] overflow-hidden backdrop-blur-sm flex flex-col relative">
              {mode === 'check' ? (
                <>
+                 {/* Loading Overlay */}
+                 {viewState === 'analyzing' && (
+                   <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/50 backdrop-blur-sm z-20">
+                      <div className="w-16 h-16 border-t-2 border-r-2 border-white rounded-full animate-spin mb-4" />
+                      <p className="text-white font-bold animate-pulse">Analyzing your vibes...</p>
+                   </div>
+                 )}
+                 
                  <div className="flex-1 overflow-hidden">
                     <FeedbackDisplay 
                       response={aiResponse}
-                      isProcessing={isProcessing}
+                      isProcessing={isProcessing && viewState !== 'analyzing'} // Handled by overlay for full analyze
                       error={error}
                     />
                  </div>
-                 {/* Analyze Button - Placed Here */}
-                 {!isListening && transcript.length > 5 && (
-                    <div className="p-6 border-t border-white/5">
-                       <button 
-                          onClick={handleAnalyze}
-                          disabled={isProcessing}
-                          className="w-full bg-white text-black py-4 rounded-full font-bold text-xl hover:scale-105 transition-transform shadow-xl flex items-center justify-center gap-3"
-                       >
-                         {isProcessing ? <Sparkles className="w-6 h-6 animate-spin" /> : <Play className="w-6 h-6 fill-current" />}
-                         Analyze Now
-                       </button>
-                    </div>
-                 )}
                </>
              ) : (
-               /* Tutor Mode Chat Display */
-               <div className="flex-1 p-8 flex flex-col justify-end">
-                  {tutorResponse ? (
-                    <motion.div 
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="space-y-4"
-                    >
-                      <div className="bg-white/5 rounded-3xl p-6 border border-white/10">
-                        <span className="text-primary text-xs font-bold uppercase tracking-widest mb-2 block">Tutor says:</span>
-                        <p className="text-xl text-white leading-relaxed">"{tutorResponse}"</p>
-                      </div>
-                    </motion.div>
-                  ) : (
-                    <div className="text-center text-neutral-600">
-                       <MessageCircle className="w-12 h-12 mx-auto mb-4 opacity-20" />
-                       <p>Ask me anything about the study material.</p>
-                    </div>
-                  )}
-                  
-                  {isProcessing && (
-                    <div className="flex items-center justify-center gap-2 text-neutral-500 mt-4">
-                       <span className="w-2 h-2 bg-primary rounded-full animate-bounce" />
-                       <span className="w-2 h-2 bg-primary rounded-full animate-bounce delay-75" />
-                       <span className="w-2 h-2 bg-primary rounded-full animate-bounce delay-150" />
-                    </div>
-                  )}
+               /* Tutor Mode Placeholder (Right Column Hidden in Tutor Mode usually, but kept for structure) */
+               <div className="flex-1 p-8 flex flex-col justify-center items-center text-center text-neutral-600">
+                  <MessageCircle className="w-12 h-12 mb-4 opacity-20" />
+                  <p>Your chat history appears here.</p>
                </div>
              )}
            </div>
