@@ -73,15 +73,20 @@ export default function Home() {
   };
 
   const handleTutorChat = async (currentTranscript: string) => {
-    if (currentTranscript.length < 3) return;
+    if (currentTranscript.trim().length < 3) {
+      setError("Say something longer, bestie!");
+      return;
+    }
     setIsProcessing(true);
+    setError(null);
     try {
        const response = await askTutor(currentTranscript, images);
        setTutorResponse(response);
        speakText(response);
-       setTranscript(''); // Clear transcript after sending to tutor
+       setTranscript('');
     } catch (err: any) {
       setError(err.message || 'Tutor is busy. Try again.');
+      setTutorResponse(null);
     } finally {
       setIsProcessing(false);
     }
@@ -91,7 +96,15 @@ export default function Home() {
     if (isListening) {
       toggleListening();
       if (mode === 'tutor') {
-        setTimeout(() => handleTutorChat(transcript), 100); 
+        // Capture current transcript before state updates
+        const currentText = transcript;
+        setTimeout(() => {
+          if (currentText.trim().length >= 3) {
+            handleTutorChat(currentText);
+          } else {
+            setError("Say something longer, bestie!");
+          }
+        }, 100); 
       }
     } else {
       toggleListening();
@@ -308,15 +321,22 @@ export default function Home() {
                   </motion.div>
                 )}
 
-                {/* Tutor Response (Only in Tutor Mode) */}
-                {mode === 'tutor' && tutorResponse && !isListening && (
+                {/* Tutor Response or Error (Only in Tutor Mode) */}
+                {mode === 'tutor' && !isListening && (tutorResponse || error) && (
                     <motion.div 
                       initial={{ opacity: 0, y: 20, scale: 0.9 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
-                      className="absolute bottom-12 bg-neutral-900/90 backdrop-blur-xl p-6 rounded-3xl border border-white/10 max-w-xl text-center shadow-2xl z-30"
+                      className={`absolute bottom-12 backdrop-blur-xl p-6 rounded-3xl border max-w-xl text-center shadow-2xl z-30 ${error ? 'bg-red-900/90 border-red-500/30' : 'bg-neutral-900/90 border-white/10'}`}
                     >
-                      <span className="text-primary text-xs font-bold uppercase tracking-widest mb-2 block">Tutor says:</span>
-                      <p className="text-xl text-white leading-relaxed">"{tutorResponse}"</p>
+                      {tutorResponse && (
+                        <>
+                          <span className="text-primary text-xs font-bold uppercase tracking-widest mb-2 block">Tutor says:</span>
+                          <p className="text-xl text-white leading-relaxed">"{tutorResponse}"</p>
+                        </>
+                      )}
+                      {error && !tutorResponse && (
+                        <p className="text-lg text-red-200">{error}</p>
+                      )}
                     </motion.div>
                   )}
              </div>
