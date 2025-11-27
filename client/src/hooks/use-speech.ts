@@ -57,11 +57,22 @@ export function useSpeech() {
     if (!recognitionRef.current) return;
 
     if (isListening) {
-      recognitionRef.current.stop();
+      try {
+        recognitionRef.current.stop();
+      } catch (e) {
+        console.warn("Stop error:", e);
+      }
       setIsListening(false);
     } else {
       setTranscript('');
-      recognitionRef.current.start();
+      try {
+        recognitionRef.current.start();
+      } catch (e) {
+        console.warn("Start error:", e);
+        // If already started, just mark as listening
+        setIsListening(true);
+        return;
+      }
       setIsListening(true);
     }
   }, [isListening]);
