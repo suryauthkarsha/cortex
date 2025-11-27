@@ -1,5 +1,5 @@
 import React from 'react';
-import { Brain, AlertTriangle, CheckCircle2, FileText } from 'lucide-react';
+import { Brain, AlertTriangle, CheckCircle2, FileText, Sparkles, ArrowRight } from 'lucide-react';
 import type { GeminiResponse } from '@/lib/gemini';
 import { motion } from 'framer-motion';
 
@@ -12,28 +12,30 @@ interface FeedbackDisplayProps {
 export function FeedbackDisplay({ response, isProcessing, error }: FeedbackDisplayProps) {
   if (isProcessing) {
     return (
-      <div className="h-full flex flex-col items-center justify-center p-8 text-neutral-500 space-y-4 border border-neutral-800 bg-neutral-900/50 border-dashed">
-        <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
-        <p className="font-mono text-sm uppercase tracking-widest animate-pulse">Analyzing your rambling...</p>
+      <div className="h-full flex flex-col items-center justify-center p-12 space-y-6">
+        <div className="w-16 h-16 border-t-2 border-r-2 border-primary rounded-full animate-spin" />
+        <p className="font-mono text-sm uppercase tracking-widest animate-pulse text-neutral-500">Analyzing vibes...</p>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="h-full flex flex-col items-center justify-center p-8 text-red-500 space-y-4 border border-red-900/30 bg-red-950/10">
-        <AlertTriangle className="w-12 h-12" />
-        <p className="font-bold text-center">{error}</p>
+      <div className="h-full flex flex-col items-center justify-center p-12 text-red-500 space-y-6">
+        <AlertTriangle className="w-16 h-16 stroke-1" />
+        <p className="text-xl font-medium text-center max-w-md leading-relaxed">{error}</p>
       </div>
     );
   }
 
   if (!response) {
     return (
-      <div className="h-full flex flex-col items-center justify-center p-8 text-neutral-600 space-y-4 border border-neutral-800 bg-neutral-900/20">
-        <Brain className="w-12 h-12 opacity-20" />
-        <p className="font-mono text-xs uppercase tracking-widest opacity-50 text-center max-w-[200px]">
-          Waiting for input...<br/>Upload images & Explain what you know
+      <div className="h-full flex flex-col items-center justify-center p-12 text-neutral-700 space-y-6">
+        <div className="w-24 h-24 rounded-full bg-neutral-900 flex items-center justify-center">
+           <Sparkles className="w-10 h-10 opacity-20" />
+        </div>
+        <p className="text-lg font-medium text-center max-w-[250px] leading-relaxed">
+          Waiting for your brilliance.
         </p>
       </div>
     );
@@ -41,52 +43,52 @@ export function FeedbackDisplay({ response, isProcessing, error }: FeedbackDispl
 
   return (
     <motion.div 
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="space-y-6 h-full overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="space-y-8 h-full overflow-y-auto pr-4 pb-8 custom-scrollbar"
     >
-      {/* Score Card */}
-      <div className="bg-neutral-900 border border-neutral-800 p-6 relative overflow-hidden group hover:border-primary/50 transition-colors">
-        <div className="absolute top-0 right-0 p-4 opacity-10">
-          <CheckCircle2 className="w-24 h-24" />
-        </div>
-        <div className="relative z-10">
-          <span className="text-neutral-500 text-xs font-bold uppercase tracking-widest mb-1 block">Score</span>
-          <div className="flex items-baseline gap-2">
-            <span className={`text-6xl font-display font-bold ${response.score > 70 ? 'text-primary' : 'text-red-500'}`}>
-              {response.score}
-            </span>
-            <span className="text-neutral-500 font-display text-xl">/100</span>
+      {/* Score Section - BIGGER */}
+      <div className="bg-neutral-900/50 rounded-[2rem] p-8 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl pointer-events-none translate-x-1/3 -translate-y-1/3" />
+        
+        <div className="relative z-10 flex flex-col items-center text-center gap-2">
+          <span className="text-neutral-500 text-sm font-bold uppercase tracking-widest">Score</span>
+          <div className="text-[8rem] leading-none font-bold tracking-tighter text-white relative">
+            {response.score}
+            <span className="text-2xl text-neutral-600 absolute top-8 -right-8 font-normal">/100</span>
           </div>
-          <p className="text-neutral-400 mt-2 text-sm italic border-l-2 border-primary pl-3 py-1">
+          <p className="text-xl text-neutral-300 mt-4 font-medium max-w-lg leading-relaxed">
             "{response.summary}"
           </p>
         </div>
       </div>
 
-      {/* Missed Topics */}
-      {response.missed_topics.length > 0 && (
-        <div className="space-y-3">
-          <h4 className="text-neutral-500 text-xs font-bold uppercase tracking-widest flex items-center gap-2">
-            <AlertTriangle className="w-3 h-3" /> You Missed This
+      {/* Feedback & Missed Topics */}
+      <div className="grid gap-6">
+        <div className="minimal-card p-8">
+          <h4 className="text-neutral-500 text-sm font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
+            <FileText className="w-4 h-4" /> The Breakdown
           </h4>
-          {response.missed_topics.map((topic, i) => (
-            <div key={i} className="bg-neutral-900/50 border border-neutral-800 p-4 hover:bg-neutral-900 transition-colors">
-              <span className="text-red-400 font-bold block mb-1 text-sm uppercase">{topic.topic}</span>
-              <p className="text-neutral-400 text-sm leading-relaxed">{topic.explanation}</p>
-            </div>
-          ))}
+          <p className="text-lg text-neutral-300 leading-8 font-light">
+            {response.detailed_feedback}
+          </p>
         </div>
-      )}
 
-      {/* Detailed Feedback */}
-      <div>
-        <h4 className="text-neutral-500 text-xs font-bold uppercase tracking-widest mb-3 flex items-center gap-2">
-          <FileText className="w-3 h-3" /> The Breakdown
-        </h4>
-        <div className="bg-neutral-900 p-5 border border-neutral-800 text-neutral-300 text-sm leading-7">
-          {response.detailed_feedback}
-        </div>
+        {response.missed_topics.length > 0 && (
+          <div className="minimal-card p-8 bg-red-500/5 border-red-500/10">
+            <h4 className="text-red-400 text-sm font-bold uppercase tracking-widest mb-6 flex items-center gap-2">
+              <AlertTriangle className="w-4 h-4" /> Missed Concepts
+            </h4>
+            <div className="space-y-4">
+              {response.missed_topics.map((topic, i) => (
+                <div key={i} className="bg-neutral-900/50 rounded-xl p-5 border border-red-500/10">
+                  <span className="text-white font-bold block mb-2 text-lg">{topic.topic}</span>
+                  <p className="text-neutral-400 text-base leading-relaxed">{topic.explanation}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </motion.div>
   );

@@ -42,6 +42,21 @@ export const callGemini = async (prompt: string, images: string[] = []): Promise
   return JSON.parse(jsonString);
 };
 
+export const callGeminiText = async (prompt: string, images: string[] = []): Promise<string> => {
+  const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${API_KEY}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      contents: [{
+        parts: [...getImageParts(images), { text: prompt }]
+      }]
+    })
+  });
+  const data = await response.json();
+  if (data.error) throw new Error(data.error.message);
+  return data.candidates[0].content.parts[0].text;
+};
+
 export const analyzeExplanation = async (transcript: string, images: string[]): Promise<GeminiResponse> => {
   const prompt = `
     You are a smart, tough-love study tutor from New York City.
@@ -80,4 +95,17 @@ export const generateQuiz = async (images: string[]): Promise<QuizQuestion[]> =>
     ]
   `;
   return callGemini(prompt, images);
+};
+
+export const askTutor = async (question: string, images: string[] = []): Promise<string> => {
+  const prompt = `
+    You are a Gen Z study tutor. 
+    You use slang like "no cap", "fr", "bet", "slay", "mid", "L", "W", "sus", "vibes".
+    Keep it educational but extremely casual and relatable.
+    The user is asking: "${question}"
+    
+    If images are provided, reference them.
+    Answer the question accurately but in your Gen Z persona. Keep it concise (under 3 sentences if possible).
+  `;
+  return callGeminiText(prompt, images);
 };

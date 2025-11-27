@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { useSpeech } from '@/hooks/use-speech';
 import { useMedia } from '@/hooks/use-media';
-import { analyzeExplanation, generateQuiz, type QuizQuestion, type GeminiResponse } from '@/lib/gemini';
+import { analyzeExplanation, generateQuiz, askTutor, type QuizQuestion, type GeminiResponse } from '@/lib/gemini';
 import { QuizModal } from '@/components/modules/quiz-modal';
 import { FeedbackDisplay } from '@/components/modules/feedback-display';
-import { Mic, Square, Play, Volume2, VolumeX, Brain, Sparkles, Camera, Upload, X, Video, Image as ImageIcon } from 'lucide-react';
+import { Mic, Square, Play, VolumeX, Sparkles, Upload, X, Video, Image as ImageIcon, MessageCircle, GraduationCap, StopCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+
+type Mode = 'check' | 'tutor';
 
 export default function Home() {
   // Hooks
@@ -13,10 +15,10 @@ export default function Home() {
     isListening, 
     isSpeaking, 
     transcript, 
+    setTranscript,
     toggleListening, 
     speakText, 
     stopSpeaking,
-    error: speechError 
   } = useSpeech();
 
   const {
@@ -26,12 +28,13 @@ export default function Home() {
     videoRef,
     handleFileUpload,
     removeImage,
-    error: mediaError
   } = useMedia();
 
   // App State
+  const [mode, setMode] = useState<Mode>('check');
   const [isProcessing, setIsProcessing] = useState(false);
   const [aiResponse, setAiResponse] = useState<GeminiResponse | null>(null);
+  const [tutorResponse, setTutorResponse] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isSelfieMode, setIsSelfieMode] = useState(false);
 
@@ -47,7 +50,7 @@ export default function Home() {
   // Actions
   const handleAnalyze = async () => {
     if (transcript.length < 10) {
-      setError("I need you to explain something first. Start talking.");
+      setError("Say something first.");
       return;
     }
     setIsProcessing(true);
@@ -56,9 +59,24 @@ export default function Home() {
     try {
       const result = await analyzeExplanation(transcript, images);
       setAiResponse(result);
-      speakText(`Alright, here's the score. You got ${result.score}. ${result.summary}`);
+      speakText(`Score: ${result.score}. ${result.summary}`);
     } catch (err: any) {
-      setError("Analysis failed. " + err.message);
+      setError(err.message);
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const handleTutorChat = async () => {
+    if (transcript.length < 3) return;
+    setIsProcessing(true);
+    try {
+       const response = await askTutor(transcript, images);
+       setTutorResponse(response);
+       speakText(response);
+       setTranscript(''); // Clear transcript after sending to tutor
+    } catch (err: any) {
+      setError(err.message);
     } finally {
       setIsProcessing(false);
     }
@@ -67,15 +85,21 @@ export default function Home() {
   const handleVoiceInteraction = () => {
     if (isListening) {
       toggleListening();
+      if (mode === 'tutor') {
+        // In tutor mode, stopping recording automatically sends the message
+        setTimeout(() => handleTutorChat(), 500); 
+      }
     } else {
       toggleListening();
-      setAiResponse(null); 
+      if (mode === 'check') {
+        setAiResponse(null); 
+      }
     }
   };
 
   const handleGenerateQuiz = async () => {
     if (images.length === 0) {
-      setError("Upload some study material first so I can quiz ya.");
+      setError("Upload material first.");
       return;
     }
     setIsQuizLoading(true);
@@ -89,7 +113,7 @@ export default function Home() {
       setSelectedOption(null);
       setShowQuizModal(true);
     } catch (err: any) {
-      setError("Quiz generation failed. " + err.message);
+      setError(err.message);
     } finally {
       setIsQuizLoading(false);
     }
@@ -122,186 +146,198 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col relative overflow-hidden selection:bg-primary/30 font-sans">
+    <div className="min-h-screen bg-background text-foreground flex flex-col relative overflow-hidden font-sans selection:bg-white/20">
       
-      {/* Header */}
-      <header className="relative z-10 px-6 py-6 flex justify-between items-center border-b border-white/5 bg-black/50 backdrop-blur-sm">
+      {/* Header & Nav */}
+      <header className="relative z-20 px-8 py-6 flex justify-between items-center">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-primary flex items-center justify-center skew-x-[-10deg]">
-            <Brain className="w-6 h-6 text-black skew-x-[10deg]" />
+          <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+            <Brain className="w-5 h-5 text-black" />
           </div>
-          <span className="text-2xl font-display font-bold tracking-tighter uppercase">
-            Study<span className="text-primary">Sync</span> <span className="text-xs text-neutral-500 ml-2 tracking-widest font-sans">NYC EDITION</span>
-          </span>
+          <span className="text-xl font-bold tracking-tight">Study<span className="opacity-50">Sync</span></span>
         </div>
         
-        <div className="flex items-center gap-4">
+        {/* Mode Switcher */}
+        <div className="flex bg-neutral-900/50 rounded-full p-1 border border-white/5 backdrop-blur-xl">
+          <button 
+            onClick={() => setMode('check')}
+            className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${mode === 'check' ? 'bg-white text-black shadow-lg' : 'text-neutral-400 hover:text-white'}`}
+          >
+            Check Me
+          </button>
+          <button 
+            onClick={() => setMode('tutor')}
+            className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${mode === 'tutor' ? 'bg-primary text-black shadow-[0_0_20px_theme("colors.primary.DEFAULT")]' : 'text-neutral-400 hover:text-white'}`}
+          >
+            Gen Z Tutor
+          </button>
+        </div>
+
+        <div className="flex items-center gap-4 w-[120px] justify-end">
           {isSpeaking && (
-            <button onClick={stopSpeaking} className="bg-neutral-800 rounded-sm p-3 text-primary animate-pulse border border-primary/50">
+            <button onClick={stopSpeaking} className="bg-neutral-800 rounded-full p-3 text-white hover:bg-neutral-700 transition-colors">
               <VolumeX className="w-5 h-5" />
             </button>
           )}
         </div>
       </header>
 
-      <main className="relative z-10 flex-1 container mx-auto px-4 py-6 flex flex-col lg:flex-row gap-6 overflow-hidden h-[calc(100vh-100px)]">
+      <main className="relative z-10 flex-1 container mx-auto px-6 py-4 flex flex-col lg:flex-row gap-8 h-[calc(100vh-100px)]">
         
-        {/* LEFT COLUMN: Uploads & Tools */}
-        <div className="lg:w-1/4 flex flex-col gap-4 h-full">
-           <div className="glass-panel p-5 flex-1 flex flex-col rounded-sm border-l-4 border-primary">
-              <h3 className="text-sm font-bold text-neutral-400 uppercase tracking-widest mb-4 flex items-center gap-2">
-                <ImageIcon className="w-4 h-4 text-primary" /> Study Materials
-              </h3>
-              
-              {/* Upload Area */}
-              <div className="flex-1 overflow-y-auto mb-4 space-y-2 pr-2 custom-scrollbar">
-                {images.length === 0 ? (
-                  <div className="h-full border-2 border-dashed border-neutral-800 rounded-sm flex flex-col items-center justify-center text-neutral-600 gap-2 p-4 text-center">
-                    <Upload className="w-8 h-8 opacity-50" />
-                    <p className="text-xs uppercase tracking-wide">Drop images here<br/>or click upload</p>
-                  </div>
-                ) : (
-                  images.map((img, idx) => (
-                    <div key={idx} className="relative aspect-video bg-neutral-900 border border-neutral-800 group">
-                      <img src={img} alt={`Material ${idx}`} className="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity" />
-                      <button 
-                        onClick={() => removeImage(idx)}
-                        className="absolute top-1 right-1 bg-black text-red-500 p-1 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-900/20"
-                      >
-                        <X className="w-3 h-3" />
-                      </button>
-                    </div>
-                  ))
-                )}
-              </div>
-
-              <label className="w-full py-4 bg-neutral-800 hover:bg-neutral-700 text-white font-bold uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer transition-colors border border-neutral-700">
-                <Upload className="w-4 h-4" />
-                Upload Files
-                <input type="file" multiple accept="image/*" onChange={handleFileUpload} className="hidden" />
-              </label>
-           </div>
+        {/* LEFT COLUMN: Tools (Collapsible/Minimal) */}
+        <div className="hidden lg:flex flex-col gap-4 w-20 items-center py-8 bg-neutral-900/30 rounded-full border border-white/5 h-fit self-center backdrop-blur-xl">
+           <label className="p-4 rounded-full hover:bg-white/10 text-neutral-400 hover:text-white cursor-pointer transition-all relative group">
+              <Upload className="w-6 h-6" />
+              <input type="file" multiple accept="image/*" onChange={handleFileUpload} className="hidden" />
+              <span className="absolute left-14 bg-black px-2 py-1 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity border border-white/10 pointer-events-none">
+                Upload Material
+              </span>
+           </label>
            
-           {/* Quiz Trigger */}
            <button 
-              onClick={handleGenerateQuiz}
-              disabled={isQuizLoading || images.length === 0}
-              className="py-6 bg-neutral-900 border border-neutral-800 hover:border-primary/50 text-neutral-300 hover:text-primary transition-all font-display font-bold uppercase text-xl tracking-wide flex items-center justify-center gap-3 disabled:opacity-50 group"
-            >
-              <Sparkles className="w-5 h-5 group-hover:animate-spin" />
-              {isQuizLoading ? "Generating..." : "Pop Quiz"}
+             onClick={() => {
+                const newState = !isSelfieMode;
+                setIsSelfieMode(newState);
+                setUseCamera(newState);
+             }}
+             className={`p-4 rounded-full transition-all relative group ${isSelfieMode ? 'bg-white text-black' : 'hover:bg-white/10 text-neutral-400 hover:text-white'}`}
+           >
+              <Video className="w-6 h-6" />
+              <span className="absolute left-14 bg-black px-2 py-1 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity border border-white/10 pointer-events-none">
+                Toggle Camera
+              </span>
            </button>
+
+           <div className="w-8 h-[1px] bg-white/10 my-2" />
+
+           {images.map((img, idx) => (
+             <div key={idx} className="w-12 h-12 rounded-xl overflow-hidden border border-white/10 relative group">
+               <img src={img} alt="" className="w-full h-full object-cover opacity-50 group-hover:opacity-100 transition-opacity" />
+               <button onClick={() => removeImage(idx)} className="absolute inset-0 bg-red-500/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                 <X className="w-4 h-4 text-white" />
+               </button>
+             </div>
+           ))}
         </div>
 
-        {/* MIDDLE COLUMN: Interaction Stage */}
-        <div className="lg:w-1/2 flex flex-col gap-6 h-full">
-          
-          <div className="flex-1 bg-neutral-900/50 border border-neutral-800 rounded-sm relative overflow-hidden flex flex-col items-center justify-center min-h-[400px]">
-             {/* Camera Feed Background */}
-             {isSelfieMode && (
-               <div className="absolute inset-0 z-0">
-                 <video 
-                   ref={videoRef} 
-                   autoPlay 
-                   playsInline 
-                   muted
-                   className="w-full h-full object-cover opacity-60 grayscale contrast-125" 
-                 />
-                 {/* Scanlines effect */}
-                 <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] z-10 bg-[length:100%_2px,3px_100%] pointer-events-none" />
-                 <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10" />
-               </div>
-             )}
+        {/* MIDDLE: Stage */}
+        <div className="flex-1 flex flex-col gap-8 justify-center relative">
+           
+           {/* Central Visualizer */}
+           <div className="relative flex-1 flex flex-col items-center justify-center min-h-[400px]">
+              
+              {/* Background Layer */}
+              <div className="absolute inset-0 rounded-[3rem] overflow-hidden bg-neutral-900/20 border border-white/5">
+                 {isSelfieMode && (
+                   <video ref={videoRef} autoPlay playsInline muted className="w-full h-full object-cover opacity-50" />
+                 )}
+                 {!isSelfieMode && (
+                    <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/20" />
+                 )}
+              </div>
 
-             {/* Center Interaction */}
-             <div className="relative z-20 flex flex-col items-center gap-8 w-full max-w-md mx-auto px-6">
-                
-                {/* Main Voice Button */}
-                <div className="relative group">
-                  {isListening && (
-                    <div className="absolute inset-0 bg-primary/20 rounded-full blur-3xl animate-pulse" />
-                  )}
-                  <button
-                    onClick={handleVoiceInteraction}
-                    className={`w-40 h-40 rounded-full flex items-center justify-center transition-all duration-300 border-4 ${
-                      isListening 
-                        ? 'bg-red-600 border-red-500 scale-110 shadow-[0_0_30px_rgba(220,38,38,0.5)]' 
-                        : 'bg-black border-neutral-700 hover:border-primary hover:scale-105 hover:shadow-[0_0_30px_rgba(255,215,0,0.2)]'
-                    }`}
-                  >
+              {/* Voice Button */}
+              <div className="relative z-20 flex flex-col items-center gap-8">
+                 <motion.button
+                   onClick={handleVoiceInteraction}
+                   whileHover={{ scale: 1.05 }}
+                   whileTap={{ scale: 0.95 }}
+                   className={`w-48 h-48 rounded-full flex items-center justify-center transition-all duration-500 relative ${
+                     isListening 
+                       ? 'bg-red-500 shadow-[0_0_100px_rgba(239,68,68,0.4)]' 
+                       : mode === 'tutor' 
+                          ? 'bg-primary text-black shadow-[0_0_60px_rgba(255,215,0,0.2)]' 
+                          : 'bg-white text-black shadow-[0_0_60px_rgba(255,255,255,0.1)]'
+                   }`}
+                 >
                     {isListening ? (
-                      <Square className="w-16 h-16 fill-white text-white" />
+                      <StopCircle className="w-20 h-20 fill-current text-white animate-pulse" />
                     ) : (
-                      <Mic className="w-16 h-16 text-white" />
+                      <Mic className="w-20 h-20" />
                     )}
-                  </button>
-                </div>
+                 </motion.button>
 
-                {/* Status Text */}
-                <div className="text-center space-y-2">
-                  <h2 className="text-3xl font-display font-bold text-white uppercase tracking-wide">
-                    {isListening ? "Listening..." : "Tap to Explain"}
-                  </h2>
-                  <p className="text-neutral-500 font-mono text-xs uppercase tracking-widest">
-                    {isListening 
-                      ? "Go ahead, break it down for me." 
-                      : "Hit the button and teach me what you know."}
-                  </p>
-                </div>
+                 <div className="text-center space-y-2 relative z-20">
+                   <h2 className="text-4xl font-bold text-white tracking-tight">
+                     {isListening ? "Listening..." : mode === 'tutor' ? "Ask Gen Z Tutor" : "Explain Concept"}
+                   </h2>
+                   <p className="text-neutral-500 text-lg font-medium">
+                     {isListening 
+                       ? "I'm all ears." 
+                       : mode === 'tutor' 
+                         ? "Ask me anything, no cap." 
+                         : "Tap to record your explanation."}
+                   </p>
+                 </div>
+              </div>
 
-                {/* Camera Toggle */}
-                <button 
-                  onClick={() => {
-                    const newState = !isSelfieMode;
-                    setIsSelfieMode(newState);
-                    setUseCamera(newState);
-                  }}
-                  className={`absolute top-[-60px] right-[-20px] lg:static lg:mt-4 p-3 rounded-full border transition-all ${isSelfieMode ? 'bg-primary text-black border-primary' : 'bg-black text-neutral-500 border-neutral-800 hover:border-neutral-600'}`}
-                  title="Toggle Camera"
-                >
-                  {isSelfieMode ? <Video className="w-5 h-5" /> : <Video className="w-5 h-5" />}
-                </button>
-             </div>
-          </div>
-          
-          {/* Analyze Button - Separate Section Below */}
-          <div className="h-20 flex items-center justify-center">
-             <AnimatePresence>
-                {!isListening && transcript.length > 5 && (
-                  <motion.button
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    onClick={handleAnalyze}
-                    disabled={isProcessing}
-                    className="w-full bg-primary hover:bg-yellow-400 text-black font-display font-bold text-2xl uppercase tracking-wider py-4 rounded-sm flex items-center justify-center gap-3 shadow-[0_0_20px_rgba(255,215,0,0.3)] transition-all"
+              {/* Mode Specific Outputs */}
+              <AnimatePresence>
+                {/* Tutor Chat Bubble */}
+                {mode === 'tutor' && tutorResponse && !isListening && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    className="absolute bottom-12 bg-neutral-900/90 backdrop-blur-xl p-6 rounded-3xl border border-white/10 max-w-xl text-center shadow-2xl z-30"
                   >
-                    {isProcessing ? <Sparkles className="w-6 h-6 animate-spin" /> : <Play className="w-6 h-6 fill-current" />}
-                    Analyze Explanation
-                  </motion.button>
+                    <span className="text-primary text-xs font-bold uppercase tracking-widest mb-2 block">Tutor says:</span>
+                    <p className="text-xl text-white leading-relaxed">"{tutorResponse}"</p>
+                  </motion.div>
+                )}
+
+                {/* Analyze Button (Check Mode) */}
+                {mode === 'check' && !isListening && transcript.length > 5 && (
+                   <motion.div 
+                     initial={{ opacity: 0, y: 20 }}
+                     animate={{ opacity: 1, y: 0 }}
+                     className="absolute -bottom-20 z-30"
+                   >
+                     <button 
+                        onClick={handleAnalyze}
+                        disabled={isProcessing}
+                        className="bg-white text-black px-10 py-4 rounded-full font-bold text-xl hover:scale-105 transition-transform shadow-xl flex items-center gap-3"
+                     >
+                       {isProcessing ? <Sparkles className="w-6 h-6 animate-spin" /> : <Play className="w-6 h-6 fill-current" />}
+                       Analyze Now
+                     </button>
+                   </motion.div>
                 )}
               </AnimatePresence>
-          </div>
-
+           </div>
         </div>
 
-        {/* RIGHT COLUMN: Feedback */}
-        <div className="lg:w-1/4 h-full">
-           <div className="h-full glass-panel p-1 flex flex-col rounded-sm border-r-4 border-primary overflow-hidden">
-              <div className="bg-neutral-900 p-4 border-b border-neutral-800">
-                 <h3 className="text-sm font-bold text-neutral-400 uppercase tracking-widest flex items-center gap-2">
-                   <Sparkles className="w-4 h-4 text-primary" /> Tutor Feedback
-                 </h3>
-              </div>
-              <div className="flex-1 overflow-hidden p-4">
-                <FeedbackDisplay 
+        {/* RIGHT: Big Feedback Panel */}
+        {mode === 'check' && (
+          <motion.div 
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="lg:w-[400px] xl:w-[500px] h-full flex flex-col"
+          >
+             <div className="flex justify-between items-center mb-6 px-2">
+               <h3 className="text-lg font-bold text-white">Results</h3>
+               <button 
+                  onClick={handleGenerateQuiz}
+                  disabled={isQuizLoading || images.length === 0}
+                  className="text-sm text-neutral-400 hover:text-white transition-colors flex items-center gap-2"
+               >
+                  <GraduationCap className="w-4 h-4" />
+                  {isQuizLoading ? "Making Quiz..." : "Pop Quiz"}
+               </button>
+             </div>
+             
+             <div className="flex-1 bg-neutral-900/20 border border-white/5 rounded-[2.5rem] overflow-hidden backdrop-blur-sm">
+               <FeedbackDisplay 
                   response={aiResponse}
                   isProcessing={isProcessing}
                   error={error}
                 />
-              </div>
-           </div>
-        </div>
+             </div>
+          </motion.div>
+        )}
+
+        {/* Placeholder for Tutor Mode Right Side (Empty for minimalism or history later) */}
+        {mode === 'tutor' && <div className="lg:w-[400px] xl:w-[500px] hidden lg:block" />}
+        
       </main>
 
       {/* Quiz Modal */}

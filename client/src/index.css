@@ -30,41 +30,41 @@
   --radius-xl: calc(var(--radius) + 4px);
   
   --font-sans: 'Inter', sans-serif;
-  --font-display: 'Oswald', sans-serif; /* Back to Oswald for that bold NY look */
+  --font-display: 'Inter', sans-serif; /* Cleaner modern sans */
 }
 
-/* Modern Black & Yellow Theme */
+/* Ultra Minimalist Dark Theme */
 :root {
-  --background: 0 0% 0%; /* Pure Black */
-  --foreground: 0 0% 100%;
+  --background: 0 0% 5%; 
+  --foreground: 0 0% 95%;
   
-  --card: 0 0% 7%; /* Very dark grey for cards */
-  --card-foreground: 0 0% 100%;
+  --card: 0 0% 8%;
+  --card-foreground: 0 0% 95%;
   
-  --popover: 0 0% 7%;
-  --popover-foreground: 0 0% 100%;
+  --popover: 0 0% 8%;
+  --popover-foreground: 0 0% 95%;
   
-  /* Vivid Yellow */
-  --primary: 48 100% 50%; /* #FFD700 Gold/Yellow */
+  /* Electric Yellow for minimal accents */
+  --primary: 50 100% 50%; 
   --primary-foreground: 0 0% 0%;
   
-  --secondary: 0 0% 15%;
+  --secondary: 0 0% 12%;
   --secondary-foreground: 0 0% 100%;
   
-  --muted: 0 0% 15%;
-  --muted-foreground: 0 0% 60%;
+  --muted: 0 0% 12%;
+  --muted-foreground: 0 0% 50%;
   
-  --accent: 48 100% 50%;
+  --accent: 50 100% 50%;
   --accent-foreground: 0 0% 0%;
   
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
 
-  --border: 0 0% 20%;
-  --input: 0 0% 20%;
-  --ring: 48 100% 50%;
+  --border: 0 0% 12%;
+  --input: 0 0% 12%;
+  --ring: 50 100% 50%;
 
-  --radius: 0.5rem; /* Slightly rounded, modern industrial */
+  --radius: 1.5rem; 
 }
 
 @layer base {
@@ -73,33 +73,25 @@
   }
   body {
     @apply font-sans antialiased bg-background text-foreground;
-    /* Subtle grid pattern for depth */
-    background-image: 
-      linear-gradient(to right, #1a1a1a 1px, transparent 1px),
-      linear-gradient(to bottom, #1a1a1a 1px, transparent 1px);
-    background-size: 40px 40px;
-    background-color: #050505;
+    /* No noisy textures, just clean dark gradient */
+    background: radial-gradient(circle at 50% 0%, #1a1a1a, #050505);
+    min-height: 100vh;
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply font-display uppercase tracking-wider;
+    @apply font-display font-semibold tracking-tight;
   }
 }
 
 @layer components {
-  .glass-panel {
-    @apply bg-neutral-900/80 backdrop-blur-md border border-white/10 shadow-2xl;
+  .minimal-card {
+    @apply bg-white/5 backdrop-blur-sm border border-white/5 rounded-3xl transition-all hover:bg-white/10;
   }
   
-  .glass-button {
-    @apply bg-white/5 border border-white/10 hover:bg-white/10 transition-all active:scale-95;
+  .minimal-button {
+    @apply bg-white/5 text-white border border-white/5 hover:bg-white/10 hover:scale-105 transition-all active:scale-95 rounded-full px-6 py-3 font-medium;
   }
   
-  /* Yellow Glow Effects */
-  .glow-primary {
-    box-shadow: 0 0 20px theme('colors.primary.DEFAULT'), inset 0 0 10px theme('colors.primary.DEFAULT');
-  }
-  
-  .text-glow {
-    text-shadow: 0 0 10px theme('colors.primary.DEFAULT');
+  .primary-glow {
+    box-shadow: 0 0 40px -10px theme('colors.primary.DEFAULT');
   }
 }
