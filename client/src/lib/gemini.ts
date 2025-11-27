@@ -23,38 +23,67 @@ export const getImageParts = (images: string[]) => images.map(img => ({
   }
 }));
 
+// Retry logic for API calls
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+const callGeminiWithRetry = async (prompt: string, images: string[] = [], isJson: boolean = true): Promise<any> => {
+  const maxRetries = 3;
+  let lastError = null;
+
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    try {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${API_KEY}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{
+            parts: [...getImageParts(images), { text: prompt }]
+          }]
+        })
+      });
+      
+      const data = await response.json();
+      
+      if (data.error) {
+        lastError = data.error;
+        // If overloaded or rate limited, retry with backoff
+        if (data.error.message?.includes('overloaded') || data.error.message?.includes('rate') || response.status === 429) {
+          const waitTime = Math.pow(2, attempt) * 1000; // Exponential backoff
+          if (attempt < maxRetries - 1) {
+            await sleep(waitTime);
+            continue;
+          }
+        }
+        throw new Error(data.error.message || 'API Error');
+      }
+      
+      const textResponse = data.candidates[0].content.parts[0].text;
+      
+      if (isJson) {
+        const jsonString = textResponse.replace(/```json/g, '').replace(/```/g, '').trim();
+        return JSON.parse(jsonString);
+      }
+      
+      return textResponse;
+    } catch (err: any) {
+      lastError = err;
+      if (attempt < maxRetries - 1) {
+        const waitTime = Math.pow(2, attempt) * 1000;
+        await sleep(waitTime);
+        continue;
+      }
+    }
+  }
+
+  throw lastError || new Error('API request failed after retries');
+};
+
 export const callGemini = async (prompt: string, images: string[] = []): Promise<any> => {
-  const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${API_KEY}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      contents: [{
-        parts: [...getImageParts(images), { text: prompt }]
-      }]
-    })
-  });
-  const data = await response.json();
-  if (data.error) throw new Error(data.error.message);
-  
-  const textResponse = data.candidates[0].content.parts[0].text;
-  // Clean markdown json code blocks if present
-  const jsonString = textResponse.replace(/```json/g, '').replace(/```/g, '').trim();
-  return JSON.parse(jsonString);
+  return callGeminiWithRetry(prompt, images, true);
 };
 
 export const callGeminiText = async (prompt: string, images: string[] = []): Promise<string> => {
-  const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${API_KEY}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      contents: [{
-        parts: [...getImageParts(images), { text: prompt }]
-      }]
-    })
-  });
-  const data = await response.json();
-  if (data.error) throw new Error(data.error.message);
-  return data.candidates[0].content.parts[0].text;
+  return callGeminiWithRetry(prompt, images, false);
 };
 
 export const analyzeExplanation = async (transcript: string, images: string[]): Promise<GeminiResponse> => {

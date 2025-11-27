@@ -65,7 +65,7 @@ export default function Home() {
       speakText(`Score: ${result.score}. ${result.summary}`);
       setViewState('results');
     } catch (err: any) {
-      setError(err.message);
+      setError(err.message || 'Failed to analyze. Please try again.');
       setViewState('idle'); // Reset on error
     } finally {
       setIsProcessing(false);
@@ -81,7 +81,7 @@ export default function Home() {
        speakText(response);
        setTranscript(''); // Clear transcript after sending to tutor
     } catch (err: any) {
-      setError(err.message);
+      setError(err.message || 'Tutor is busy. Try again.');
     } finally {
       setIsProcessing(false);
     }
@@ -91,9 +91,6 @@ export default function Home() {
     if (isListening) {
       toggleListening();
       if (mode === 'tutor') {
-        // Pass the current transcript directly to avoid state update lag
-        // We use a small delay to ensure the final transcript bit is captured by the hook
-        // ideally the hook would return the final transcript on stop, but for now:
         setTimeout(() => handleTutorChat(transcript), 100); 
       }
     } else {
@@ -120,7 +117,7 @@ export default function Home() {
       setSelectedOption(null);
       setShowQuizModal(true);
     } catch (err: any) {
-      setError(err.message);
+      setError(err.message || 'Quiz generation failed. Try again.');
     } finally {
       setIsQuizLoading(false);
     }
@@ -156,6 +153,7 @@ export default function Home() {
     setViewState('idle');
     setAiResponse(null);
     setTranscript('');
+    setError(null);
   };
 
   return (
@@ -292,7 +290,7 @@ export default function Home() {
                    </div>
                 </div>
 
-                {/* Analyze Button (Check Mode) - Only shows when NOT in results mode */}
+                {/* Analyze Button (Check Mode) */}
                 {!isListening && transcript.length > 5 && mode === 'check' && viewState === 'idle' && (
                   <motion.div 
                     initial={{ opacity: 0, y: 20 }}
@@ -337,7 +335,7 @@ export default function Home() {
           }}
           className={`h-full flex flex-col transition-all duration-500 ${viewState === 'results' ? 'w-full max-w-4xl mx-auto' : 'lg:w-[400px] xl:w-[500px]'}`}
         >
-           {/* Only show "Results" title if NOT in tutor mode (or if desired) */}
+           {/* Header with Back Button */}
            {mode === 'check' && (
              <div className="flex justify-between items-center mb-6 px-2">
                <div className="flex items-center gap-4">
@@ -354,7 +352,7 @@ export default function Home() {
                <button 
                   onClick={handleGenerateQuiz}
                   disabled={isQuizLoading || images.length === 0}
-                  className="text-sm text-neutral-400 hover:text-white transition-colors flex items-center gap-2"
+                  className="text-sm text-neutral-400 hover:text-white transition-colors flex items-center gap-2 disabled:opacity-30"
                >
                   <GraduationCap className="w-4 h-4" />
                   {isQuizLoading ? "Making Quiz..." : "Pop Quiz"}
@@ -377,13 +375,13 @@ export default function Home() {
                  <div className="flex-1 overflow-hidden">
                     <FeedbackDisplay 
                       response={aiResponse}
-                      isProcessing={isProcessing && viewState !== 'analyzing'} // Handled by overlay for full analyze
+                      isProcessing={isProcessing && viewState !== 'analyzing'}
                       error={error}
                     />
                  </div>
                </>
              ) : (
-               /* Tutor Mode Placeholder (Right Column Hidden in Tutor Mode usually, but kept for structure) */
+               /* Tutor Mode Placeholder */
                <div className="flex-1 p-8 flex flex-col justify-center items-center text-center text-neutral-600">
                   <MessageCircle className="w-12 h-12 mb-4 opacity-20" />
                   <p>Your chat history appears here.</p>
