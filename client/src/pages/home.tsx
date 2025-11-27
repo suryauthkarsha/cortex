@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useSpeech } from '@/hooks/use-speech';
 import { useMedia } from '@/hooks/use-media';
+import { useAudioVisualizer } from '@/hooks/use-audio-visualizer';
 import { analyzeExplanation, generateQuiz, askTutor, type QuizQuestion, type GeminiResponse } from '@/lib/gemini';
 import { QuizModal } from '@/components/modules/quiz-modal';
 import { FeedbackDisplay } from '@/components/modules/feedback-display';
@@ -30,6 +31,8 @@ export default function Home() {
     handleFileUpload,
     removeImage,
   } = useMedia();
+
+  const visualizerBars = useAudioVisualizer(isListening);
 
   // App State
   const [mode, setMode] = useState<Mode>('check');
@@ -268,26 +271,41 @@ export default function Home() {
                    )}
                 </div>
 
-                {/* Voice Button */}
+                {/* Voice Button with Visualizer */}
                 <div className="relative z-20 flex flex-col items-center gap-8">
-                   <motion.button
-                     onClick={handleVoiceInteraction}
-                     whileHover={{ scale: 1.05 }}
-                     whileTap={{ scale: 0.95 }}
-                     className={`w-48 h-48 rounded-full flex items-center justify-center transition-all duration-500 relative ${
-                       isListening 
-                         ? 'bg-red-500 shadow-[0_0_100px_rgba(239,68,68,0.4)]' 
-                         : mode === 'tutor' 
-                            ? 'bg-primary text-black shadow-[0_0_60px_rgba(255,215,0,0.2)]' 
-                            : 'bg-white text-black shadow-[0_0_60px_rgba(255,255,255,0.1)]'
-                     }`}
-                   >
-                      {isListening ? (
-                        <StopCircle className="w-20 h-20 fill-current text-white animate-pulse" />
-                      ) : (
-                        <Mic className="w-20 h-20" />
+                   <div className="relative">
+                      {isListening && (
+                        <div className="absolute inset-0 flex items-center justify-center gap-2 pointer-events-none">
+                          {visualizerBars.map((height, idx) => (
+                            <motion.div
+                              key={idx}
+                              className="w-1 bg-gradient-to-t from-red-500 to-red-300 rounded-full"
+                              initial={{ height: 4 }}
+                              animate={{ height: Math.max(4, (height / 100) * 60) }}
+                              transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                            />
+                          ))}
+                        </div>
                       )}
-                   </motion.button>
+                      <motion.button
+                        onClick={handleVoiceInteraction}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className={`w-48 h-48 rounded-full flex items-center justify-center transition-all duration-500 relative ${
+                          isListening 
+                            ? 'bg-red-500 shadow-[0_0_100px_rgba(239,68,68,0.4)]' 
+                            : mode === 'tutor' 
+                               ? 'bg-primary text-black shadow-[0_0_60px_rgba(255,215,0,0.2)]' 
+                               : 'bg-white text-black shadow-[0_0_60px_rgba(255,255,255,0.1)]'
+                        }`}
+                      >
+                         {isListening ? (
+                           <StopCircle className="w-20 h-20 fill-current text-white animate-pulse" />
+                         ) : (
+                           <Mic className="w-20 h-20" />
+                         )}
+                      </motion.button>
+                   </div>
 
                    <div className="text-center space-y-2 relative z-20">
                      <h2 className="text-4xl font-bold text-white tracking-tight">

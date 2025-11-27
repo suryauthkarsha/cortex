@@ -77,6 +77,15 @@ export function useSpeech() {
     }
   }, [isListening]);
 
+  const addPausesToText = (text: string): string => {
+    // Add natural pauses after sentences and before key words
+    return text
+      .replace(/([.!?])\s+/g, '$1 ... ')
+      .replace(/,\s+/g, ', ... ')
+      .replace(/\b(but|however|also|furthermore|additionally)\b/gi, '... $1 ...')
+      .trim();
+  };
+
   const speakText = useCallback((text: string) => {
     if (!text) return;
 
@@ -86,7 +95,8 @@ export function useSpeech() {
     }
     
     try {
-      const utterance = new SpeechSynthesisUtterance(text);
+      const textWithPauses = addPausesToText(text);
+      const utterance = new SpeechSynthesisUtterance(textWithPauses);
       const voices = synthRef.current.getVoices();
       
       // Use default voice if available
@@ -95,7 +105,7 @@ export function useSpeech() {
       }
       
       utterance.pitch = 1.0;
-      utterance.rate = 1.0;
+      utterance.rate = 0.95; // Slightly slower for natural flow
       utterance.volume = 1.0;
       
       utterance.onstart = () => setIsSpeaking(true);
