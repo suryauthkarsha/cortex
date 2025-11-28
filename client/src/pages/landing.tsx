@@ -1,7 +1,10 @@
-import { ArrowRight, CheckCircle2, X } from "lucide-react";
+import { ArrowRight, CheckCircle2, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "wouter";
+import { useState } from "react";
 
 const LandingPage = () => {
+  const [currentFeature, setCurrentFeature] = useState(0);
+  
   const features = [
     {
       title: "Voice Grading",
@@ -112,7 +115,7 @@ const LandingPage = () => {
           </div>
 
           {/* Main Heading */}
-          <h1 className="text-7xl md:text-8xl font-black text-center leading-tight mb-6" style={{ fontFamily: 'Times New Roman, serif' }}>
+          <h1 className="text-7xl md:text-8xl font-black text-center leading-tight mb-6">
             <span style={{
               color: '#9ca3af',
               textShadow: '0 4px 20px rgba(0, 0, 0, 0.95), 0 0 40px rgba(0, 0, 0, 0.8)',
@@ -162,21 +165,48 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Features Section */}
+      {/* Features Carousel Section */}
       <section className="py-20 px-6 border-t border-yellow-600/20">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-5xl font-bold text-center mb-16">What You Get</h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {features.map((feature, i) => (
-              <div
-                key={i}
-                className="p-6 rounded-lg border border-yellow-600/20 hover:border-yellow-600/40 transition"
-              >
-                <h3 className="text-xl font-bold mb-3 text-yellow-500">{feature.title}</h3>
-                <p className="text-neutral-400">{feature.description}</p>
+          <div className="flex items-center justify-center gap-8">
+            {/* Left Arrow */}
+            <button
+              onClick={() => setCurrentFeature((prev) => (prev === 0 ? features.length - 1 : prev - 1))}
+              className="p-3 rounded-full border border-yellow-600/40 hover:border-yellow-500 hover:bg-yellow-500/10 transition"
+            >
+              <ChevronLeft className="w-6 h-6 text-yellow-500" />
+            </button>
+
+            {/* Carousel Container */}
+            <div className="flex-1 max-w-2xl">
+              <div className="p-8 rounded-lg border border-yellow-600/20 bg-yellow-500/5 min-h-48 flex flex-col justify-center">
+                <h3 className="text-3xl font-bold mb-4 text-yellow-500">{features[currentFeature].title}</h3>
+                <p className="text-xl text-neutral-300">{features[currentFeature].description}</p>
               </div>
-            ))}
+
+              {/* Dots Indicator */}
+              <div className="flex justify-center gap-2 mt-6">
+                {features.map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setCurrentFeature(idx)}
+                    className={`w-2 h-2 rounded-full transition ${
+                      idx === currentFeature ? 'bg-yellow-500 w-8' : 'bg-yellow-600/40'
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Right Arrow */}
+            <button
+              onClick={() => setCurrentFeature((prev) => (prev === features.length - 1 ? 0 : prev + 1))}
+              className="p-3 rounded-full border border-yellow-600/40 hover:border-yellow-500 hover:bg-yellow-500/10 transition"
+            >
+              <ChevronRight className="w-6 h-6 text-yellow-500" />
+            </button>
           </div>
         </div>
       </section>
