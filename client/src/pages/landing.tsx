@@ -111,38 +111,35 @@ const LandingPage = () => {
           {/* Badge with Animation - Frosted Glass */}
           <motion.div 
             className="text-center mb-8"
-            animate={{ opacity: [0.3, 0.7, 0.3] }}
+            animate={{ opacity: [0.5, 1, 0.5] }}
             transition={{ duration: 3, repeat: Infinity }}
           >
-            <div className="inline-block px-4 py-2 rounded-full border border-white/25 text-yellow-400 text-sm font-medium" style={{
-              background: 'rgba(255, 255, 255, 0.08)',
-              backdropFilter: 'blur(16px)',
-              WebkitBackdropFilter: 'blur(16px)',
-              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 4px 16px rgba(0, 0, 0, 0.25)',
+            <div className="inline-block px-5 py-3 rounded-full border border-yellow-300/80 text-yellow-300 text-sm font-bold" style={{
+              background: 'rgba(255, 255, 255, 0.15)',
+              backdropFilter: 'blur(20px)',
+              WebkitBackdropFilter: 'blur(20px)',
+              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 8px 24px rgba(251, 191, 36, 0.15)',
+              textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)',
             }}>
               NOW LIVE
             </div>
           </motion.div>
 
           {/* Main Heading */}
-          <h1 className="text-6xl md:text-7xl text-center leading-tight mb-6" style={{ fontFamily: 'Times New Roman, serif', fontWeight: 500 }}>
+          <h1 className="text-7xl md:text-8xl text-center leading-tight mb-6" style={{ fontFamily: 'Times New Roman, serif', fontWeight: 500 }}>
             <span style={{
-              backgroundImage: 'linear-gradient(to-bottom, #ffffff 0%, #e5e7eb 30%, #cbd5e1 60%, #a0a0a0 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-              textShadow: '0 4px 16px rgba(0, 0, 0, 0.8)',
+              color: '#f5f5f5',
+              textShadow: '0 2px 8px rgba(0, 0, 0, 0.9), 0 4px 16px rgba(0, 0, 0, 0.7)',
               letterSpacing: '0.02em',
+              filter: 'drop-shadow(0 0 10px rgba(0, 0, 0, 0.7))',
             }}>
               F*ck Bad.
             </span>{" "}
             <span style={{
-              backgroundImage: 'linear-gradient(to-bottom, #fef3c7 0%, #fde047 40%, #f59e0b 70%, #d97706 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-              textShadow: '0 4px 16px rgba(0, 0, 0, 0.8)',
+              color: '#fbbf24',
+              textShadow: '0 2px 8px rgba(0, 0, 0, 0.9), 0 4px 16px rgba(0, 0, 0, 0.7)',
               letterSpacing: '0.02em',
+              filter: 'drop-shadow(0 0 10px rgba(0, 0, 0, 0.7))',
             }}>
               Grades
             </span>
@@ -171,18 +168,18 @@ const LandingPage = () => {
           </div>
 
           {/* Hero Stats */}
-          <div className="grid grid-cols-3 gap-8 mt-16 pt-12 border-t border-yellow-600/20">
+          <div className="grid grid-cols-3 gap-8 mt-20 pt-16 border-t border-yellow-600/20">
             <div className="text-center">
-              <div className="text-3xl font-bold text-yellow-500">500+</div>
-              <p className="text-neutral-500 text-sm mt-2">Students</p>
+              <div className="text-6xl md:text-7xl font-bold text-yellow-400">500+</div>
+              <p className="text-neutral-400 text-lg mt-3">Students</p>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-yellow-500">98%</div>
-              <p className="text-neutral-500 text-sm mt-2">Satisfaction</p>
+              <div className="text-6xl md:text-7xl font-bold text-yellow-400">98%</div>
+              <p className="text-neutral-400 text-lg mt-3">Satisfaction</p>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-yellow-500">2000+</div>
-              <p className="text-neutral-500 text-sm mt-2">Hours Studied</p>
+              <div className="text-6xl md:text-7xl font-bold text-yellow-400">2000+</div>
+              <p className="text-neutral-400 text-lg mt-3">Hours Studied</p>
             </div>
           </div>
         </div>
