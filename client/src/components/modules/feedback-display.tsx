@@ -12,9 +12,17 @@ interface FeedbackDisplayProps {
 export function FeedbackDisplay({ response, isProcessing, error }: FeedbackDisplayProps) {
   if (isProcessing) {
     return (
-      <div className="h-full flex flex-col items-center justify-center p-12 space-y-6">
-        <div className="w-16 h-16 border-t-2 border-r-2 border-primary rounded-full animate-spin" />
-        <p className="font-mono text-sm uppercase tracking-widest animate-pulse text-neutral-500">Analyzing vibes...</p>
+      <div className="h-full flex flex-col items-center justify-center p-12">
+        <div className="flex items-center gap-2">
+          {[0, 1, 2, 3].map((i) => (
+            <motion.div
+              key={i}
+              animate={{ y: [0, -12, 0] }}
+              transition={{ duration: 1.2, delay: i * 0.15, repeat: Infinity }}
+              className="w-2 h-8 bg-gradient-to-t from-primary to-primary/50 rounded-full"
+            />
+          ))}
+        </div>
       </div>
     );
   }
@@ -30,13 +38,12 @@ export function FeedbackDisplay({ response, isProcessing, error }: FeedbackDispl
 
   if (!response) {
     return (
-      <div className="h-full flex flex-col items-center justify-center p-12 text-neutral-700 space-y-6">
-        <div className="w-24 h-24 rounded-full bg-neutral-900 flex items-center justify-center">
-           <Sparkles className="w-10 h-10 opacity-20" />
-        </div>
-        <p className="text-lg font-medium text-center max-w-[250px] leading-relaxed">
-          Waiting for your brilliance.
-        </p>
+      <div className="h-full flex flex-col items-center justify-center p-12">
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
+          className="w-20 h-20 rounded-full border-2 border-transparent border-t-primary border-r-primary mb-6"
+        />
       </div>
     );
   }

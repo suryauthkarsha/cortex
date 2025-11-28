@@ -394,8 +394,16 @@ export default function Home() {
                  {/* Loading Overlay */}
                  {viewState === 'analyzing' && (
                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/50 backdrop-blur-sm z-20">
-                      <div className="w-16 h-16 border-t-2 border-r-2 border-white rounded-full animate-spin mb-4" />
-                      <p className="text-white font-bold animate-pulse">Analyzing your vibes...</p>
+                      <div className="flex items-center gap-3">
+                        {[0, 1, 2].map((i) => (
+                          <motion.div
+                            key={i}
+                            animate={{ scale: [1, 1.5, 1], opacity: [0.4, 1, 0.4] }}
+                            transition={{ duration: 1.5, delay: i * 0.2, repeat: Infinity }}
+                            className="w-3 h-3 bg-primary rounded-full"
+                          />
+                        ))}
+                      </div>
                    </div>
                  )}
                  
