@@ -268,7 +268,7 @@ export default function Home() {
                     animate={{ opacity: 1 }}
                     className="absolute inset-0 rounded-[3rem] overflow-hidden backdrop-blur-sm z-10"
                   >
-                    <video ref={videoRef} autoPlay playsInline muted className="w-full h-full object-cover opacity-20" />
+                    <video ref={videoRef} autoPlay playsInline muted className="w-full h-full object-cover" />
                   </motion.div>
                 )}
 
@@ -299,12 +299,12 @@ export default function Home() {
                         onClick={handleVoiceInteraction}
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        className={`w-48 h-48 rounded-full flex items-center justify-center transition-all duration-500 relative backdrop-blur-sm border border-white/20 ${
+                        className={`w-48 h-48 rounded-full flex items-center justify-center transition-all duration-500 relative backdrop-blur-md border border-white/30 ${
                           isListening 
-                            ? 'bg-red-500/80 shadow-[0_0_100px_rgba(239,68,68,0.4)]' 
+                            ? 'bg-red-500/70 shadow-[0_0_100px_rgba(239,68,68,0.4)]' 
                             : mode === 'tutor' 
-                               ? 'bg-primary/50 text-black shadow-[0_0_60px_rgba(255,215,0,0.2)]' 
-                               : 'bg-white/30 text-black shadow-[0_0_60px_rgba(255,255,255,0.1)]'
+                               ? 'bg-primary/40 text-black shadow-[0_0_60px_rgba(255,215,0,0.2)]' 
+                               : 'bg-white/20 text-black shadow-[0_0_60px_rgba(255,255,255,0.1)]'
                         }`}
                       >
                          {isListening ? (
@@ -357,10 +357,10 @@ export default function Home() {
           animate={{ 
             opacity: 1, 
             x: 0,
-            width: viewState === 'results' ? '100%' : undefined, // Expand to full width
+            width: viewState === 'results' ? '100%' : undefined,
             flex: viewState === 'results' ? 1 : undefined
           }}
-          className={`h-full flex flex-col transition-all duration-500 ${viewState === 'results' ? 'w-full max-w-4xl mx-auto' : 'lg:w-[400px] xl:w-[500px]'}`}
+          className={`h-full flex flex-col transition-all duration-500 ${viewState === 'results' ? 'w-full max-w-5xl mx-auto' : 'lg:w-[500px] xl:w-[650px]'}`}
         >
            {/* Header with Back Button */}
            {mode === 'check' && (

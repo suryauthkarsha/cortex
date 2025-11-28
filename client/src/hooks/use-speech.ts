@@ -98,13 +98,26 @@ export function useSpeech() {
       const utterance = new SpeechSynthesisUtterance(textWithPauses);
       const voices = synthRef.current.getVoices();
       
-      // Use best available voice - prefer Google voices if available
+      // Use best available voice - prefer premium voices
       let selectedVoice = null;
       
-      // Try to find Google voices first (more natural)
-      selectedVoice = voices.find(v => v.name?.includes('Google'));
+      // Try Google Premium US voices first (highest quality)
+      selectedVoice = voices.find(v => v.name?.includes('Google US English'));
       
-      // Fall back to American English female
+      // Try any Google voice
+      if (!selectedVoice) {
+        selectedVoice = voices.find(v => v.name?.includes('Google'));
+      }
+      
+      // Try high-quality system voices
+      if (!selectedVoice) {
+        selectedVoice = voices.find(v => 
+          v.lang?.startsWith('en-US') && 
+          (v.name?.includes('Natural') || v.name?.includes('Premium') || v.name?.includes('Neural'))
+        );
+      }
+      
+      // Fall back to US English female
       if (!selectedVoice) {
         selectedVoice = voices.find(v => 
           v.lang?.startsWith('en-US') && v.name?.toLowerCase().includes('female')
@@ -118,8 +131,8 @@ export function useSpeech() {
       
       if (selectedVoice) utterance.voice = selectedVoice;
       
-      utterance.pitch = 1.0; // Natural pitch
-      utterance.rate = 0.85; // Conversational speed - slower for clarity but natural
+      utterance.pitch = 1.0;
+      utterance.rate = 0.9; // Slightly faster for better engagement
       utterance.volume = 1.0;
       
       utterance.onstart = () => setIsSpeaking(true);
