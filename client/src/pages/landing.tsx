@@ -1,6 +1,7 @@
 import { ArrowRight, CheckCircle2, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "wouter";
 import { useState } from "react";
+import { motion } from "framer-motion";
 
 const LandingPage = () => {
   const [currentFeature, setCurrentFeature] = useState(0);
@@ -107,17 +108,21 @@ const LandingPage = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/50 to-black/60 z-0" />
 
         <div className="max-w-5xl mx-auto relative z-10">
-          {/* Badge */}
-          <div className="text-center mb-8">
-            <div className="inline-block px-4 py-2 rounded-full border border-yellow-600/40 text-yellow-600 text-sm font-medium">
+          {/* Badge with Animation */}
+          <motion.div 
+            className="text-center mb-8"
+            animate={{ opacity: [0.4, 0.8, 0.4] }}
+            transition={{ duration: 3, repeat: Infinity }}
+          >
+            <div className="inline-block px-4 py-2 rounded-full border border-yellow-600/30 text-yellow-600 text-sm font-medium bg-yellow-600/10 backdrop-blur-sm">
               NOW LIVE
             </div>
-          </div>
+          </motion.div>
 
           {/* Main Heading */}
-          <h1 className="text-7xl md:text-8xl font-black text-center leading-tight mb-6">
+          <h1 className="text-7xl md:text-8xl font-black text-center leading-tight mb-6" style={{ fontFamily: 'Arial, sans-serif' }}>
             <span style={{
-              backgroundImage: 'linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 10%, #d0d0d0 20%, #a0a0a0 35%, #787878 50%, #a0a0a0 65%, #d0d0d0 80%, #e8e8e8 90%, #f5f5f5 100%)',
+              backgroundImage: 'linear-gradient(to-bottom, #f5f5f5 0%, #e8e8e8 15%, #d0d0d0 30%, #a0a0a0 45%, #787878 50%, #a0a0a0 55%, #d0d0d0 70%, #e8e8e8 85%, #f5f5f5 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
@@ -128,7 +133,7 @@ const LandingPage = () => {
               F*CK BAD
             </span>{" "}
             <span style={{
-              backgroundImage: 'linear-gradient(135deg, #fef3c7 0%, #fde047 8%, #fcd34d 15%, #f59e0b 28%, #d97706 40%, #b45309 50%, #d97706 60%, #f59e0b 72%, #fcd34d 85%, #fde047 92%, #fef3c7 100%)',
+              backgroundImage: 'linear-gradient(to-bottom, #fef3c7 0%, #fde047 12%, #fcd34d 24%, #f59e0b 36%, #d97706 48%, #b45309 50%, #d97706 52%, #f59e0b 64%, #fcd34d 76%, #fde047 88%, #fef3c7 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
