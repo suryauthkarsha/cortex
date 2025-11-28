@@ -261,18 +261,26 @@ export default function Home() {
              {/* Central Visualizer */}
              <div className="relative flex-1 flex flex-col items-center justify-center min-h-[400px]">
                 
+                {/* Camera Feed - Top of Stage (not behind mic) */}
+                {isSelfieMode && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="absolute top-0 left-0 right-0 h-32 rounded-[2rem] overflow-hidden bg-neutral-900/20 border border-white/5 mb-4"
+                  >
+                    <video ref={videoRef} autoPlay playsInline muted className="w-full h-full object-cover opacity-60" />
+                  </motion.div>
+                )}
+
                 {/* Background Layer */}
                 <div className="absolute inset-0 rounded-[3rem] overflow-hidden bg-neutral-900/20 border border-white/5">
-                   {isSelfieMode && (
-                     <video ref={videoRef} autoPlay playsInline muted className="w-full h-full object-cover opacity-50" />
-                   )}
                    {!isSelfieMode && (
                       <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/20" />
                    )}
                 </div>
 
                 {/* Voice Button with Visualizer */}
-                <div className="relative z-20 flex flex-col items-center gap-8">
+                <div className="relative z-20 flex flex-col items-center gap-8 pt-12">
                    <div className="relative">
                       {isListening && (
                         <div className="absolute inset-0 flex items-center justify-center gap-2 pointer-events-none">

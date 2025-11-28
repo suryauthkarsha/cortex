@@ -104,34 +104,36 @@ export function PomodoroTimer() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="bg-neutral-800/50 border border-white/10 rounded-lg p-3 space-y-2"
+            className="bg-neutral-800/50 border border-white/10 rounded-lg p-3 space-y-3"
           >
-            <div>
-              <label className="text-[10px] uppercase tracking-widest text-neutral-400 block mb-1">
-                Focus (min)
-              </label>
-              <input
-                type="number"
-                min="1"
-                max="60"
-                value={tempWorkMinutes}
-                onChange={(e) => setTempWorkMinutes(Math.max(1, parseInt(e.target.value) || 1))}
-                className="w-full bg-neutral-900/50 border border-white/10 rounded px-2 py-1 text-white text-center text-xs focus:outline-none focus:border-white/30"
-              />
-            </div>
+            <div className="grid grid-cols-2 gap-2">
+              <div>
+                <label className="text-[9px] uppercase tracking-widest text-neutral-400 block mb-1">
+                  Focus
+                </label>
+                <input
+                  type="number"
+                  min="1"
+                  max="60"
+                  value={tempWorkMinutes}
+                  onChange={(e) => setTempWorkMinutes(Math.max(1, parseInt(e.target.value) || 1))}
+                  className="w-full bg-neutral-900/50 border border-white/10 rounded px-2 py-1 text-white text-center text-xs focus:outline-none focus:border-white/30"
+                />
+              </div>
 
-            <div>
-              <label className="text-[10px] uppercase tracking-widest text-neutral-400 block mb-1">
-                Break (min)
-              </label>
-              <input
-                type="number"
-                min="1"
-                max="30"
-                value={tempBreakMinutes}
-                onChange={(e) => setTempBreakMinutes(Math.max(1, parseInt(e.target.value) || 1))}
-                className="w-full bg-neutral-900/50 border border-white/10 rounded px-2 py-1 text-white text-center text-xs focus:outline-none focus:border-white/30"
-              />
+              <div>
+                <label className="text-[9px] uppercase tracking-widest text-neutral-400 block mb-1">
+                  Break
+                </label>
+                <input
+                  type="number"
+                  min="1"
+                  max="30"
+                  value={tempBreakMinutes}
+                  onChange={(e) => setTempBreakMinutes(Math.max(1, parseInt(e.target.value) || 1))}
+                  className="w-full bg-neutral-900/50 border border-white/10 rounded px-2 py-1 text-white text-center text-xs focus:outline-none focus:border-white/30"
+                />
+              </div>
             </div>
 
             <motion.button
