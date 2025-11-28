@@ -58,7 +58,8 @@ export function useSpeech() {
 
     if (isListening) {
       try {
-        recognitionRef.current.stop();
+        // Use abort instead of stop for smoother stopping
+        recognitionRef.current.abort();
       } catch (e) {
         console.warn("Stop error:", e);
       }

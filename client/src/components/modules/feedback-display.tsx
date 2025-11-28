@@ -44,37 +44,17 @@ export function FeedbackDisplay({ response, isProcessing, error }: FeedbackDispl
           </p>
         </div>
 
-        {/* Progress bar foreground */}
-        <motion.div
-          className="w-64 relative z-10"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-        >
-          {/* Progress bar background */}
-          <div className="bg-neutral-800/50 border border-white/10 rounded-full h-2 overflow-hidden">
-            {/* Animated progress fill */}
+        {/* Bigger animated dots */}
+        <div className="flex items-center gap-4 relative z-10">
+          {[0, 1, 2].map((i) => (
             <motion.div
-              animate={{ width: '100%' }}
-              transition={{ duration: 3, ease: 'easeInOut' }}
-              className="h-full bg-gradient-to-r from-primary via-primary/80 to-primary rounded-full"
+              key={i}
+              animate={{ y: [0, -16, 0], scale: [1, 1.2, 1] }}
+              transition={{ duration: 1.4, delay: i * 0.2, repeat: Infinity }}
+              className="w-4 h-12 bg-gradient-to-t from-primary to-primary/60 rounded-full"
             />
-          </div>
-
-          {/* Percentage text */}
-          <motion.div
-            className="text-center mt-4"
-            animate={{ opacity: [0.6, 1, 0.6] }}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
-            <motion.span
-              className="text-2xl font-bold text-primary"
-              animate={{ x: [0, 2, 0] }}
-              transition={{ duration: 0.6, repeat: Infinity }}
-            >
-              100%
-            </motion.span>
-          </motion.div>
-        </motion.div>
+          ))}
+        </div>
 
         <p className="text-neutral-400 text-sm animate-pulse relative z-10">Analyzing your brilliance...</p>
       </div>
