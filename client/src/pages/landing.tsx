@@ -122,7 +122,10 @@ const LandingPage = () => {
           {/* Main Heading */}
           <h1 className="text-6xl md:text-7xl font-bold text-center leading-tight mb-8" style={{ fontFamily: 'Arial, sans-serif', fontWeight: 700 }}>
             <span style={{
-              color: '#e5e7eb',
+              backgroundImage: 'linear-gradient(to-bottom, #e5e7eb 0%, #cbd5e1 25%, #94a3b8 50%, #475569 75%, #1e293b 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
               textShadow: '0 4px 16px rgba(0, 0, 0, 0.8)',
               letterSpacing: '-0.01em',
             }}>
@@ -137,9 +140,14 @@ const LandingPage = () => {
             </span>
           </h1>
 
-          {/* Subheading in Translucent Box */}
-          <div className="px-6 py-4 rounded-lg bg-black/30 backdrop-blur-md border border-white/10 max-w-3xl mx-auto mb-12">
-            <p className="text-lg text-white text-center" style={{ fontFamily: 'Arial, sans-serif' }}>
+          {/* Subheading in Frosted Glass Box */}
+          <div className="px-8 py-6 rounded-2xl border border-white/20 max-w-3xl mx-auto mb-12" style={{
+            background: 'rgba(255, 255, 255, 0.05)',
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+            boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 8px 32px rgba(0, 0, 0, 0.3)',
+          }}>
+            <p className="text-lg text-white text-center" style={{ fontFamily: 'Arial, sans-serif', letterSpacing: '0.3px' }}>
               Voice-based learning. No excuses. No coddling. Just results.
             </p>
           </div>
