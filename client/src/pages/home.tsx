@@ -197,27 +197,20 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Mode Switcher & Pomodoro */}
-        <div className="flex items-center justify-between gap-8">
-          <div className="flex bg-neutral-900/50 rounded-full p-1 border border-white/5 backdrop-blur-xl">
-            <button 
-              onClick={() => { setMode('check'); resetView(); }}
-              className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${mode === 'check' ? 'bg-white text-black shadow-lg' : 'text-neutral-400 hover:text-white'}`}
-            >
-              Check Me
-            </button>
-            <button 
-              onClick={() => { setMode('tutor'); resetView(); }}
-              className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${mode === 'tutor' ? 'bg-primary text-black shadow-[0_0_20px_theme("colors.primary.DEFAULT")]' : 'text-neutral-400 hover:text-white'}`}
-            >
-              Gen Z Tutor
-            </button>
-          </div>
-
-          {/* Pomodoro Timer */}
-          <div className="bg-neutral-900/20 border border-white/5 rounded-2xl backdrop-blur-xl p-4 w-[280px]">
-            <PomodoroTimer />
-          </div>
+        {/* Mode Switcher */}
+        <div className="flex bg-neutral-900/50 rounded-full p-1 border border-white/5 backdrop-blur-xl">
+          <button 
+            onClick={() => { setMode('check'); resetView(); }}
+            className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${mode === 'check' ? 'bg-white text-black shadow-lg' : 'text-neutral-400 hover:text-white'}`}
+          >
+            Check Me
+          </button>
+          <button 
+            onClick={() => { setMode('tutor'); resetView(); }}
+            className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${mode === 'tutor' ? 'bg-primary text-black shadow-[0_0_20px_theme("colors.primary.DEFAULT")]' : 'text-neutral-400 hover:text-white'}`}
+          >
+            Gen Z Tutor
+          </button>
         </div>
       </header>
 
@@ -451,6 +444,13 @@ export default function Home() {
                       {isProcessing ? <Sparkles className="w-5 h-5 inline-block animate-spin mr-2" /> : '✨ Ask'}
                     </motion.button>
                   )}
+               </div>
+             )}
+
+             {/* Pomodoro Timer - Bottom of Results Panel */}
+             {(mode === 'check' || mode === 'tutor') && (
+               <div className="border-t border-white/5 pt-4 mt-4">
+                 <PomodoroTimer />
                </div>
              )}
            </div>

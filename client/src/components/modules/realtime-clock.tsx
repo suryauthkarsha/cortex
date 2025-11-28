@@ -9,8 +9,7 @@ export function RealtimeClock() {
       const now = new Date();
       const hours = String(now.getHours()).padStart(2, '0');
       const minutes = String(now.getMinutes()).padStart(2, '0');
-      const seconds = String(now.getSeconds()).padStart(2, '0');
-      setTime(`${hours}:${minutes}:${seconds}`);
+      setTime(`${hours} ${minutes}`);
     };
 
     updateTime();
@@ -22,12 +21,11 @@ export function RealtimeClock() {
     <motion.div
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="text-center space-y-1"
+      className="text-center"
     >
-      <div className="text-5xl font-bold text-white tracking-tight font-mono">
-        {time || '00:00:00'}
+      <div className="text-4xl font-light text-white tracking-widest font-mono">
+        {time || '00 00'}
       </div>
-      <p className="text-xs uppercase tracking-widest text-neutral-400">Study Time</p>
     </motion.div>
   );
 }
