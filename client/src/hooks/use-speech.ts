@@ -78,10 +78,13 @@ export function useSpeech() {
   }, [isListening]);
 
   const addPausesToText = (text: string): string => {
-    // Add subtle, natural pauses
+    // Add natural pauses and phrase breaks for more human-like speech
     return text
-      .replace(/([.!?])\s+/g, '$1 ') // Natural pause after sentences
-      .replace(/,\s+/g, ', ') // Slight pause after commas
+      .replace(/([.!?])\s+/g, '$1 ') // Sentence ends
+      .replace(/,\s+/g, ', ') // Comma pauses
+      .replace(/—/g, ', ') // Em-dashes as pauses
+      .replace(/;\s+/g, '; ') // Semicolon pauses
+      .replace(/\.\.\./g, '..') // Ellipsis
       .trim();
   };
 
@@ -101,7 +104,7 @@ export function useSpeech() {
       // Use best available voice - prefer premium voices
       let selectedVoice = null;
       
-      // Try Google Premium US voices first (highest quality)
+      // Try Google Premium US English voices first (highest quality)
       selectedVoice = voices.find(v => v.name?.includes('Google US English'));
       
       // Try any Google voice
@@ -109,21 +112,29 @@ export function useSpeech() {
         selectedVoice = voices.find(v => v.name?.includes('Google'));
       }
       
-      // Try high-quality system voices
+      // Try high-quality system voices (Microsoft, Apple, etc.)
       if (!selectedVoice) {
         selectedVoice = voices.find(v => 
           v.lang?.startsWith('en-US') && 
-          (v.name?.includes('Natural') || v.name?.includes('Premium') || v.name?.includes('Neural'))
+          (v.name?.includes('Natural') || v.name?.includes('Premium') || v.name?.includes('Neural') || v.name?.includes('Samantha'))
         );
       }
-      
-      // Fall back to US English female
+
+      // Try higher quality female voices
       if (!selectedVoice) {
         selectedVoice = voices.find(v => 
-          v.lang?.startsWith('en-US') && v.name?.toLowerCase().includes('female')
+          v.lang?.startsWith('en-US') && 
+          (v.name?.includes('Victoria') || v.name?.includes('Karen') || v.name?.includes('Moira') || v.name?.includes('Zira'))
         );
       }
       
+      // Fall back to any US English voice marked as default
+      if (!selectedVoice) {
+        selectedVoice = voices.find(v => 
+          v.lang?.startsWith('en-US') && v.default
+        );
+      }
+
       // Final fallback to any US voice
       if (!selectedVoice) {
         selectedVoice = voices.find(v => v.lang?.startsWith('en-US')) || voices[0];
@@ -131,8 +142,9 @@ export function useSpeech() {
       
       if (selectedVoice) utterance.voice = selectedVoice;
       
-      utterance.pitch = 1.0;
-      utterance.rate = 0.9; // Slightly faster for better engagement
+      // More human-like parameters
+      utterance.pitch = 0.95; // Slightly lower for more natural tone
+      utterance.rate = 0.85; // Slower, more deliberate speech
       utterance.volume = 1.0;
       
       utterance.onstart = () => setIsSpeaking(true);
