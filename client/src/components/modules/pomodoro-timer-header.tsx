@@ -99,14 +99,14 @@ export function PomodoroTimerHeader() {
       <AnimatePresence>
         {showSettings && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: -10 }}
+            initial={{ opacity: 0, scale: 0.9, y: -5 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: -10 }}
-            className="absolute top-full right-0 mt-2 bg-neutral-800/50 border border-white/10 backdrop-blur-md rounded-lg p-2 z-50 w-56"
+            exit={{ opacity: 0, scale: 0.9, y: -5 }}
+            className="absolute top-full right-0 mt-1 bg-neutral-800/60 border border-white/10 backdrop-blur-md rounded px-2 py-1.5 z-50 w-32"
           >
-            <div className="grid grid-cols-2 gap-2 mb-2">
+            <div className="grid grid-cols-2 gap-1 mb-1">
               <div>
-                <label className="text-[7px] uppercase tracking-widest text-neutral-400 block mb-0.5">
+                <label className="text-[6px] uppercase tracking-widest text-neutral-500 block mb-0.25">
                   Focus
                 </label>
                 <input
@@ -115,12 +115,12 @@ export function PomodoroTimerHeader() {
                   max="60"
                   value={tempWorkMinutes}
                   onChange={(e) => setTempWorkMinutes(Math.max(1, parseInt(e.target.value) || 1))}
-                  className="w-full bg-neutral-900/50 border border-white/10 rounded px-1.5 py-0.5 text-white text-center text-xs focus:outline-none focus:border-white/30"
+                  className="w-full bg-neutral-900/50 border border-white/10 rounded px-1 py-0.25 text-white text-center text-[10px] focus:outline-none focus:border-white/30"
                 />
               </div>
 
               <div>
-                <label className="text-[7px] uppercase tracking-widest text-neutral-400 block mb-0.5">
+                <label className="text-[6px] uppercase tracking-widest text-neutral-500 block mb-0.25">
                   Break
                 </label>
                 <input
@@ -129,16 +129,16 @@ export function PomodoroTimerHeader() {
                   max="30"
                   value={tempBreakMinutes}
                   onChange={(e) => setTempBreakMinutes(Math.max(1, parseInt(e.target.value) || 1))}
-                  className="w-full bg-neutral-900/50 border border-white/10 rounded px-1.5 py-0.5 text-white text-center text-xs focus:outline-none focus:border-white/30"
+                  className="w-full bg-neutral-900/50 border border-white/10 rounded px-1 py-0.25 text-white text-center text-[10px] focus:outline-none focus:border-white/30"
                 />
               </div>
             </div>
 
             <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={handleSaveSettings}
-              className="w-full bg-primary text-black font-bold py-1 rounded text-[10px] transition-all"
+              className="w-full bg-primary text-black font-bold py-0.5 rounded text-[9px] transition-all"
             >
               Save
             </motion.button>
