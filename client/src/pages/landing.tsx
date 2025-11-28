@@ -120,35 +120,29 @@ const LandingPage = () => {
           </motion.div>
 
           {/* Main Heading */}
-          <h1 className="text-7xl md:text-8xl font-black text-center leading-tight mb-6" style={{ fontFamily: 'Arial, sans-serif' }}>
+          <h1 className="text-6xl md:text-7xl font-bold text-center leading-tight mb-8" style={{ fontFamily: 'Arial, sans-serif', fontWeight: 700 }}>
             <span style={{
-              backgroundImage: 'linear-gradient(to-bottom, #f5f5f5 0%, #e8e8e8 15%, #d0d0d0 30%, #a0a0a0 45%, #787878 50%, #a0a0a0 55%, #d0d0d0 70%, #e8e8e8 85%, #f5f5f5 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-              textShadow: '0 8px 32px rgba(0, 0, 0, 0.95)',
-              filter: 'drop-shadow(0 4px 12px rgba(0, 0, 0, 0.7)) drop-shadow(0 8px 24px rgba(0, 0, 0, 0.6))',
-              letterSpacing: '-0.02em',
+              color: '#e5e7eb',
+              textShadow: '0 4px 16px rgba(0, 0, 0, 0.8)',
+              letterSpacing: '-0.01em',
             }}>
-              F*CK BAD
+              F*ck Bad
             </span>{" "}
             <span style={{
-              backgroundImage: 'linear-gradient(to-bottom, #fef3c7 0%, #fde047 12%, #fcd34d 24%, #f59e0b 36%, #d97706 48%, #b45309 50%, #d97706 52%, #f59e0b 64%, #fcd34d 76%, #fde047 88%, #fef3c7 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-              textShadow: '0 8px 32px rgba(0, 0, 0, 0.95)',
-              filter: 'drop-shadow(0 4px 12px rgba(0, 0, 0, 0.7)) drop-shadow(0 8px 24px rgba(0, 0, 0, 0.6))',
-              letterSpacing: '-0.02em',
+              color: '#fbbf24',
+              textShadow: '0 4px 16px rgba(0, 0, 0, 0.8)',
+              letterSpacing: '-0.01em',
             }}>
-              GRADES
+              Grades
             </span>
           </h1>
 
-          {/* Subheading */}
-          <p className="text-xl text-neutral-400 text-center max-w-3xl mx-auto mb-12">
-            Voice-based learning. No excuses. No coddling. Just results.
-          </p>
+          {/* Subheading in Translucent Box */}
+          <div className="px-6 py-4 rounded-lg bg-black/30 backdrop-blur-md border border-white/10 max-w-3xl mx-auto mb-12">
+            <p className="text-lg text-white text-center" style={{ fontFamily: 'Arial, sans-serif' }}>
+              Voice-based learning. No excuses. No coddling. Just results.
+            </p>
+          </div>
 
           {/* CTA Button */}
           <div className="flex justify-center">
