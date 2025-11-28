@@ -179,7 +179,7 @@ export default function Home() {
             <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
               <Brain className="w-5 h-5 text-black" />
             </div>
-            <span className="text-xl font-bold tracking-tight">Study<span className="opacity-50">Sync</span></span>
+            <span className="text-xl font-bold tracking-tight" style={{ fontFamily: 'Times New Roman, serif' }}>Cortex</span>
           </div>
 
           {/* Center: Mode Switcher */}

@@ -74,7 +74,7 @@ const LandingPage = () => {
       {/* Navigation */}
       <nav className="fixed top-0 w-full z-50 bg-black border-b border-yellow-600/20">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="text-3xl font-black text-yellow-500" style={{ fontFamily: 'Russo One' }}>Cortex</div>
+          <div className="text-3xl font-black text-yellow-500" style={{ fontFamily: 'Times New Roman, serif' }}>Cortex</div>
           <div className="flex items-center gap-8">
             <Link href="/app">
               <button className="px-6 py-2 rounded-lg border border-yellow-600/40 hover:border-yellow-500 transition text-sm font-medium text-yellow-600 hover:text-yellow-500">
@@ -112,25 +112,17 @@ const LandingPage = () => {
           </div>
 
           {/* Main Heading */}
-          <h1 className="text-7xl md:text-8xl font-black text-center leading-tight mb-6">
+          <h1 className="text-7xl md:text-8xl font-black text-center leading-tight mb-6" style={{ fontFamily: 'Times New Roman, serif' }}>
             <span style={{
-              backgroundImage: 'linear-gradient(to-bottom, #a0aec0, #4a5568, #2d3748)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-              textShadow: '0 2px 16px rgba(0, 0, 0, 0.8)',
-              filter: 'drop-shadow(0 2px 16px rgba(0, 0, 0, 0.9))',
+              color: '#9ca3af',
+              textShadow: '0 4px 20px rgba(0, 0, 0, 0.95), 0 0 40px rgba(0, 0, 0, 0.8)',
               letterSpacing: '-0.02em',
             }}>
               F*CK BAD
             </span>{" "}
             <span style={{
-              backgroundImage: 'linear-gradient(to-bottom, #fbbf24, #f59e0b, #d97706)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-              textShadow: '0 2px 16px rgba(0, 0, 0, 0.8)',
-              filter: 'drop-shadow(0 2px 16px rgba(0, 0, 0, 0.9))',
+              color: '#fbbf24',
+              textShadow: '0 4px 20px rgba(0, 0, 0, 0.95), 0 0 40px rgba(0, 0, 0, 0.8)',
               letterSpacing: '-0.02em',
             }}>
               GRADES
