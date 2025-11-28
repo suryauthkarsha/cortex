@@ -98,8 +98,8 @@ const LandingPage = () => {
           backgroundPosition: 'center',
         }}
       >
-        {/* Top Fade Overlay - Stronger */}
-        <div className="absolute top-0 left-0 right-0 h-64 bg-gradient-to-b from-black via-black/80 to-transparent z-0" />
+        {/* Top Fade Overlay */}
+        <div className="absolute top-0 left-0 right-0 h-64 bg-gradient-to-b from-black/50 via-black/30 to-transparent z-0" />
         
         {/* Bottom Fade Overlay */}
         <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-black to-transparent z-0" />
