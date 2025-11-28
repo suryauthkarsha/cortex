@@ -5,6 +5,8 @@ import { useAudioVisualizer } from '@/hooks/use-audio-visualizer';
 import { analyzeExplanation, generateQuiz, askTutor, type QuizQuestion, type GeminiResponse } from '@/lib/gemini';
 import { QuizModal } from '@/components/modules/quiz-modal';
 import { FeedbackDisplay } from '@/components/modules/feedback-display';
+import { RealtimeClock } from '@/components/modules/realtime-clock';
+import { PomodoroTimer } from '@/components/modules/pomodoro-timer';
 import { Mic, Square, Play, VolumeX, Sparkles, Upload, X, Video, Image as ImageIcon, MessageCircle, GraduationCap, StopCircle, Brain, ArrowLeft } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -170,36 +172,52 @@ export default function Home() {
     <div className="min-h-screen bg-background text-foreground flex flex-col relative overflow-hidden font-sans selection:bg-white/20">
       
       {/* Header & Nav */}
-      <header className="relative z-20 px-8 py-6 flex justify-between items-center">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
-            <Brain className="w-5 h-5 text-black" />
+      <header className="relative z-20 px-8 py-6">
+        <div className="flex justify-between items-start gap-8 mb-6">
+          {/* Left: Logo */}
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+              <Brain className="w-5 h-5 text-black" />
+            </div>
+            <span className="text-xl font-bold tracking-tight">Study<span className="opacity-50">Sync</span></span>
           </div>
-          <span className="text-xl font-bold tracking-tight">Study<span className="opacity-50">Sync</span></span>
-        </div>
-        
-        {/* Mode Switcher */}
-        <div className="flex bg-neutral-900/50 rounded-full p-1 border border-white/5 backdrop-blur-xl">
-          <button 
-            onClick={() => { setMode('check'); resetView(); }}
-            className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${mode === 'check' ? 'bg-white text-black shadow-lg' : 'text-neutral-400 hover:text-white'}`}
-          >
-            Check Me
-          </button>
-          <button 
-            onClick={() => { setMode('tutor'); resetView(); }}
-            className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${mode === 'tutor' ? 'bg-primary text-black shadow-[0_0_20px_theme("colors.primary.DEFAULT")]' : 'text-neutral-400 hover:text-white'}`}
-          >
-            Gen Z Tutor
-          </button>
+
+          {/* Center: Clock */}
+          <div className="flex-1 flex justify-center">
+            <RealtimeClock />
+          </div>
+
+          {/* Right: Controls */}
+          <div className="flex items-center gap-4">
+            {isSpeaking && (
+              <button onClick={stopSpeaking} className="bg-neutral-800 rounded-full p-3 text-white hover:bg-neutral-700 transition-colors">
+                <VolumeX className="w-5 h-5" />
+              </button>
+            )}
+          </div>
         </div>
 
-        <div className="flex items-center gap-4 w-[120px] justify-end">
-          {isSpeaking && (
-            <button onClick={stopSpeaking} className="bg-neutral-800 rounded-full p-3 text-white hover:bg-neutral-700 transition-colors">
-              <VolumeX className="w-5 h-5" />
+        {/* Mode Switcher & Pomodoro */}
+        <div className="flex items-center justify-between gap-8">
+          <div className="flex bg-neutral-900/50 rounded-full p-1 border border-white/5 backdrop-blur-xl">
+            <button 
+              onClick={() => { setMode('check'); resetView(); }}
+              className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${mode === 'check' ? 'bg-white text-black shadow-lg' : 'text-neutral-400 hover:text-white'}`}
+            >
+              Check Me
             </button>
-          )}
+            <button 
+              onClick={() => { setMode('tutor'); resetView(); }}
+              className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${mode === 'tutor' ? 'bg-primary text-black shadow-[0_0_20px_theme("colors.primary.DEFAULT")]' : 'text-neutral-400 hover:text-white'}`}
+            >
+              Gen Z Tutor
+            </button>
+          </div>
+
+          {/* Pomodoro Timer */}
+          <div className="bg-neutral-900/20 border border-white/5 rounded-2xl backdrop-blur-xl p-4 w-[280px]">
+            <PomodoroTimer />
+          </div>
         </div>
       </header>
 
