@@ -74,7 +74,7 @@ const LandingPage = () => {
       {/* Navigation */}
       <nav className="fixed top-0 w-full z-50 bg-black border-b border-yellow-600/20">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="text-2xl font-bold text-yellow-500">Cortex</div>
+          <div className="text-3xl font-black text-yellow-500" style={{ fontFamily: 'Russo One' }}>Cortex</div>
           <div className="flex items-center gap-8">
             <Link href="/app">
               <button className="px-6 py-2 rounded-lg border border-yellow-600/40 hover:border-yellow-500 transition text-sm font-medium text-yellow-600 hover:text-yellow-500">
@@ -94,8 +94,14 @@ const LandingPage = () => {
           backgroundPosition: 'center',
         }}
       >
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-black/80 z-0" />
+        {/* Top Fade Overlay */}
+        <div className="absolute top-0 left-0 right-0 h-40 bg-gradient-to-b from-black to-transparent z-0" />
+        
+        {/* Bottom Fade Overlay */}
+        <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-black to-transparent z-0" />
+        
+        {/* Main Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/50 to-black/60 z-0" />
 
         <div className="max-w-5xl mx-auto relative z-10">
           {/* Badge */}
@@ -108,18 +114,24 @@ const LandingPage = () => {
           {/* Main Heading */}
           <h1 className="text-7xl md:text-8xl font-black text-center leading-tight mb-6">
             <span style={{
-              backgroundImage: 'linear-gradient(to-bottom, #d1d5db, #111827, #374151)',
+              backgroundImage: 'linear-gradient(to-bottom, #a0aec0, #4a5568, #2d3748)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
+              textShadow: '0 2px 16px rgba(0, 0, 0, 0.8)',
+              filter: 'drop-shadow(0 2px 16px rgba(0, 0, 0, 0.9))',
+              letterSpacing: '-0.02em',
             }}>
               F*CK BAD
             </span>{" "}
             <span style={{
-              backgroundImage: 'linear-gradient(to-bottom, #fde047, #eab308, #b45309)',
+              backgroundImage: 'linear-gradient(to-bottom, #fbbf24, #f59e0b, #d97706)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
+              textShadow: '0 2px 16px rgba(0, 0, 0, 0.8)',
+              filter: 'drop-shadow(0 2px 16px rgba(0, 0, 0, 0.9))',
+              letterSpacing: '-0.02em',
             }}>
               GRADES
             </span>
