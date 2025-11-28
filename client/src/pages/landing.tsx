@@ -125,40 +125,26 @@ const LandingPage = () => {
             </div>
           </motion.div>
 
-          {/* Main Heading with Blur Background */}
-          <div className="relative inline-block w-full mb-6">
-            {/* Blur background element */}
-            <div className="absolute inset-0 bg-black/20 rounded-3xl blur-3xl" style={{ 
-              backdropFilter: 'blur(12px)',
-              WebkitBackdropFilter: 'blur(12px)',
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
-            }} />
-            
-            <h1 className="relative text-7xl md:text-8xl text-center leading-tight py-6" style={{ fontFamily: 'Times New Roman, serif', fontWeight: 500 }}>
-              <span style={{
-                backgroundImage: 'linear-gradient(to-bottom, #ffffff 0%, #e5e7eb 25%, #cbd5e1 50%, #a0a0a0 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-                textShadow: '0 4px 12px rgba(0, 0, 0, 0.8)',
-                letterSpacing: '0.02em',
-                filter: 'drop-shadow(0 2px 8px rgba(0, 0, 0, 0.7))',
-              }}>
-                F*ck Bad
-              </span>{" "}
-              <span style={{
-                backgroundImage: 'linear-gradient(to-bottom, #fef3c7 0%, #fde047 35%, #f59e0b 65%, #d97706 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-                textShadow: '0 4px 12px rgba(0, 0, 0, 0.8)',
-                letterSpacing: '0.02em',
-                filter: 'drop-shadow(0 2px 8px rgba(0, 0, 0, 0.7))',
-              }}>
-                Grades
-              </span>
-            </h1>
-          </div>
+          {/* Main Heading */}
+          <h1 className="text-7xl md:text-8xl text-center leading-tight mb-6" style={{ fontFamily: 'Times New Roman, serif', fontWeight: 500 }}>
+            <span style={{
+              color: '#e5e7eb',
+              textShadow: '0 4px 16px rgba(0, 0, 0, 0.95), 0 8px 32px rgba(0, 0, 0, 0.8)',
+              letterSpacing: '0.02em',
+              filter: 'drop-shadow(0 2px 6px rgba(0, 0, 0, 0.9)) drop-shadow(0 4px 12px rgba(0, 0, 0, 0.8))',
+              textDecoration: 'none',
+            }}>
+              F*ck Bad
+            </span>{" "}
+            <span style={{
+              color: '#fbbf24',
+              textShadow: '0 4px 16px rgba(0, 0, 0, 0.95), 0 8px 32px rgba(0, 0, 0, 0.8)',
+              letterSpacing: '0.02em',
+              filter: 'drop-shadow(0 2px 6px rgba(0, 0, 0, 0.9)) drop-shadow(0 4px 12px rgba(0, 0, 0, 0.8))',
+            }}>
+              Grades
+            </span>
+          </h1>
 
           {/* Subheading in Frosted Glass Box */}
           <div className="px-4 py-3 rounded-lg border border-white/20 max-w-xl mx-auto mb-12" style={{
