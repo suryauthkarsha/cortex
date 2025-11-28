@@ -98,8 +98,8 @@ const LandingPage = () => {
           backgroundPosition: 'center',
         }}
       >
-        {/* Top Fade Overlay */}
-        <div className="absolute top-0 left-0 right-0 h-40 bg-gradient-to-b from-black to-transparent z-0" />
+        {/* Top Fade Overlay - Stronger */}
+        <div className="absolute top-0 left-0 right-0 h-64 bg-gradient-to-b from-black via-black/80 to-transparent z-0" />
         
         {/* Bottom Fade Overlay */}
         <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-black to-transparent z-0" />
@@ -129,18 +129,15 @@ const LandingPage = () => {
           <h1 className="text-7xl md:text-8xl text-center leading-tight mb-6" style={{ fontFamily: 'Times New Roman, serif', fontWeight: 500 }}>
             <span style={{
               color: '#e5e7eb',
-              textShadow: '0 4px 16px rgba(0, 0, 0, 0.95), 0 8px 32px rgba(0, 0, 0, 0.8)',
+              textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)',
               letterSpacing: '0.02em',
-              filter: 'drop-shadow(0 2px 6px rgba(0, 0, 0, 0.9)) drop-shadow(0 4px 12px rgba(0, 0, 0, 0.8))',
-              textDecoration: 'none',
             }}>
               F*ck Bad
             </span>{" "}
             <span style={{
               color: '#fbbf24',
-              textShadow: '0 4px 16px rgba(0, 0, 0, 0.95), 0 8px 32px rgba(0, 0, 0, 0.8)',
+              textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)',
               letterSpacing: '0.02em',
-              filter: 'drop-shadow(0 2px 6px rgba(0, 0, 0, 0.9)) drop-shadow(0 4px 12px rgba(0, 0, 0, 0.8))',
             }}>
               Grades
             </span>
