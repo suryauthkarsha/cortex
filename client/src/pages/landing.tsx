@@ -117,15 +117,23 @@ const LandingPage = () => {
           {/* Main Heading */}
           <h1 className="text-7xl md:text-8xl font-black text-center leading-tight mb-6">
             <span style={{
-              color: '#9ca3af',
-              textShadow: '0 4px 20px rgba(0, 0, 0, 0.95), 0 0 40px rgba(0, 0, 0, 0.8)',
+              backgroundImage: 'linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 10%, #d0d0d0 20%, #a0a0a0 35%, #787878 50%, #a0a0a0 65%, #d0d0d0 80%, #e8e8e8 90%, #f5f5f5 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              textShadow: '0 8px 32px rgba(0, 0, 0, 0.95)',
+              filter: 'drop-shadow(0 4px 12px rgba(0, 0, 0, 0.7)) drop-shadow(0 8px 24px rgba(0, 0, 0, 0.6))',
               letterSpacing: '-0.02em',
             }}>
               F*CK BAD
             </span>{" "}
             <span style={{
-              color: '#fbbf24',
-              textShadow: '0 4px 20px rgba(0, 0, 0, 0.95), 0 0 40px rgba(0, 0, 0, 0.8)',
+              backgroundImage: 'linear-gradient(135deg, #fef3c7 0%, #fde047 8%, #fcd34d 15%, #f59e0b 28%, #d97706 40%, #b45309 50%, #d97706 60%, #f59e0b 72%, #fcd34d 85%, #fde047 92%, #fef3c7 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              textShadow: '0 8px 32px rgba(0, 0, 0, 0.95)',
+              filter: 'drop-shadow(0 4px 12px rgba(0, 0, 0, 0.7)) drop-shadow(0 8px 24px rgba(0, 0, 0, 0.6))',
               letterSpacing: '-0.02em',
             }}>
               GRADES
