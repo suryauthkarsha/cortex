@@ -1,6 +1,5 @@
 import { ArrowRight, CheckCircle2, X } from "lucide-react";
 import { Link } from "wouter";
-import heroImage from "@assets/stock_images/futuristic_abstract__6161ebda.jpg";
 
 const LandingPage = () => {
   const features = [
@@ -91,7 +90,7 @@ const LandingPage = () => {
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <img 
-            src={heroImage} 
+            src="https://i.ibb.co/M5ST5KP7/Gemini-Generated-Image-m5n9jhm5n9jhm5n9.png" 
             alt="Hero Background" 
             className="w-full h-full object-cover opacity-30"
           />
