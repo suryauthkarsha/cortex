@@ -108,28 +108,39 @@ const LandingPage = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/50 to-black/60 z-0" />
 
         <div className="max-w-5xl mx-auto relative z-10">
-          {/* Badge with Animation */}
+          {/* Badge with Animation - Frosted Glass */}
           <motion.div 
             className="text-center mb-8"
-            animate={{ opacity: [0.4, 0.8, 0.4] }}
+            animate={{ opacity: [0.3, 0.7, 0.3] }}
             transition={{ duration: 3, repeat: Infinity }}
           >
-            <div className="inline-block px-4 py-2 rounded-full border border-yellow-600/30 text-yellow-600 text-sm font-medium bg-yellow-600/10 backdrop-blur-sm">
+            <div className="inline-block px-4 py-2 rounded-full border border-white/25 text-yellow-400 text-sm font-medium" style={{
+              background: 'rgba(255, 255, 255, 0.08)',
+              backdropFilter: 'blur(16px)',
+              WebkitBackdropFilter: 'blur(16px)',
+              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 4px 16px rgba(0, 0, 0, 0.25)',
+            }}>
               NOW LIVE
             </div>
           </motion.div>
 
           {/* Main Heading */}
-          <h1 className="text-6xl md:text-7xl text-center leading-tight mb-6" style={{ fontFamily: 'Times New Roman, serif', fontWeight: 400 }}>
+          <h1 className="text-6xl md:text-7xl text-center leading-tight mb-6" style={{ fontFamily: 'Times New Roman, serif', fontWeight: 500 }}>
             <span style={{
-              color: '#f5f5f5',
+              backgroundImage: 'linear-gradient(to-bottom, #ffffff 0%, #e5e7eb 30%, #cbd5e1 60%, #a0a0a0 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
               textShadow: '0 4px 16px rgba(0, 0, 0, 0.8)',
               letterSpacing: '0.02em',
             }}>
               F*ck Bad.
             </span>{" "}
             <span style={{
-              color: '#fbbf24',
+              backgroundImage: 'linear-gradient(to-bottom, #fef3c7 0%, #fde047 40%, #f59e0b 70%, #d97706 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
               textShadow: '0 4px 16px rgba(0, 0, 0, 0.8)',
               letterSpacing: '0.02em',
             }}>
@@ -144,7 +155,7 @@ const LandingPage = () => {
             WebkitBackdropFilter: 'blur(20px)',
             boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 8px 32px rgba(0, 0, 0, 0.3)',
           }}>
-            <p className="text-sm text-white text-center" style={{ fontFamily: 'Arial, sans-serif', letterSpacing: '0.3px' }}>
+            <p className="text-base text-white text-center" style={{ fontFamily: 'Arial, sans-serif', letterSpacing: '0.3px' }}>
               Voice-based learning. No excuses. No coddling. Just results.
             </p>
           </div>
