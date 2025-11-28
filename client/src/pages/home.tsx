@@ -173,7 +173,7 @@ export default function Home() {
       
       {/* Header & Nav */}
       <header className="relative z-20 px-8 py-6">
-        <div className="flex justify-between items-center gap-8 mb-6">
+        <div className="flex justify-between items-center gap-8">
           {/* Left: Logo */}
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
@@ -182,18 +182,7 @@ export default function Home() {
             <span className="text-xl font-bold tracking-tight">Study<span className="opacity-50">Sync</span></span>
           </div>
 
-          {/* Right: Controls */}
-          <div className="flex items-center gap-4">
-            {isSpeaking && (
-              <button onClick={stopSpeaking} className="bg-neutral-800 rounded-full p-3 text-white hover:bg-neutral-700 transition-colors">
-                <VolumeX className="w-5 h-5" />
-              </button>
-            )}
-          </div>
-        </div>
-
-        {/* Mode Switcher */}
-        <div className="flex w-full justify-center">
+          {/* Center: Mode Switcher */}
           <div className="flex bg-neutral-900/50 rounded-full p-1 border border-white/5 backdrop-blur-xl">
             <button 
               onClick={() => { setMode('check'); resetView(); }}
@@ -207,6 +196,15 @@ export default function Home() {
             >
               Gen Z Tutor
             </button>
+          </div>
+
+          {/* Right: Controls */}
+          <div className="flex items-center gap-4">
+            {isSpeaking && (
+              <button onClick={stopSpeaking} className="bg-neutral-800 rounded-full p-3 text-white hover:bg-neutral-700 transition-colors">
+                <VolumeX className="w-5 h-5" />
+              </button>
+            )}
           </div>
         </div>
       </header>
