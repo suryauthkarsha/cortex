@@ -74,7 +74,7 @@ const LandingPage = () => {
       {/* Navigation */}
       <nav className="fixed top-0 w-full z-50 bg-black border-b border-yellow-600/20">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="text-2xl font-bold text-yellow-500">StudyTutor</div>
+          <div className="text-2xl font-bold text-yellow-500">Cortex</div>
           <div className="flex items-center gap-8">
             <Link href="/app">
               <button className="px-6 py-2 rounded-lg border border-yellow-600/40 hover:border-yellow-500 transition text-sm font-medium text-yellow-600 hover:text-yellow-500">
@@ -265,7 +265,7 @@ const LandingPage = () => {
       {/* Footer */}
       <footer className="border-t border-yellow-600/20 py-12 px-6">
         <div className="max-w-6xl mx-auto flex items-center justify-between text-neutral-500 text-sm">
-          <p>© 2025 StudyTutor. No excuses.</p>
+          <p>© 2025 Cortex. No excuses.</p>
           <div className="flex gap-6">
             <a href="#" className="hover:text-yellow-500 transition">
               Privacy
