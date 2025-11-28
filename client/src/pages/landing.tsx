@@ -120,34 +120,31 @@ const LandingPage = () => {
           </motion.div>
 
           {/* Main Heading */}
-          <h1 className="text-6xl md:text-7xl font-bold text-center leading-tight mb-8" style={{ fontFamily: 'Arial, sans-serif', fontWeight: 700 }}>
+          <h1 className="text-6xl md:text-7xl text-center leading-tight mb-6" style={{ fontFamily: 'Times New Roman, serif', fontWeight: 400 }}>
             <span style={{
-              backgroundImage: 'linear-gradient(to-bottom, #e5e7eb 0%, #cbd5e1 25%, #94a3b8 50%, #475569 75%, #1e293b 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
+              color: '#f5f5f5',
               textShadow: '0 4px 16px rgba(0, 0, 0, 0.8)',
-              letterSpacing: '-0.01em',
+              letterSpacing: '0.02em',
             }}>
-              F*ck Bad
+              F*ck Bad.
             </span>{" "}
             <span style={{
               color: '#fbbf24',
               textShadow: '0 4px 16px rgba(0, 0, 0, 0.8)',
-              letterSpacing: '-0.01em',
+              letterSpacing: '0.02em',
             }}>
               Grades
             </span>
           </h1>
 
           {/* Subheading in Frosted Glass Box */}
-          <div className="px-8 py-6 rounded-2xl border border-white/20 max-w-3xl mx-auto mb-12" style={{
+          <div className="px-4 py-3 rounded-lg border border-white/20 max-w-xl mx-auto mb-12" style={{
             background: 'rgba(255, 255, 255, 0.05)',
             backdropFilter: 'blur(20px)',
             WebkitBackdropFilter: 'blur(20px)',
             boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 8px 32px rgba(0, 0, 0, 0.3)',
           }}>
-            <p className="text-lg text-white text-center" style={{ fontFamily: 'Arial, sans-serif', letterSpacing: '0.3px' }}>
+            <p className="text-sm text-white text-center" style={{ fontFamily: 'Arial, sans-serif', letterSpacing: '0.3px' }}>
               Voice-based learning. No excuses. No coddling. Just results.
             </p>
           </div>
