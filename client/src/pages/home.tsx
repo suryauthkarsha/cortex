@@ -198,19 +198,21 @@ export default function Home() {
         </div>
 
         {/* Mode Switcher */}
-        <div className="flex bg-neutral-900/50 rounded-full p-1 border border-white/5 backdrop-blur-xl">
-          <button 
-            onClick={() => { setMode('check'); resetView(); }}
-            className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${mode === 'check' ? 'bg-white text-black shadow-lg' : 'text-neutral-400 hover:text-white'}`}
-          >
-            Check Me
-          </button>
-          <button 
-            onClick={() => { setMode('tutor'); resetView(); }}
-            className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${mode === 'tutor' ? 'bg-primary text-black shadow-[0_0_20px_theme("colors.primary.DEFAULT")]' : 'text-neutral-400 hover:text-white'}`}
-          >
-            Gen Z Tutor
-          </button>
+        <div className="flex w-full justify-center">
+          <div className="flex bg-neutral-900/50 rounded-full p-1 border border-white/5 backdrop-blur-xl">
+            <button 
+              onClick={() => { setMode('check'); resetView(); }}
+              className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${mode === 'check' ? 'bg-white text-black shadow-lg' : 'text-neutral-400 hover:text-white'}`}
+            >
+              Check Me
+            </button>
+            <button 
+              onClick={() => { setMode('tutor'); resetView(); }}
+              className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${mode === 'tutor' ? 'bg-primary text-black shadow-[0_0_20px_theme("colors.primary.DEFAULT")]' : 'text-neutral-400 hover:text-white'}`}
+            >
+              Gen Z Tutor
+            </button>
+          </div>
         </div>
       </header>
 
