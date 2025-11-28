@@ -1,5 +1,5 @@
-import React from 'react';
-import { Brain, AlertTriangle, CheckCircle2, FileText, Sparkles, ArrowRight } from 'lucide-react';
+import React, { useMemo } from 'react';
+import { Brain, AlertTriangle, CheckCircle2, FileText, Sparkles, ArrowRight, Lightbulb } from 'lucide-react';
 import type { GeminiResponse } from '@/lib/gemini';
 import { motion } from 'framer-motion';
 
@@ -9,11 +9,28 @@ interface FeedbackDisplayProps {
   error: string | null;
 }
 
+const MOTIVATIONAL_QUOTES = [
+  "Every expert was once a beginner.",
+  "The only way to do great work is to love what you do.",
+  "Learning is not attainment, it is a journey.",
+  "Success is the sum of small efforts repeated day in and day out.",
+  "Your education is a dress rehearsal for a life that is yours to lead.",
+  "The capacity to learn is a gift; the ability to learn is a skill; the willingness to learn is a choice.",
+  "In learning you will teach, and in teaching you will learn.",
+  "Knowledge is power, but enthusiasm pulls the switch.",
+  "Don't watch the clock; do what it does. Keep going.",
+  "The beautiful thing about learning is that no one can take it away from you."
+];
+
 export function FeedbackDisplay({ response, isProcessing, error }: FeedbackDisplayProps) {
+  const randomQuote = useMemo(() => {
+    return MOTIVATIONAL_QUOTES[Math.floor(Math.random() * MOTIVATIONAL_QUOTES.length)];
+  }, []);
+
   if (isProcessing) {
     return (
       <div className="h-full flex flex-col items-center justify-center p-12">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 mb-8">
           {[0, 1, 2, 3].map((i) => (
             <motion.div
               key={i}
@@ -23,6 +40,7 @@ export function FeedbackDisplay({ response, isProcessing, error }: FeedbackDispl
             />
           ))}
         </div>
+        <p className="text-neutral-400 text-sm animate-pulse">Analyzing your brilliance...</p>
       </div>
     );
   }
@@ -38,12 +56,48 @@ export function FeedbackDisplay({ response, isProcessing, error }: FeedbackDispl
 
   if (!response) {
     return (
-      <div className="h-full flex flex-col items-center justify-center p-12">
+      <div className="h-full flex flex-col items-center justify-center p-12 space-y-8">
         <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
-          className="w-20 h-20 rounded-full border-2 border-transparent border-t-primary border-r-primary mb-6"
-        />
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          className="relative"
+        >
+          <div className="absolute inset-0 bg-primary/10 rounded-full blur-3xl" />
+          <div className="relative bg-neutral-900/40 border border-primary/20 rounded-full p-6">
+            <Lightbulb className="w-12 h-12 text-primary/60" />
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ y: 10, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="text-center space-y-3 max-w-md"
+        >
+          <p className="text-2xl font-light text-white leading-relaxed italic">
+            "{randomQuote}"
+          </p>
+          <div className="flex justify-center gap-1 pt-2">
+            {[0, 1, 2].map((i) => (
+              <motion.div
+                key={i}
+                animate={{ opacity: [0.4, 1, 0.4] }}
+                transition={{ duration: 2, delay: i * 0.3, repeat: Infinity }}
+                className="w-1.5 h-1.5 bg-primary rounded-full"
+              />
+            ))}
+          </div>
+        </motion.div>
+
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="text-neutral-500 text-sm"
+        >
+          Record and analyze to begin
+        </motion.p>
       </div>
     );
   }
@@ -54,47 +108,82 @@ export function FeedbackDisplay({ response, isProcessing, error }: FeedbackDispl
       animate={{ opacity: 1, y: 0 }}
       className="space-y-8 h-full overflow-y-auto pr-4 pb-8 custom-scrollbar"
     >
-      {/* Score Section - BIGGER */}
-      <div className="bg-neutral-900/50 rounded-[2rem] p-8 relative overflow-hidden">
+      {/* Score Section - Interactive */}
+      <motion.div 
+        whileHover={{ scale: 1.02 }}
+        className="bg-neutral-900/50 rounded-[2rem] p-8 relative overflow-hidden cursor-default hover:border-primary/30 border border-transparent transition-colors"
+      >
         <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl pointer-events-none translate-x-1/3 -translate-y-1/3" />
         
         <div className="relative z-10 flex flex-col items-center text-center gap-2">
           <span className="text-neutral-500 text-sm font-bold uppercase tracking-widest">Score</span>
-          <div className="text-[8rem] leading-none font-bold tracking-tighter text-white relative">
+          <motion.div 
+            initial={{ scale: 0.8 }}
+            animate={{ scale: 1 }}
+            transition={{ type: 'spring', stiffness: 100 }}
+            className="text-[8rem] leading-none font-bold tracking-tighter text-white relative"
+          >
             {response.score}
             <span className="text-2xl text-neutral-600 absolute top-8 -right-8 font-normal">/100</span>
-          </div>
+          </motion.div>
           <p className="text-xl text-neutral-300 mt-4 font-medium max-w-lg leading-relaxed">
             "{response.summary}"
           </p>
         </div>
-      </div>
+      </motion.div>
 
       {/* Feedback & Missed Topics */}
       <div className="grid gap-6">
-        <div className="minimal-card p-8">
+        <motion.div 
+          whileHover={{ x: 4 }}
+          className="minimal-card p-8 cursor-default hover:bg-neutral-900/40 transition-colors"
+        >
           <h4 className="text-neutral-500 text-sm font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
             <FileText className="w-4 h-4" /> The Breakdown
           </h4>
           <p className="text-lg text-neutral-300 leading-8 font-light">
             {response.detailed_feedback}
           </p>
-        </div>
+        </motion.div>
 
         {response.missed_topics.length > 0 && (
-          <div className="minimal-card p-8 bg-red-500/5 border-red-500/10">
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="minimal-card p-8 bg-red-500/5 border-red-500/10 hover:bg-red-500/10 transition-colors"
+          >
             <h4 className="text-red-400 text-sm font-bold uppercase tracking-widest mb-6 flex items-center gap-2">
               <AlertTriangle className="w-4 h-4" /> Missed Concepts
             </h4>
             <div className="space-y-4">
               {response.missed_topics.map((topic, i) => (
-                <div key={i} className="bg-neutral-900/50 rounded-xl p-5 border border-red-500/10">
+                <motion.div 
+                  key={i} 
+                  initial={{ x: -10, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ delay: i * 0.1 }}
+                  whileHover={{ x: 8, backgroundColor: 'rgba(239, 68, 68, 0.15)' }}
+                  className="bg-neutral-900/50 rounded-xl p-5 border border-red-500/10 cursor-default transition-all"
+                >
                   <span className="text-white font-bold block mb-2 text-lg">{topic.topic}</span>
                   <p className="text-neutral-400 text-base leading-relaxed">{topic.explanation}</p>
-                </div>
+                </motion.div>
               ))}
             </div>
-          </div>
+          </motion.div>
+        )}
+
+        {response.missed_topics.length === 0 && (
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.3 }}
+            className="bg-green-500/10 border border-green-500/20 rounded-xl p-8 text-center"
+          >
+            <CheckCircle2 className="w-12 h-12 text-green-400 mx-auto mb-4" />
+            <p className="text-green-300 font-medium text-lg">Perfect execution! No missed concepts.</p>
+          </motion.div>
         )}
       </div>
     </motion.div>
