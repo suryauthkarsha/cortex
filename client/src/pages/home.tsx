@@ -95,16 +95,13 @@ export default function Home() {
 
   const handleVoiceInteraction = () => {
     if (isListening) {
+      const currentText = transcript;
       toggleListening();
-      if (mode === 'tutor') {
-        // Capture current transcript before state updates
-        const currentText = transcript;
-        // Auto-send to tutor immediately after stopping
-        setTimeout(() => {
-          if (currentText.trim().length >= 2) {
-            handleTutorChat(currentText);
-          }
-        }, 200); 
+      
+      if (mode === 'tutor' && currentText.trim().length > 0) {
+        // Immediately send to tutor when mic is turned off
+        setError(null);
+        handleTutorChat(currentText);
       }
     } else {
       toggleListening();
