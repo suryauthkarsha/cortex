@@ -34,18 +34,47 @@ export function FeedbackDisplay({ response, isProcessing, error }: FeedbackDispl
 
   if (isProcessing) {
     return (
-      <div className="h-full flex flex-col items-center justify-center p-12">
-        <div className="flex items-center gap-2 mb-8">
-          {[0, 1, 2, 3].map((i) => (
-            <motion.div
-              key={i}
-              animate={{ y: [0, -12, 0] }}
-              transition={{ duration: 1.2, delay: i * 0.15, repeat: Infinity }}
-              className="w-2 h-8 bg-gradient-to-t from-primary to-primary/50 rounded-full"
-            />
-          ))}
+      <div className="h-full flex flex-col items-center justify-center p-12 space-y-8 relative">
+        {/* Faded quote background */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center opacity-20 pointer-events-none">
+          <p className="text-xl font-light text-white/40 text-center max-w-md italic">
+            "{randomQuote}"
+          </p>
         </div>
-        <p className="text-neutral-400 text-sm animate-pulse">Analyzing your brilliance...</p>
+
+        {/* Progress bar foreground */}
+        <motion.div
+          className="w-64 relative z-10"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+        >
+          {/* Progress bar background */}
+          <div className="bg-neutral-800/50 border border-white/10 rounded-full h-2 overflow-hidden">
+            {/* Animated progress fill */}
+            <motion.div
+              animate={{ width: '100%' }}
+              transition={{ duration: 3, ease: 'easeInOut' }}
+              className="h-full bg-gradient-to-r from-primary via-primary/80 to-primary rounded-full"
+            />
+          </div>
+
+          {/* Percentage text */}
+          <motion.div
+            className="text-center mt-4"
+            animate={{ opacity: [0.6, 1, 0.6] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          >
+            <motion.span
+              className="text-2xl font-bold text-primary"
+              animate={{ x: [0, 2, 0] }}
+              transition={{ duration: 0.6, repeat: Infinity }}
+            >
+              100%
+            </motion.span>
+          </motion.div>
+        </motion.div>
+
+        <p className="text-neutral-400 text-sm animate-pulse relative z-10">Analyzing your brilliance...</p>
       </div>
     );
   }
@@ -78,7 +107,7 @@ export function FeedbackDisplay({ response, isProcessing, error }: FeedbackDispl
           initial={{ y: 10, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-center space-y-3 max-w-md"
+          className="text-center space-y-3 max-w-md opacity-100"
         >
           <p className="text-2xl font-light text-white leading-relaxed italic">
             "{randomQuote}"
