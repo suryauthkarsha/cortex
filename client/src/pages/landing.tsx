@@ -78,7 +78,7 @@ const LandingPage = () => {
       {/* Navigation */}
       <nav className="fixed top-0 w-full z-50 bg-black border-b border-yellow-600/20">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="text-3xl font-black text-yellow-500 uppercase tracking-wider" style={{ fontFamily: 'Space Mono, monospace', letterSpacing: '0.15em' }}>CORTEX</div>
+          <div className="text-3xl font-black text-yellow-500 uppercase tracking-widest" style={{ fontFamily: 'DM Sans, sans-serif', letterSpacing: '0.12em', fontWeight: 700 }}>CORTEX</div>
           <div className="flex items-center gap-8">
             <Link href="/app">
               <button className="px-6 py-2 rounded-lg border border-yellow-600/40 hover:border-yellow-500 transition text-sm font-medium text-yellow-600 hover:text-yellow-500">
