@@ -10,16 +10,21 @@ interface FeedbackDisplayProps {
 }
 
 const MOTIVATIONAL_QUOTES = [
-  "Every expert was once a beginner.",
-  "The only way to do great work is to love what you do.",
-  "Learning is not attainment, it is a journey.",
-  "Success is the sum of small efforts repeated day in and day out.",
-  "Your education is a dress rehearsal for a life that is yours to lead.",
-  "The capacity to learn is a gift; the ability to learn is a skill; the willingness to learn is a choice.",
-  "In learning you will teach, and in teaching you will learn.",
-  "Knowledge is power, but enthusiasm pulls the switch.",
-  "Don't watch the clock; do what it does. Keep going.",
-  "The beautiful thing about learning is that no one can take it away from you."
+  "What would your future self think if he saw you right now, making excuses?",
+  "You made a promise to yourself. Are you keeping it, or are you lying?",
+  "The grind doesn't stop. Your competition isn't studying—are you?",
+  "Comfort is the death of greatness. Push through the pain.",
+  "You want it? Then act like you want it. Stop talking, start suffering.",
+  "Every day you don't improve is a day someone else is beating you.",
+  "Arrogance is a luxury you can't afford. Dominate through relentless effort.",
+  "You're not tired. You're just mentally weak. Break through it.",
+  "The world doesn't care about your excuses. It cares about results.",
+  "Stay hard. The moment you get comfortable is the moment you start losing.",
+  "Callus your mind. Embrace the struggle. That's where champions are made.",
+  "Your potential is a lie if you're not willing to bleed for it.",
+  "Forget motivation. Build discipline and never stop grinding.",
+  "The pain you feel today will be the strength you feel tomorrow.",
+  "You're gonna die. Make sure you earned it on the way."
 ];
 
 export function FeedbackDisplay({ response, isProcessing, error }: FeedbackDisplayProps) {
