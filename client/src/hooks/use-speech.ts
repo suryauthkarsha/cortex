@@ -78,11 +78,10 @@ export function useSpeech() {
   }, [isListening]);
 
   const addPausesToText = (text: string): string => {
-    // Add natural pauses for energetic friend vibe
+    // Add subtle, natural pauses
     return text
-      .replace(/([.!?])\s+/g, '$1 ... ')
-      .replace(/,\s+/g, ', ... ')
-      .replace(/\b(and|but|like|so|because|actually)\b/gi, '... $1 ...')
+      .replace(/([.!?])\s+/g, '$1 ') // Natural pause after sentences
+      .replace(/,\s+/g, ', ') // Slight pause after commas
       .trim();
   };
 
@@ -99,15 +98,28 @@ export function useSpeech() {
       const utterance = new SpeechSynthesisUtterance(textWithPauses);
       const voices = synthRef.current.getVoices();
       
-      // Prefer American English female voice for energetic friend vibe
-      const americanVoice = voices.find(v => 
-        v.lang?.startsWith('en-US') && v.name?.toLowerCase().includes('female')
-      ) || voices.find(v => v.lang?.startsWith('en-US')) || voices[0];
+      // Use best available voice - prefer Google voices if available
+      let selectedVoice = null;
       
-      if (americanVoice) utterance.voice = americanVoice;
+      // Try to find Google voices first (more natural)
+      selectedVoice = voices.find(v => v.name?.includes('Google'));
       
-      utterance.pitch = 1.1; // Slightly higher for energetic tone
-      utterance.rate = 0.9; // Clear, deliberate speech
+      // Fall back to American English female
+      if (!selectedVoice) {
+        selectedVoice = voices.find(v => 
+          v.lang?.startsWith('en-US') && v.name?.toLowerCase().includes('female')
+        );
+      }
+      
+      // Final fallback to any US voice
+      if (!selectedVoice) {
+        selectedVoice = voices.find(v => v.lang?.startsWith('en-US')) || voices[0];
+      }
+      
+      if (selectedVoice) utterance.voice = selectedVoice;
+      
+      utterance.pitch = 1.0; // Natural pitch
+      utterance.rate = 0.85; // Conversational speed - slower for clarity but natural
       utterance.volume = 1.0;
       
       utterance.onstart = () => setIsSpeaking(true);
