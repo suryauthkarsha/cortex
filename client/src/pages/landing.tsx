@@ -86,16 +86,16 @@ const LandingPage = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 px-6 min-h-screen flex flex-col items-center justify-center overflow-hidden">
-        {/* Background Image */}
-        <div className="absolute inset-0 z-0">
-          <img 
-            src="https://i.ibb.co/M5ST5KP7/Gemini-Generated-Image-m5n9jhm5n9jhm5n9.png" 
-            alt="Hero Background" 
-            className="w-full h-full object-cover opacity-30"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-black/80" />
-        </div>
+      <section 
+        className="relative pt-32 pb-20 px-6 min-h-screen flex flex-col items-center justify-center overflow-hidden"
+        style={{
+          backgroundImage: 'url(https://i.ibb.co/M5ST5KP7/Gemini-Generated-Image-m5n9jhm5n9jhm5n9.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-black/80 z-0" />
 
         <div className="max-w-5xl mx-auto relative z-10">
           {/* Badge */}
@@ -107,10 +107,20 @@ const LandingPage = () => {
 
           {/* Main Heading */}
           <h1 className="text-7xl md:text-8xl font-black text-center leading-tight mb-6">
-            <span className="bg-gradient-to-r from-gray-300 via-black to-gray-700 bg-clip-text text-transparent">
+            <span style={{
+              backgroundImage: 'linear-gradient(to-bottom, #d1d5db, #111827, #374151)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}>
               F*CK BAD
             </span>{" "}
-            <span className="bg-gradient-to-r from-yellow-300 via-yellow-500 to-amber-600 bg-clip-text text-transparent">
+            <span style={{
+              backgroundImage: 'linear-gradient(to-bottom, #fde047, #eab308, #b45309)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}>
               GRADES
             </span>
           </h1>
