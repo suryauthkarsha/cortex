@@ -126,16 +126,22 @@ const LandingPage = () => {
           </motion.div>
 
           {/* Main Heading */}
-          <h1 className="text-7xl md:text-8xl text-center leading-tight mb-6" style={{ fontFamily: 'Times New Roman, serif', fontWeight: 500 }}>
+          <h1 className="text-7xl md:text-8xl text-center leading-tight mb-6" style={{ fontFamily: 'Times New Roman, serif', fontWeight: 700 }}>
             <span style={{
-              color: '#e5e7eb',
+              backgroundImage: 'linear-gradient(to-bottom, #ffffff 0%, #e5e7eb 35%, #cbd5e1 70%, #a0a0a0 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
               textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)',
               letterSpacing: '0.02em',
             }}>
               F*ck Bad
             </span>{" "}
             <span style={{
-              color: '#fbbf24',
+              backgroundImage: 'linear-gradient(to-bottom, #fef3c7 0%, #fde047 35%, #f59e0b 65%, #d97706 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
               textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)',
               letterSpacing: '0.02em',
             }}>
