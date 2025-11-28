@@ -173,18 +173,13 @@ export default function Home() {
       
       {/* Header & Nav */}
       <header className="relative z-20 px-8 py-6">
-        <div className="flex justify-between items-start gap-8 mb-6">
+        <div className="flex justify-between items-center gap-8 mb-6">
           {/* Left: Logo */}
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
               <Brain className="w-5 h-5 text-black" />
             </div>
             <span className="text-xl font-bold tracking-tight">Study<span className="opacity-50">Sync</span></span>
-          </div>
-
-          {/* Center: Clock */}
-          <div className="flex-1 flex justify-center">
-            <RealtimeClock />
           </div>
 
           {/* Right: Controls */}
