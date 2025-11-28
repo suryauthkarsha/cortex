@@ -299,12 +299,12 @@ export default function Home() {
                         onClick={handleVoiceInteraction}
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        className={`w-48 h-48 rounded-full flex items-center justify-center transition-all duration-500 relative ${
+                        className={`w-48 h-48 rounded-full flex items-center justify-center transition-all duration-500 relative backdrop-blur-sm border border-white/20 ${
                           isListening 
-                            ? 'bg-red-500 shadow-[0_0_100px_rgba(239,68,68,0.4)]' 
+                            ? 'bg-red-500/80 shadow-[0_0_100px_rgba(239,68,68,0.4)]' 
                             : mode === 'tutor' 
-                               ? 'bg-primary text-black shadow-[0_0_60px_rgba(255,215,0,0.2)]' 
-                               : 'bg-white text-black shadow-[0_0_60px_rgba(255,255,255,0.1)]'
+                               ? 'bg-primary/50 text-black shadow-[0_0_60px_rgba(255,215,0,0.2)]' 
+                               : 'bg-white/30 text-black shadow-[0_0_60px_rgba(255,255,255,0.1)]'
                         }`}
                       >
                          {isListening ? (

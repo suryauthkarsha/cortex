@@ -104,7 +104,7 @@ export function PomodoroTimer() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
-            className="bg-neutral-800/30 border border-white/10 backdrop-blur-sm rounded-lg p-2 mt-1"
+            className="fixed bottom-24 left-1/2 -translate-x-1/2 bg-neutral-800/50 border border-white/10 backdrop-blur-md rounded-lg p-2 z-50"
           >
             <div className="flex items-end gap-2">
               <div className="flex-1">
