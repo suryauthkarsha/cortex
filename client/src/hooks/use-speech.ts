@@ -78,11 +78,11 @@ export function useSpeech() {
   }, [isListening]);
 
   const addPausesToText = (text: string): string => {
-    // Add natural pauses after sentences and before key words
+    // Add natural pauses for energetic friend vibe
     return text
       .replace(/([.!?])\s+/g, '$1 ... ')
       .replace(/,\s+/g, ', ... ')
-      .replace(/\b(but|however|also|furthermore|additionally)\b/gi, '... $1 ...')
+      .replace(/\b(and|but|like|so|because|actually)\b/gi, '... $1 ...')
       .trim();
   };
 
@@ -99,13 +99,15 @@ export function useSpeech() {
       const utterance = new SpeechSynthesisUtterance(textWithPauses);
       const voices = synthRef.current.getVoices();
       
-      // Use default voice if available
-      if (voices.length > 0) {
-        utterance.voice = voices[0];
-      }
+      // Prefer American English female voice for energetic friend vibe
+      const americanVoice = voices.find(v => 
+        v.lang?.startsWith('en-US') && v.name?.toLowerCase().includes('female')
+      ) || voices.find(v => v.lang?.startsWith('en-US')) || voices[0];
       
-      utterance.pitch = 1.0;
-      utterance.rate = 0.95; // Slightly slower for natural flow
+      if (americanVoice) utterance.voice = americanVoice;
+      
+      utterance.pitch = 1.1; // Slightly higher for energetic tone
+      utterance.rate = 0.9; // Clear, deliberate speech
       utterance.volume = 1.0;
       
       utterance.onstart = () => setIsSpeaking(true);

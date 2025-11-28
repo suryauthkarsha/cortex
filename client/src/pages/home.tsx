@@ -76,10 +76,8 @@ export default function Home() {
   };
 
   const handleTutorChat = async (currentTranscript: string) => {
-    if (currentTranscript.trim().length < 3) {
-      setError("Say something longer, bestie!");
-      return;
-    }
+    if (!currentTranscript.trim()) return;
+    
     setIsProcessing(true);
     setError(null);
     try {
@@ -101,13 +99,12 @@ export default function Home() {
       if (mode === 'tutor') {
         // Capture current transcript before state updates
         const currentText = transcript;
+        // Auto-send to tutor immediately after stopping
         setTimeout(() => {
-          if (currentText.trim().length >= 3) {
+          if (currentText.trim().length >= 2) {
             handleTutorChat(currentText);
-          } else {
-            setError("Say something longer, bestie!");
           }
-        }, 100); 
+        }, 200); 
       }
     } else {
       toggleListening();
