@@ -6,7 +6,7 @@ import { analyzeExplanation, generateQuiz, askTutor, type QuizQuestion, type Gem
 import { QuizModal } from '@/components/modules/quiz-modal';
 import { FeedbackDisplay } from '@/components/modules/feedback-display';
 import { RealtimeClock } from '@/components/modules/realtime-clock';
-import { PomodoroTimer } from '@/components/modules/pomodoro-timer';
+import { PomodoroTimerHeader } from '@/components/modules/pomodoro-timer-header';
 import { Mic, Square, Play, VolumeX, Sparkles, Upload, X, Video, Image as ImageIcon, MessageCircle, GraduationCap, StopCircle, Brain, ArrowLeft } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -200,6 +200,7 @@ export default function Home() {
 
           {/* Right: Controls */}
           <div className="flex items-center gap-4">
+            <PomodoroTimerHeader />
             {isSpeaking && (
               <button onClick={stopSpeaking} className="bg-neutral-800 rounded-full p-3 text-white hover:bg-neutral-700 transition-colors">
                 <VolumeX className="w-5 h-5" />
@@ -455,13 +456,6 @@ export default function Home() {
                       {isProcessing ? <Sparkles className="w-5 h-5 inline-block animate-spin mr-2" /> : '✨ Ask'}
                     </motion.button>
                   )}
-               </div>
-             )}
-
-             {/* Pomodoro Timer - Bottom of Results Panel */}
-             {(mode === 'check' || mode === 'tutor') && (
-               <div className="border-t border-white/5 pt-4 mt-4">
-                 <PomodoroTimer />
                </div>
              )}
            </div>
