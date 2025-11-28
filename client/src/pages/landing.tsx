@@ -1,5 +1,6 @@
 import { ArrowRight, CheckCircle2, X } from "lucide-react";
 import { Link } from "wouter";
+import heroImage from "@assets/stock_images/futuristic_abstract__6161ebda.jpg";
 
 const LandingPage = () => {
   const features = [
@@ -86,8 +87,18 @@ const LandingPage = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 px-6">
-        <div className="max-w-5xl mx-auto">
+      <section className="relative pt-32 pb-20 px-6 min-h-screen flex flex-col items-center justify-center overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0 z-0">
+          <img 
+            src={heroImage} 
+            alt="Hero Background" 
+            className="w-full h-full object-cover opacity-30"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-black/80" />
+        </div>
+
+        <div className="max-w-5xl mx-auto relative z-10">
           {/* Badge */}
           <div className="text-center mb-8">
             <div className="inline-block px-4 py-2 rounded-full border border-yellow-600/40 text-yellow-600 text-sm font-medium">
@@ -96,9 +107,11 @@ const LandingPage = () => {
           </div>
 
           {/* Main Heading */}
-          <h1 className="text-7xl md:text-8xl font-black text-center leading-tight mb-6 text-white">
-            F*CK BAD{" "}
-            <span className="text-yellow-500">
+          <h1 className="text-7xl md:text-8xl font-black text-center leading-tight mb-6">
+            <span className="bg-gradient-to-r from-gray-300 via-black to-gray-700 bg-clip-text text-transparent">
+              F*CK BAD
+            </span>{" "}
+            <span className="bg-gradient-to-r from-yellow-300 via-yellow-500 to-amber-600 bg-clip-text text-transparent">
               GRADES
             </span>
           </h1>
