@@ -261,14 +261,14 @@ export default function Home() {
              {/* Central Visualizer */}
              <div className="relative flex-1 flex flex-col items-center justify-center min-h-[400px]">
                 
-                {/* Camera Feed - Top of Stage (not behind mic) */}
+                {/* Camera Feed - Glass overlay behind mic */}
                 {isSelfieMode && (
                   <motion.div 
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="absolute top-0 left-0 right-0 h-32 rounded-[2rem] overflow-hidden bg-neutral-900/20 border border-white/5 mb-4"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="absolute inset-0 rounded-[3rem] overflow-hidden backdrop-blur-sm z-10"
                   >
-                    <video ref={videoRef} autoPlay playsInline muted className="w-full h-full object-cover opacity-60" />
+                    <video ref={videoRef} autoPlay playsInline muted className="w-full h-full object-cover opacity-20" />
                   </motion.div>
                 )}
 

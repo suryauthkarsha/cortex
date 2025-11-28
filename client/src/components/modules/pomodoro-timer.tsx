@@ -101,14 +101,14 @@ export function PomodoroTimer() {
       <AnimatePresence>
         {showSettings && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="bg-neutral-800/50 border border-white/10 rounded-lg p-3 space-y-3"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            className="bg-neutral-800/30 border border-white/10 backdrop-blur-sm rounded-lg p-2 mt-1"
           >
-            <div className="grid grid-cols-2 gap-2">
-              <div>
-                <label className="text-[9px] uppercase tracking-widest text-neutral-400 block mb-1">
+            <div className="flex items-end gap-2">
+              <div className="flex-1">
+                <label className="text-[8px] uppercase tracking-widest text-neutral-500 block mb-0.5">
                   Focus
                 </label>
                 <input
@@ -117,12 +117,12 @@ export function PomodoroTimer() {
                   max="60"
                   value={tempWorkMinutes}
                   onChange={(e) => setTempWorkMinutes(Math.max(1, parseInt(e.target.value) || 1))}
-                  className="w-full bg-neutral-900/50 border border-white/10 rounded px-2 py-1 text-white text-center text-xs focus:outline-none focus:border-white/30"
+                  className="w-full bg-neutral-900/50 border border-white/10 rounded px-1.5 py-0.5 text-white text-center text-xs focus:outline-none focus:border-white/30"
                 />
               </div>
 
-              <div>
-                <label className="text-[9px] uppercase tracking-widest text-neutral-400 block mb-1">
+              <div className="flex-1">
+                <label className="text-[8px] uppercase tracking-widest text-neutral-500 block mb-0.5">
                   Break
                 </label>
                 <input
@@ -131,19 +131,19 @@ export function PomodoroTimer() {
                   max="30"
                   value={tempBreakMinutes}
                   onChange={(e) => setTempBreakMinutes(Math.max(1, parseInt(e.target.value) || 1))}
-                  className="w-full bg-neutral-900/50 border border-white/10 rounded px-2 py-1 text-white text-center text-xs focus:outline-none focus:border-white/30"
+                  className="w-full bg-neutral-900/50 border border-white/10 rounded px-1.5 py-0.5 text-white text-center text-xs focus:outline-none focus:border-white/30"
                 />
               </div>
-            </div>
 
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={handleSaveSettings}
-              className="w-full bg-primary text-black font-bold py-1 rounded text-xs"
-            >
-              Save
-            </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={handleSaveSettings}
+                className="bg-primary text-black font-bold px-2 py-0.5 rounded text-xs whitespace-nowrap"
+              >
+                Save
+              </motion.button>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
