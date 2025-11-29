@@ -76,14 +76,21 @@ const LandingPage = () => {
   return (
     <div className="min-h-screen bg-black text-white overflow-hidden">
       {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 border-b border-yellow-600/20" style={{
-        background: 'linear-gradient(to-bottom, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.6) 50%, rgba(0, 0, 0, 0) 100%)',
+      <nav className="fixed top-0 w-full z-50 border-b border-white/10" style={{
+        background: 'rgba(20, 20, 20, 0.6)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
+        boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 8px 32px rgba(0, 0, 0, 0.3)',
       }}>
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="text-3xl font-black text-yellow-500 uppercase tracking-widest" style={{ fontFamily: 'DM Sans, sans-serif', letterSpacing: '0.12em', fontWeight: 700 }}>CORTEX</div>
           <div className="flex items-center gap-8">
             <Link href="/app">
-              <button className="px-6 py-2 rounded-lg border border-yellow-600/40 hover:border-yellow-500 transition text-sm font-medium text-yellow-600 hover:text-yellow-500">
+              <button className="px-6 py-2 rounded-lg border border-white/20 hover:border-yellow-500 hover:bg-yellow-500/10 transition text-sm font-medium text-neutral-300 hover:text-yellow-400" style={{
+                background: 'rgba(255, 255, 255, 0.05)',
+                backdropFilter: 'blur(10px)',
+                WebkitBackdropFilter: 'blur(10px)',
+              }}>
                 App
               </button>
             </Link>
