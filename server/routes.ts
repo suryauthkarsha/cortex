@@ -151,13 +151,25 @@ Return ONLY valid JSON with this structure:
       }
 
       const textResponse = data.candidates[0].content.parts[0].text;
-      const jsonString = textResponse.replace(/```json/g, '').replace(/```/g, '').trim();
+      console.log("Raw Gemini response:", textResponse.substring(0, 200));
+      
+      let jsonString = textResponse.replace(/```json/g, '').replace(/```/g, '').trim();
+      
+      // Try to extract JSON if it's embedded in text
+      const jsonMatch = jsonString.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        jsonString = jsonMatch[0];
+      }
+      
+      console.log("Parsed JSON string:", jsonString.substring(0, 200));
+      
       const infographicData = JSON.parse(jsonString);
 
       res.json(infographicData);
     } catch (err: any) {
-      console.error("Infographic endpoint error:", err);
-      res.status(500).json({ error: err.message || "Infographic generation failed" });
+      console.error("Infographic endpoint error:", err.message);
+      console.error("Error stack:", err.stack);
+      res.status(500).json({ error: err.message || "Failed to parse infographic data" });
     }
   });
 
