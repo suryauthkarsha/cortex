@@ -101,9 +101,10 @@ const LandingPage = () => {
           <div className="text-3xl font-black text-yellow-500 uppercase tracking-widest" style={{ fontFamily: 'DM Sans, sans-serif', letterSpacing: '0.12em', fontWeight: 700 }}>CORTEX</div>
           <div className="flex items-center gap-8">
             <Link href="/app">
-              <button className="px-6 py-2 rounded-full font-medium text-white text-sm hover:shadow-lg transition" style={{
+              <button className="px-6 py-2 font-medium text-white text-sm hover:shadow-lg transition" style={{
                 background: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)',
-                boxShadow: '0 2px 6px rgba(251, 191, 36, 0.16)',
+                borderRadius: '4px',
+                boxShadow: '0 1px 3px rgba(251, 191, 36, 0.08)',
               }}>
                 App
               </button>
