@@ -51,7 +51,29 @@ export function PomodoroTimerHeader() {
   return (
     <div className="relative">
       {/* Timer Display - Sleek Header Version */}
-      <div className="flex items-center gap-3 bg-neutral-900/40 border border-white/10 rounded-full px-4 py-2 backdrop-blur-xl">
+      <div className="flex items-center gap-4 bg-neutral-900/40 border border-white/10 rounded-full px-4 py-2 backdrop-blur-xl">
+        {/* Hamster Wheel - Only show when timer is running */}
+        {isRunning && (
+          <div className="wheel-and-hamster" style={{ '--dur': '1s' } as React.CSSProperties}>
+            <div className="wheel"></div>
+            <div className="hamster">
+              <div className="hamster__body">
+                <div className="hamster__head">
+                  <div className="hamster__ear"></div>
+                  <div className="hamster__eye"></div>
+                  <div className="hamster__nose"></div>
+                </div>
+                <div className="hamster__limb hamster__limb--fr"></div>
+                <div className="hamster__limb hamster__limb--fl"></div>
+                <div className="hamster__limb hamster__limb--br"></div>
+                <div className="hamster__limb hamster__limb--bl"></div>
+                <div className="hamster__tail"></div>
+              </div>
+            </div>
+            <div className="spoke"></div>
+          </div>
+        )}
+
         {/* Time Display */}
         <div className={`font-mono text-lg font-bold tracking-wider transition-colors ${
           isBreak ? 'text-green-400' : 'text-primary'
