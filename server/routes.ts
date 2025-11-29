@@ -63,41 +63,108 @@ export async function registerRoutes(
     }
   });
 
-  // Infographic Generation Endpoint
-  app.post("/api/generate-infographic", (req, res) => {
-    res.json({
-      title: "Study Guide",
-      subtitle: "Key Learning Concepts",
-      colorScheme: ["#FBBF24", "#3B82F6", "#EC4899"],
-      concepts: [
-        {
-          title: "Main Topic",
-          icon: "brain",
-          description: "Primary subject from your study material",
-          color: "#FBBF24"
-        },
-        {
-          title: "Key Concepts",
-          icon: "lightbulb",
-          description: "Important ideas and core principles to understand",
-          color: "#3B82F6"
-        },
-        {
-          title: "Learning Focus",
-          icon: "sparkles",
-          description: "Areas to emphasize and practice",
-          color: "#EC4899"
+  // Infographic Generation Endpoint - Use Gemini like quiz
+  app.post("/api/generate-infographic", async (req, res) => {
+    try {
+      const { topic, content, images = [] } = req.body;
+      if (images.length === 0) {
+        return res.status(400).json({ error: "Upload study material first" });
+      }
+
+      const apiKey = process.env.GEMINI_API_KEY;
+      if (!apiKey) {
+        return res.status(500).json({ error: "API key not configured" });
+      }
+
+      // Build request with images
+      const imageParts = images.map(img => ({
+        inlineData: {
+          mimeType: "image/jpeg",
+          data: img.split(',')[1]
         }
-      ],
-      keyStats: [
+      }));
+
+      const prompt = `Analyze the study material and create study notes.
+      
+Return valid JSON ONLY (no markdown):
+{
+  "title": "Study Notes",
+  "subtitle": "Key Concepts",
+  "colorScheme": ["#FBBF24", "#3B82F6", "#EC4899"],
+  "concepts": [
+    {"title": "Concept 1", "icon": "brain", "description": "Description", "color": "#FBBF24"},
+    {"title": "Concept 2", "icon": "lightbulb", "description": "Description", "color": "#3B82F6"},
+    {"title": "Concept 3", "icon": "sparkles", "description": "Description", "color": "#EC4899"}
+  ],
+  "keyStats": [{"label": "Key", "value": "Info", "icon": "check-circle"}],
+  "summary": "Study guide summary"
+}`;
+
+      const response = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`,
         {
-          label: "Study Method",
-          value: "Active Learning",
-          icon: "check-circle"
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents: [{
+              parts: [
+                ...imageParts,
+                { text: prompt }
+              ]
+            }]
+          })
         }
-      ],
-      summary: "Review these key concepts regularly. Use active recall and spaced repetition for better retention of the material."
-    });
+      );
+
+      const data = await response.json();
+
+      if (data.error) {
+        throw new Error(data.error.message || "API error");
+      }
+
+      const textResponse = data.candidates[0].content.parts[0].text;
+      const jsonMatch = textResponse.match(/\{[\s\S]*\}/);
+      const jsonString = jsonMatch ? jsonMatch[0] : textResponse;
+      
+      const infographicData = JSON.parse(jsonString);
+      res.json(infographicData);
+    } catch (err: any) {
+      console.error("Infographic error:", err.message);
+      // Return fallback
+      res.json({
+        title: "Study Guide",
+        subtitle: "Key Learning Concepts",
+        colorScheme: ["#FBBF24", "#3B82F6", "#EC4899"],
+        concepts: [
+          {
+            title: "Main Topic",
+            icon: "brain",
+            description: "Primary subject from your study material",
+            color: "#FBBF24"
+          },
+          {
+            title: "Key Concepts",
+            icon: "lightbulb",
+            description: "Important ideas and core principles to understand",
+            color: "#3B82F6"
+          },
+          {
+            title: "Learning Focus",
+            icon: "sparkles",
+            description: "Areas to emphasize and practice",
+            color: "#EC4899"
+          }
+        ],
+        keyStats: [
+          {
+            label: "Study Method",
+            value: "Active Learning",
+            icon: "check-circle"
+          }
+        ],
+        summary: "Review these key concepts regularly for better retention."
+      });
+    }
   });
 
   return httpServer;
