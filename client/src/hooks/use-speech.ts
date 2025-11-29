@@ -121,57 +121,48 @@ export function useSpeech() {
   const speakText = useCallback((text: string) => {
     if (!text) return;
 
-    if (synthRef.current.speaking) {
-      synthRef.current.cancel();
-    }
-    
-    try {
-      const utterance = new SpeechSynthesisUtterance(text);
-      const voices = synthRef.current.getVoices();
-      
-      // Find a natural, human-sounding voice
-      let selectedVoice = null;
-      
-      // Try to find Google voices (usually sound best)
-      selectedVoice = voices.find(v => v.name?.includes('Google US English'));
-      
-      // Try for natural/premium quality voices
-      if (!selectedVoice) {
-        selectedVoice = voices.find(v => 
-          v.lang?.includes('en-US') && 
-          (v.name?.includes('Natural') || v.name?.includes('Premium') || v.name?.includes('Neural') || v.name?.includes('Samantha') || v.name?.includes('Victoria'))
-        );
-      }
-      
-      // Try any English voice
-      if (!selectedVoice) {
-        selectedVoice = voices.find(v => v.lang?.includes('en-US'));
-      }
-      
-      // Fallback to first available voice
-      if (!selectedVoice && voices.length > 0) {
-        selectedVoice = voices[0];
-      }
-      
-      if (selectedVoice) {
-        utterance.voice = selectedVoice;
-        console.log("Using voice:", selectedVoice.name);
-      }
-      
-      // Settings for natural human-like speech
-      utterance.pitch = 1.0;      // Normal pitch
-      utterance.rate = 0.9;       // Slightly slower for clarity
-      utterance.volume = 1.0;
-      
-      utterance.onstart = () => setIsSpeaking(true);
-      utterance.onend = () => setIsSpeaking(false);
-      utterance.onerror = () => setIsSpeaking(false);
-      
-      synthRef.current.speak(utterance);
-    } catch (e) {
-      console.warn("TTS error:", e);
-      setIsSpeaking(false);
-    }
+    setIsSpeaking(true);
+
+    // Use backend TTS endpoint
+    fetch('/api/tts', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text })
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.error) throw new Error(data.error);
+        
+        // Decode base64 audio and play
+        const binaryString = atob(data.audioContent);
+        const bytes = new Uint8Array(binaryString.length);
+        for (let i = 0; i < binaryString.length; i++) {
+          bytes[i] = binaryString.charCodeAt(i);
+        }
+        
+        const audioBlob = new Blob([bytes], { type: 'audio/mp3' });
+        const audioUrl = URL.createObjectURL(audioBlob);
+        const audio = new Audio(audioUrl);
+        
+        audio.onended = () => {
+          setIsSpeaking(false);
+          URL.revokeObjectURL(audioUrl);
+        };
+        audio.onerror = () => {
+          setIsSpeaking(false);
+          URL.revokeObjectURL(audioUrl);
+        };
+        
+        audio.play().catch(e => {
+          console.error("Playback error:", e);
+          setIsSpeaking(false);
+          URL.revokeObjectURL(audioUrl);
+        });
+      })
+      .catch(e => {
+        console.warn("TTS error:", e);
+        setIsSpeaking(false);
+      });
   }, []);
 
   const stopSpeaking = useCallback(() => {
