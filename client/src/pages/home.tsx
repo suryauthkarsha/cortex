@@ -179,7 +179,14 @@ export default function Home() {
             <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
               <Brain className="w-5 h-5 text-black" />
             </div>
-            <span className="text-xl font-bold tracking-tight" style={{ fontFamily: 'Times New Roman, serif' }}>Cortex</span>
+            <span className="text-xl font-bold tracking-tight" style={{
+              fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif',
+              background: 'linear-gradient(180deg, #FFFFFF 5%, #4a4a4a 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              color: 'transparent',
+            }}>Cortex</span>
           </div>
 
           {/* Center: Mode Switcher */}
