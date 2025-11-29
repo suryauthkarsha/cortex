@@ -568,7 +568,7 @@ export default function Home() {
                      initial={{ opacity: 0, y: 20 }}
                      animate={{ opacity: 1, y: 0 }}
                      transition={{ delay: 0.4 }}
-                     className="mt-10 pt-8 border-t border-yellow-400/30"
+                     className="mt-14 pt-6"
                    >
                      <h3 className="text-2xl font-bold text-yellow-400 mb-6 flex items-center gap-3">
                        <Sparkles className="w-6 h-6" />
