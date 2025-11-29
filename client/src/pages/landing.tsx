@@ -74,7 +74,20 @@ const LandingPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-black text-white overflow-hidden">
+    <div className="min-h-screen bg-black text-white overflow-hidden relative">
+      {/* Bottom Blur Overlay */}
+      <div style={{
+        position: 'fixed',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        height: '40vh',
+        background: 'linear-gradient(to-bottom, transparent 0%, rgba(0, 0, 0, 0.2) 30%, rgba(0, 0, 0, 0.5) 70%, rgba(0, 0, 0, 0.8) 100%)',
+        backdropFilter: 'blur(8px) brightness(0.9)',
+        WebkitBackdropFilter: 'blur(8px) brightness(0.9)',
+        pointerEvents: 'none',
+        zIndex: 40,
+      }} />
       {/* Navigation */}
       <nav className="fixed top-0 w-full z-50 border-b border-white/10" style={{
         background: 'rgba(20, 20, 20, 0.6)',
