@@ -476,7 +476,7 @@ export default function Home() {
                <button 
                  onClick={handleGenerateQuiz}
                  disabled={isQuizLoading || images.length === 0}
-                 className="flex-1 flex items-center justify-center gap-2 px-6 py-4 bg-white hover:bg-white/80 text-black rounded-full font-bold text-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+                 className="flex-1 flex items-center justify-center gap-2 px-6 py-4 bg-black hover:bg-black/80 text-yellow-400 rounded-full font-bold text-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg border border-yellow-400"
                  data-testid="button-quiz"
                >
                  <GraduationCap className="w-5 h-5" />
@@ -657,7 +657,7 @@ export default function Home() {
                       animate={{ opacity: 1, y: 0 }}
                       onClick={() => handleTutorChat(transcript)}
                       disabled={isProcessing}
-                      className="w-full bg-primary text-black px-8 py-4 rounded-full font-bold text-lg hover:scale-105 transition-transform shadow-xl disabled:opacity-50 flex items-center justify-center gap-3"
+                      className="w-full bg-black text-yellow-400 px-8 py-4 rounded-full font-bold text-lg hover:scale-105 transition-transform shadow-xl disabled:opacity-50 flex items-center justify-center gap-3 border border-yellow-400"
                       data-testid="button-ask-tutor"
                     >
                       {isProcessing ? <Sparkles className="w-5 h-5 animate-spin" /> : '✨ Ask Tutor'}

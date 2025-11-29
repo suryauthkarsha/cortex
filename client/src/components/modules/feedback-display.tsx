@@ -90,20 +90,20 @@ export function FeedbackDisplay({ response, isProcessing, error }: FeedbackDispl
       {/* Score Section - Interactive */}
       <motion.div 
         whileHover={{ scale: 1.02 }}
-        className="bg-neutral-900/50 rounded-[2rem] p-8 relative overflow-hidden cursor-default hover:border-primary/30 border border-transparent transition-colors"
+        className="bg-black border-2 border-yellow-400 rounded-[2rem] p-8 relative overflow-hidden cursor-default"
       >
-        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl pointer-events-none translate-x-1/3 -translate-y-1/3" />
+        <div className="absolute top-0 right-0 w-64 h-64 bg-yellow-400/5 rounded-full blur-3xl pointer-events-none translate-x-1/3 -translate-y-1/3" />
         
         <div className="relative z-10 flex flex-col items-center text-center gap-2">
-          <span className="text-neutral-500 text-sm font-bold uppercase tracking-widest">Score</span>
+          <span className="text-yellow-400 text-sm font-bold uppercase tracking-widest">Score</span>
           <motion.div 
             initial={{ scale: 0.8 }}
             animate={{ scale: 1 }}
             transition={{ type: 'spring', stiffness: 100 }}
-            className="text-[8rem] leading-none font-bold tracking-tighter text-white relative"
+            className="text-[8rem] leading-none font-bold tracking-tighter text-yellow-400 relative"
           >
             {response.score}
-            <span className="text-2xl text-neutral-600 absolute top-8 -right-8 font-normal">/100</span>
+            <span className="text-2xl text-neutral-500 absolute top-8 -right-8 font-normal">/100</span>
           </motion.div>
           <p className="text-xl text-neutral-300 mt-4 font-medium max-w-lg leading-relaxed">
             "{response.summary}"
