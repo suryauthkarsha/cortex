@@ -114,30 +114,61 @@ export function useSpeech() {
     }
     
     try {
-      const utterance = new SpeechSynthesisUtterance(textToSpeak);
-      const voices = synthRef.current.getVoices();
+      // Split text into chunks to avoid timeout (Web Speech API limit ~5-10 seconds)
+      const maxChunkLength = 200;
+      const chunks: string[] = [];
+      let currentChunk = '';
       
-      let selectedVoice = voices.find(v => v.name?.includes('Google US English'));
-      if (!selectedVoice) {
-        selectedVoice = voices.find(v => v.lang?.includes('en-US'));
+      const sentences = textToSpeak.split(/(?<=[.!?])\s+/);
+      for (const sentence of sentences) {
+        if ((currentChunk + sentence).length > maxChunkLength) {
+          if (currentChunk) chunks.push(currentChunk);
+          currentChunk = sentence;
+        } else {
+          currentChunk += (currentChunk ? ' ' : '') + sentence;
+        }
       }
-      if (!selectedVoice && voices.length > 0) {
-        selectedVoice = voices[0];
-      }
+      if (currentChunk) chunks.push(currentChunk);
       
-      if (selectedVoice) {
-        utterance.voice = selectedVoice;
-      }
+      let chunkIndex = 0;
       
-      utterance.pitch = 1.0;
-      utterance.rate = 0.9;
-      utterance.volume = 1.0;
+      const speakChunk = (index: number) => {
+        if (index >= chunks.length) {
+          setIsSpeaking(false);
+          return;
+        }
+        
+        const utterance = new SpeechSynthesisUtterance(chunks[index]);
+        const voices = synthRef.current.getVoices();
+        
+        let selectedVoice = voices.find(v => v.name?.includes('Google US English'));
+        if (!selectedVoice) {
+          selectedVoice = voices.find(v => v.lang?.includes('en-US'));
+        }
+        if (!selectedVoice && voices.length > 0) {
+          selectedVoice = voices[0];
+        }
+        
+        if (selectedVoice) {
+          utterance.voice = selectedVoice;
+        }
+        
+        utterance.pitch = 1.0;
+        utterance.rate = 1.0;
+        utterance.volume = 1.0;
+        
+        utterance.onstart = () => setIsSpeaking(true);
+        utterance.onend = () => speakChunk(index + 1);
+        utterance.onerror = () => {
+          console.warn("Speech chunk error, skipping to next");
+          speakChunk(index + 1);
+        };
+        
+        synthRef.current.speak(utterance);
+      };
       
-      utterance.onstart = () => setIsSpeaking(true);
-      utterance.onend = () => setIsSpeaking(false);
-      utterance.onerror = () => setIsSpeaking(false);
-      
-      synthRef.current.speak(utterance);
+      setIsSpeaking(true);
+      speakChunk(0);
     } catch (e) {
       console.error("Browser speech failed:", e);
       setIsSpeaking(false);

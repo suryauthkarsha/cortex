@@ -9,28 +9,7 @@ interface FeedbackDisplayProps {
   error: string | null;
 }
 
-const MOTIVATIONAL_QUOTES = [
-  "What would your future self think if he saw you right now, making excuses?",
-  "You made a promise to yourself. Are you keeping it, or are you lying?",
-  "The grind doesn't stop. Your competition isn't studying—are you?",
-  "Comfort is the death of greatness. Push through the pain.",
-  "You want it? Then act like you want it. Stop talking, start suffering.",
-  "Every day you don't improve is a day someone else is beating you.",
-  "Arrogance is a luxury you can't afford. Dominate through relentless effort.",
-  "You're not tired. You're just mentally weak. Break through it.",
-  "The world doesn't care about your excuses. It cares about results.",
-  "Stay hard. The moment you get comfortable is the moment you start losing.",
-  "Callus your mind. Embrace the struggle. That's where champions are made.",
-  "Your potential is a lie if you're not willing to bleed for it.",
-  "Forget motivation. Build discipline and never stop grinding.",
-  "The pain you feel today will be the strength you feel tomorrow.",
-  "You're gonna die. Make sure you earned it on the way."
-];
-
 export function FeedbackDisplay({ response, isProcessing, error }: FeedbackDisplayProps) {
-  const randomQuote = useMemo(() => {
-    return MOTIVATIONAL_QUOTES[Math.floor(Math.random() * MOTIVATIONAL_QUOTES.length)];
-  }, []);
 
   if (isProcessing) {
     return (
@@ -79,26 +58,16 @@ export function FeedbackDisplay({ response, isProcessing, error }: FeedbackDispl
           </div>
         </motion.div>
 
-        <motion.div
-          initial={{ y: 10, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-center space-y-3 max-w-md opacity-100"
-        >
-          <p className="text-2xl font-light text-white leading-relaxed italic">
-            "{randomQuote}"
-          </p>
-          <div className="flex justify-center gap-1 pt-2">
-            {[0, 1, 2].map((i) => (
-              <motion.div
-                key={i}
-                animate={{ opacity: [0.4, 1, 0.4] }}
-                transition={{ duration: 2, delay: i * 0.3, repeat: Infinity }}
-                className="w-1.5 h-1.5 bg-primary rounded-full"
-              />
-            ))}
-          </div>
-        </motion.div>
+        <div className="flex justify-center gap-1 pt-2">
+          {[0, 1, 2].map((i) => (
+            <motion.div
+              key={i}
+              animate={{ opacity: [0.4, 1, 0.4] }}
+              transition={{ duration: 2, delay: i * 0.3, repeat: Infinity }}
+              className="w-1.5 h-1.5 bg-primary rounded-full"
+            />
+          ))}
+        </div>
 
         <motion.p
           initial={{ opacity: 0 }}
