@@ -571,7 +571,7 @@ export default function Home() {
                        error={error}
                      />
                    </div>
-                   {viewState === 'results' && aiResponse && (
+                   {viewState === 'results' && (
                      <motion.div 
                        initial={{ opacity: 0, y: 10 }}
                        animate={{ opacity: 1, y: 0 }}
@@ -579,7 +579,7 @@ export default function Home() {
                      >
                        <button 
                          onClick={handleGenerateInfographic}
-                         disabled={isInfographicLoading}
+                         disabled={isInfographicLoading || !aiResponse}
                          className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-primary hover:bg-primary/80 text-black rounded-full font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                          data-testid="button-generate-notes"
                        >
