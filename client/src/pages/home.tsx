@@ -321,7 +321,7 @@ export default function Home() {
                       </motion.button>
                    </div>
 
-                   <div className="text-center space-y-4 relative z-20 w-full max-w-2xl">
+                   <div className="text-center space-y-2 relative z-20">
                      <h2 className="text-4xl font-bold text-white tracking-tight">
                        {isListening ? "Listening..." : mode === 'tutor' ? "Ask Gen Z Tutor" : "Explain Concept"}
                      </h2>
@@ -332,19 +332,9 @@ export default function Home() {
                            ? "Ask me anything, no cap." 
                            : "Tap to record your explanation."}
                      </p>
-                     
-                     {/* Text Input */}
-                     <textarea
-                       value={transcript}
-                       onChange={(e) => setTranscript(e.target.value)}
-                       placeholder={mode === 'check' ? "Type or speak your explanation..." : "Type or speak your question..."}
-                       className="w-full bg-neutral-800/50 text-white text-sm rounded-2xl p-4 border border-white/10 focus:outline-none focus:border-primary/50 resize-none placeholder-neutral-500"
-                       rows={3}
-                     />
-
                      {transcript && (
-                       <p className="text-xs text-yellow-400 italic">
-                         {transcript.length} characters • Ready to {mode === 'check' ? 'analyze' : 'ask'}
+                       <p className="text-sm text-yellow-400 mt-4 italic">
+                         Recording captured • Click below to {mode === 'check' ? 'analyze' : 'ask'}
                        </p>
                      )}
                    </div>
