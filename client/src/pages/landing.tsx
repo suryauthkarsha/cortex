@@ -310,25 +310,26 @@ const LandingPage = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-black/50 border-t border-gray-700/50 py-24 px-6">
+      <footer className="bg-black/50 border-t border-gray-700/50 py-32 px-6">
         <div className="max-w-6xl mx-auto">
           {/* CORTEX Logo Text */}
-          <div className="text-center mb-12">
-            <h3 className="text-7xl md:text-8xl font-bold" style={{
+          <div className="text-center mb-16">
+            <h3 className="text-9xl md:text-10xl font-bold leading-tight" style={{
               fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif',
-              background: 'linear-gradient(180deg, #FFFFFF 10%, #5a5a5a 100%)',
+              background: 'linear-gradient(180deg, #FFFFFF 5%, #4a4a4a 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
               color: 'transparent',
-              letterSpacing: '-0.02em',
+              letterSpacing: '-0.04em',
+              marginBottom: '3rem',
             }}>
               CORTEX
             </h3>
           </div>
 
           {/* Separator Line */}
-          <div className="border-t border-gray-600/40 my-8" />
+          <div className="border-t border-gray-600/40 my-12" />
 
           {/* Footer Navigation */}
           <div className="flex items-center justify-between text-neutral-400 text-sm">
