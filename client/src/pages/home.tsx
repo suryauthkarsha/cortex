@@ -358,23 +358,25 @@ export default function Home() {
                       </motion.button>
                    </div>
 
-                   <div className="text-center space-y-2 relative z-20 mt-4">
-                     <h2 className="text-3xl font-bold text-white tracking-tight letter-spacing-[0.5px]">
-                       {isListening ? "Listening..." : mode === 'tutor' ? "Ask Gen Z Tutor" : "Explain Concept"}
-                     </h2>
-                     <p className="text-neutral-400 text-sm font-light">
-                       {isListening 
-                         ? "I'm all ears." 
-                         : mode === 'tutor' 
-                           ? "Ask me anything, no cap." 
-                           : "Tap to record your explanation."}
-                     </p>
-                     {transcript && (
-                       <p className="text-sm text-yellow-400 mt-4 italic">
-                         Recording captured • Click below to {mode === 'check' ? 'analyze' : 'ask'}
+                   {viewState !== 'analyzing' && (
+                     <div className="text-center space-y-2 relative z-20 mt-4">
+                       <h2 className="text-3xl font-bold text-white tracking-tight letter-spacing-[0.5px]">
+                         {isListening ? "Listening..." : mode === 'tutor' ? "Ask Gen Z Tutor" : "Explain Concept"}
+                       </h2>
+                       <p className="text-neutral-400 text-sm font-light">
+                         {isListening 
+                           ? "I'm all ears." 
+                           : mode === 'tutor' 
+                             ? "Ask me anything, no cap." 
+                             : "Tap to record your explanation."}
                        </p>
-                     )}
-                   </div>
+                       {transcript && (
+                         <p className="text-sm text-yellow-400 mt-4 italic">
+                           Recording captured • Click below to {mode === 'check' ? 'analyze' : 'ask'}
+                         </p>
+                       )}
+                     </div>
+                   )}
 
                    {/* Analyze/Ask Buttons */}
                    {transcript && transcript.trim().length > 0 && (
