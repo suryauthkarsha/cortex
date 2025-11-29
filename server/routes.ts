@@ -67,28 +67,24 @@ export async function registerRoutes(
   app.post("/api/generate-infographic", async (req, res) => {
     try {
       const { topic, content, images = [] } = req.body;
-      if (!topic || !content) {
-        return res.status(400).json({ error: "Topic and content are required" });
+      if (images.length === 0) {
+        return res.status(400).json({ error: "Upload study material first" });
       }
 
       const apiKey = 'AIzaSyDIqg3VvdiMz7N1aJi82Ju0_X93-7RFLkI'; // Gemini API key
 
-      const prompt = `You are a brilliant study infographic designer. Analyze this study material and respond with ONLY a valid JSON object (no markdown, no code blocks, no extra text).
-
-Topic: ${topic}
-Content: ${content}
-
-Return this exact JSON structure:
-{"title":"Study Guide","subtitle":"Key Learning Points","colorScheme":["#FBBF24","#3B82F6","#EC4899"],"concepts":[{"title":"Concept 1","icon":"brain","description":"First key concept from the material","color":"#FBBF24"},{"title":"Concept 2","icon":"lightbulb","description":"Second key concept from the material","color":"#3B82F6"},{"title":"Concept 3","icon":"sparkles","description":"Third key concept from the material","color":"#EC4899"}],"keyStats":[{"label":"Key Point","value":"Important","icon":"check-circle"}],"summary":"A concise summary of the main learning objectives."}`;
-
-
-      // Build request with images if available
+      // Build request with images
       const imageParts = images.map(img => ({
         inlineData: {
           mimeType: "image/jpeg",
           data: img.split(',')[1]
         }
       }));
+
+      const prompt = `Analyze the study material in this image and create an infographic summary.
+      
+      Return ONLY valid JSON (no markdown):
+      {"title":"Study Guide","subtitle":"Key Learning","colorScheme":["#FBBF24","#3B82F6","#EC4899"],"concepts":[{"title":"Main Concept","icon":"brain","description":"Primary topic from the material","color":"#FBBF24"},{"title":"Key Point","icon":"lightbulb","description":"Important detail","color":"#3B82F6"},{"title":"Learning Focus","icon":"sparkles","description":"What to focus on","color":"#EC4899"}],"keyStats":[{"label":"Topic","value":"Study","icon":"check-circle"}],"summary":"Brief overview of main concepts."}`;
 
       const requestBody = {
         contents: [{
@@ -99,7 +95,7 @@ Return this exact JSON structure:
         }]
       };
 
-      console.log("Calling Gemini with", imageParts.length, "images for infographic generation");
+      console.log("Generating infographic from", imageParts.length, "image(s)");
 
       const response = await fetch(
         `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`,
@@ -114,26 +110,21 @@ Return this exact JSON structure:
 
       if (data.error) {
         console.error("Infographic generation error:", data.error);
-        throw new Error(data.error.message || "Infographic generation failed");
+        throw new Error(data.error.message || "Generation failed");
       }
 
-      if (!data.candidates || !data.candidates[0] || !data.candidates[0].content) {
-        console.error("Invalid response structure:", data);
+      if (!data.candidates?.[0]?.content?.parts?.[0]?.text) {
         throw new Error("Invalid response from AI");
       }
 
       const textResponse = data.candidates[0].content.parts[0].text;
-      console.log("Raw Gemini response:", textResponse.substring(0, 200));
-      
       let jsonString = textResponse.replace(/```json/g, '').replace(/```/g, '').trim();
       
-      // Try to extract JSON if it's embedded in text
+      // Extract JSON object
       const jsonMatch = jsonString.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
         jsonString = jsonMatch[0];
       }
-      
-      console.log("Parsed JSON string:", jsonString.substring(0, 200));
       
       const infographicData = JSON.parse(jsonString);
 
