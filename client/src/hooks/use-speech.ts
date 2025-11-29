@@ -118,22 +118,61 @@ export function useSpeech() {
     }
   }, [isListening]);
 
+  const useBrowserSpeech = useCallback((textToSpeak: string) => {
+    if (synthRef.current.speaking) {
+      synthRef.current.cancel();
+    }
+    
+    try {
+      const utterance = new SpeechSynthesisUtterance(textToSpeak);
+      const voices = synthRef.current.getVoices();
+      
+      let selectedVoice = voices.find(v => v.name?.includes('Google US English'));
+      if (!selectedVoice) {
+        selectedVoice = voices.find(v => v.lang?.includes('en-US'));
+      }
+      if (!selectedVoice && voices.length > 0) {
+        selectedVoice = voices[0];
+      }
+      
+      if (selectedVoice) {
+        utterance.voice = selectedVoice;
+      }
+      
+      utterance.pitch = 1.0;
+      utterance.rate = 0.9;
+      utterance.volume = 1.0;
+      
+      utterance.onstart = () => setIsSpeaking(true);
+      utterance.onend = () => setIsSpeaking(false);
+      utterance.onerror = () => setIsSpeaking(false);
+      
+      synthRef.current.speak(utterance);
+    } catch (e) {
+      console.error("Browser speech failed:", e);
+      setIsSpeaking(false);
+    }
+  }, []);
+
   const speakText = useCallback((text: string) => {
     if (!text) return;
 
     setIsSpeaking(true);
 
-    // Use backend TTS endpoint
+    // Try backend TTS first, fallback to Web Speech API
     fetch('/api/tts', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ text })
     })
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error(`API error: ${res.status}`);
+        return res.json();
+      })
       .then(data => {
         if (data.error) throw new Error(data.error);
+        if (!data.audioContent) throw new Error("No audio content");
         
-        // Decode base64 audio and play
         const binaryString = atob(data.audioContent);
         const bytes = new Uint8Array(binaryString.length);
         for (let i = 0; i < binaryString.length; i++) {
@@ -153,17 +192,14 @@ export function useSpeech() {
           URL.revokeObjectURL(audioUrl);
         };
         
-        audio.play().catch(e => {
-          console.error("Playback error:", e);
-          setIsSpeaking(false);
-          URL.revokeObjectURL(audioUrl);
+        audio.play().catch(() => {
+          useBrowserSpeech(text);
         });
       })
-      .catch(e => {
-        console.warn("TTS error:", e);
-        setIsSpeaking(false);
+      .catch(() => {
+        useBrowserSpeech(text);
       });
-  }, []);
+  }, [useBrowserSpeech]);
 
   const stopSpeaking = useCallback(() => {
     if (synthRef.current.speaking) {
