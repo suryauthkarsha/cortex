@@ -82,7 +82,7 @@ const LandingPage = () => {
         left: 0,
         right: 0,
         height: '40vh',
-        background: 'linear-gradient(to-bottom, transparent 0%, transparent 50%, rgba(0, 0, 0, 0.3) 70%, rgba(0, 0, 0, 0.7) 85%, rgba(0, 0, 0, 0.95) 100%)',
+        background: 'linear-gradient(to-bottom, transparent 0%, rgba(0, 0, 0, 0.05) 20%, rgba(0, 0, 0, 0.15) 40%, rgba(0, 0, 0, 0.35) 60%, rgba(0, 0, 0, 0.65) 80%, rgba(0, 0, 0, 0.95) 100%)',
         backdropFilter: 'blur(12px) brightness(0.85)',
         WebkitBackdropFilter: 'blur(12px) brightness(0.85)',
         pointerEvents: 'none',
