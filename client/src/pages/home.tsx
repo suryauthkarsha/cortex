@@ -309,10 +309,10 @@ export default function Home() {
                         whileTap={{ scale: 0.95 }}
                         className={`w-48 h-48 rounded-full flex items-center justify-center transition-all duration-500 relative backdrop-blur-md border border-white/30 ${
                           isListening 
-                            ? 'bg-red-500/70 shadow-[0_0_100px_rgba(239,68,68,0.4)]' 
+                            ? 'bg-red-500/70 shadow-[0_0_80px_rgba(239,68,68,0.6),0_0_40px_rgba(239,68,68,0.4)]' 
                             : mode === 'tutor' 
-                               ? 'bg-primary/40 text-black shadow-[0_0_60px_rgba(255,215,0,0.2)]' 
-                               : 'bg-white/20 text-black shadow-[0_0_60px_rgba(255,255,255,0.1)]'
+                               ? 'bg-primary/40 text-black shadow-[0_0_80px_rgba(255,215,0,0.5),0_0_40px_rgba(255,215,0,0.3)]' 
+                               : 'bg-white/20 text-black shadow-[0_0_80px_rgba(255,255,255,0.4),0_0_40px_rgba(255,255,255,0.2)]'
                         }`}
                       >
                          {isListening ? (
