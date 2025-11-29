@@ -138,3 +138,35 @@ export const askTutor = async (question: string, images: string[] = []): Promise
   `;
   return callGeminiText(prompt, images);
 };
+
+export interface InfographicData {
+  title: string;
+  subtitle: string;
+  colorScheme: string[];
+  concepts: Array<{
+    title: string;
+    icon: string;
+    description: string;
+    color: string;
+  }>;
+  keyStats: Array<{
+    label: string;
+    value: string;
+    icon: string;
+  }>;
+  summary: string;
+}
+
+export const generateInfographic = async (topic: string, content: string): Promise<InfographicData> => {
+  const response = await fetch('/api/generate-infographic', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ topic, content })
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to generate infographic');
+  }
+
+  return response.json();
+};

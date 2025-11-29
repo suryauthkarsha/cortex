@@ -63,5 +63,86 @@ export async function registerRoutes(
     }
   });
 
+  // Infographic Generation Endpoint
+  app.post("/api/generate-infographic", async (req, res) => {
+    try {
+      const { topic, content } = req.body;
+      if (!topic || !content) {
+        return res.status(400).json({ error: "Topic and content are required" });
+      }
+
+      const apiKey = process.env.GEMINI_API_KEY;
+      if (!apiKey) {
+        return res.status(500).json({ error: "API key not configured" });
+      }
+
+      const prompt = `
+You are a brilliant study infographic designer. Create a detailed, visually-descriptive infographic about this topic in JSON format.
+
+Topic: ${topic}
+Content: ${content}
+
+Generate an infographic that includes:
+1. A catchy title
+2. 3-4 key concepts with icons
+3. Visual statistics or key points
+4. Color scheme (use vibrant, study-friendly colors)
+5. Layout suggestions
+
+Return ONLY valid JSON with this structure:
+{
+  "title": "Infographic Title",
+  "subtitle": "A brief subtitle",
+  "colorScheme": ["#color1", "#color2", "#color3"],
+  "concepts": [
+    {
+      "title": "Concept Title",
+      "icon": "icon-name",
+      "description": "Brief explanation",
+      "color": "#hexcolor"
+    }
+  ],
+  "keyStats": [
+    {
+      "label": "Statistic Label",
+      "value": "Value or percentage",
+      "icon": "icon-name"
+    }
+  ],
+  "summary": "A concise summary of the key takeaways"
+}
+      `;
+
+      const response = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents: [{
+              parts: [{ text: prompt }]
+            }]
+          })
+        }
+      );
+
+      const data = await response.json();
+
+      if (data.error) {
+        console.error("Infographic generation error:", data.error);
+        throw new Error(data.error.message || "Infographic generation failed");
+      }
+
+      const textResponse = data.candidates[0].content.parts[0].text;
+      const jsonString = textResponse.replace(/```json/g, '').replace(/```/g, '').trim();
+      const infographicData = JSON.parse(jsonString);
+
+      res.json(infographicData);
+    } catch (err: any) {
+      console.error("Infographic endpoint error:", err);
+      res.status(500).json({ error: err.message || "Infographic generation failed" });
+    }
+  });
+
   return httpServer;
 }

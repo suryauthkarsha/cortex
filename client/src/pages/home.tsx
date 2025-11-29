@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { useSpeech } from '@/hooks/use-speech';
 import { useMedia } from '@/hooks/use-media';
 import { useAudioVisualizer } from '@/hooks/use-audio-visualizer';
-import { analyzeExplanation, generateQuiz, askTutor, type QuizQuestion, type GeminiResponse } from '@/lib/gemini';
+import { analyzeExplanation, generateQuiz, askTutor, generateInfographic, type QuizQuestion, type GeminiResponse, type InfographicData } from '@/lib/gemini';
 import { QuizModal } from '@/components/modules/quiz-modal';
 import { FeedbackDisplay } from '@/components/modules/feedback-display';
+import { InfographicDisplay } from '@/components/modules/infographic-display';
 import { RealtimeClock } from '@/components/modules/realtime-clock';
 import { PomodoroTimerHeader } from '@/components/modules/pomodoro-timer-header';
 import { Mic, Square, Play, VolumeX, Sparkles, Upload, X, Video, Image as ImageIcon, MessageCircle, GraduationCap, StopCircle, Brain, ArrowLeft } from 'lucide-react';
@@ -53,6 +54,10 @@ export default function Home() {
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [isQuizLoading, setIsQuizLoading] = useState(false);
+  
+  // Infographic State
+  const [infographic, setInfographic] = useState<InfographicData | null>(null);
+  const [isInfographicLoading, setIsInfographicLoading] = useState(false);
 
   // Actions
   const handleAnalyze = async () => {
@@ -111,6 +116,26 @@ export default function Home() {
         setAiResponse(null);
         setViewState('idle');
       }
+    }
+  };
+
+  const handleGenerateInfographic = async () => {
+    if (!aiResponse) {
+      setError("Analyze your answer first.");
+      return;
+    }
+    setIsInfographicLoading(true);
+    setError(null);
+    try {
+      const result = await generateInfographic(
+        "Study Notes",
+        aiResponse.detailed_feedback
+      );
+      setInfographic(result);
+    } catch (err: any) {
+      setError(err.message || 'Failed to generate infographic.');
+    } finally {
+      setIsInfographicLoading(false);
     }
   };
 
@@ -422,20 +447,40 @@ export default function Home() {
                   )}
                   <h3 className="text-lg font-bold text-white">Results</h3>
                </div>
-               <button 
-                  onClick={handleGenerateQuiz}
-                  disabled={isQuizLoading || images.length === 0}
-                  className="text-sm text-neutral-400 hover:text-white transition-colors flex items-center gap-2 disabled:opacity-30"
-               >
-                  <GraduationCap className="w-4 h-4" />
-                  {isQuizLoading ? "Making Quiz..." : "Pop Quiz"}
-               </button>
+               <div className="flex items-center gap-4">
+                  <button 
+                    onClick={handleGenerateInfographic}
+                    disabled={isInfographicLoading || !aiResponse}
+                    className="text-sm text-neutral-400 hover:text-yellow-400 transition-colors flex items-center gap-2 disabled:opacity-30"
+                    data-testid="button-generate-notes"
+                  >
+                    <Sparkles className="w-4 h-4" />
+                    {isInfographicLoading ? "Generating..." : "Generate Notes"}
+                  </button>
+                  <button 
+                    onClick={handleGenerateQuiz}
+                    disabled={isQuizLoading || images.length === 0}
+                    className="text-sm text-neutral-400 hover:text-white transition-colors flex items-center gap-2 disabled:opacity-30"
+                    data-testid="button-quiz"
+                  >
+                    <GraduationCap className="w-4 h-4" />
+                    {isQuizLoading ? "Making Quiz..." : "Pop Quiz"}
+                  </button>
+               </div>
              </div>
            )}
            
            {/* Main Content Area */}
            <div className="flex-1 bg-neutral-900/20 border border-white/5 rounded-[2.5rem] overflow-hidden backdrop-blur-sm flex flex-col relative">
-             {mode === 'check' ? (
+             {infographic && (
+               <div className="flex-1 overflow-hidden">
+                 <InfographicDisplay 
+                   data={infographic} 
+                   onBack={() => setInfographic(null)}
+                 />
+               </div>
+             )}
+             {!infographic && mode === 'check' ? (
                <>
                  {/* Loading Overlay */}
                  {viewState === 'analyzing' && (
