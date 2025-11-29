@@ -190,21 +190,25 @@ export default function Home() {
           </div>
 
           {/* Center: Mode Switcher */}
-          <div className="container-toggle">
-            <label className="switch">
-              <input 
-                className="togglesw" 
-                type="checkbox" 
-                checked={mode === 'tutor'}
-                onChange={(e) => { 
-                  setMode(e.target.checked ? 'tutor' : 'check');
-                  resetView();
-                }}
-              />
-              <div className="indicator left"></div>
-              <div className="indicator right"></div>
-              <div className="button"></div>
-            </label>
+          <div className="flex items-center gap-3">
+            <span className={`text-xs font-semibold transition-colors ${mode === 'check' ? 'text-white' : 'text-neutral-500'}`}>Check Me</span>
+            <div className="container-toggle">
+              <label className="switch">
+                <input 
+                  className="togglesw" 
+                  type="checkbox" 
+                  checked={mode === 'tutor'}
+                  onChange={(e) => { 
+                    setMode(e.target.checked ? 'tutor' : 'check');
+                    resetView();
+                  }}
+                />
+                <div className="indicator left"></div>
+                <div className="indicator right"></div>
+                <div className="button"></div>
+              </label>
+            </div>
+            <span className={`text-xs font-semibold transition-colors ${mode === 'tutor' ? 'text-primary' : 'text-neutral-500'}`}>Gen Z</span>
           </div>
 
           {/* Right: Controls */}
