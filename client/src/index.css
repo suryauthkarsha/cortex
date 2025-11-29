@@ -859,3 +859,91 @@
 .gradient-button:active {
   transform: scale(0.97);
 }
+
+/* Jelly Button Animation - Yellow/Gold Theme */
+.jelly-btn {
+  position: relative;
+  border-radius: 45px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  transition-duration: 200ms;
+  overflow: hidden;
+}
+
+.jelly-btn::before {
+  width: 70%;
+  height: 2px;
+  position: absolute;
+  content: "";
+  filter: blur(1px);
+  top: 7px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.4);
+  pointer-events: none;
+}
+
+.jelly-btn::after {
+  width: 70%;
+  height: 2px;
+  position: absolute;
+  content: "";
+  filter: blur(1px);
+  bottom: 7px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.1);
+  pointer-events: none;
+}
+
+.jelly-btn:hover:not(:disabled) {
+  animation: jello-horizontal 0.6s both;
+}
+
+.jelly-btn-yellow {
+  background: linear-gradient(135deg, #facc15 0%, #eab308 50%, #ca8a04 100%);
+  color: #000;
+  box-shadow: 0px 8px 8px rgba(250, 193, 7, 0.3) inset,
+              0px 4px 6px rgba(0, 0, 0, 0.3),
+              0px -8px 8px rgba(180, 83, 9, 0.2) inset;
+}
+
+.jelly-btn-dark {
+  background: #000;
+  color: #facc15;
+  border: 2px solid #facc15;
+  box-shadow: 0px 8px 8px rgba(250, 193, 7, 0.15) inset,
+              0px 4px 6px rgba(0, 0, 0, 0.4),
+              0px -8px 8px rgba(250, 193, 7, 0.1) inset;
+}
+
+.jelly-btn-dark:hover:not(:disabled) {
+  border-color: #fde047;
+}
+
+@keyframes jello-horizontal {
+  0% {
+    transform: scale3d(1, 1, 1);
+  }
+  30% {
+    transform: scale3d(1.25, 0.75, 1);
+  }
+  40% {
+    transform: scale3d(0.75, 1.25, 1);
+  }
+  50% {
+    transform: scale3d(1.15, 0.85, 1);
+  }
+  65% {
+    transform: scale3d(0.95, 1.05, 1);
+  }
+  75% {
+    transform: scale3d(1.05, 0.95, 1);
+  }
+  100% {
+    transform: scale3d(1, 1, 1);
+  }
+}

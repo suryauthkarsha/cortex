@@ -458,44 +458,38 @@ export default function Home() {
                animate={{ opacity: 1, y: 0 }}
                className="flex gap-3 px-2 pb-4"
              >
-               <motion.button 
+               <button 
                  onClick={handleGenerateInfographic}
                  disabled={isInfographicLoading || images.length === 0}
-                 whileHover={{ scale: 1.02, y: -2 }}
-                 whileTap={{ scale: 0.98 }}
-                 className="flex-1 flex items-center justify-center gap-2 px-6 py-3.5 bg-gradient-to-br from-yellow-400 via-yellow-450 to-yellow-500 hover:brightness-110 text-black rounded-2xl font-semibold text-base transition-all shadow-lg hover:shadow-2xl hover:shadow-yellow-500/40 disabled:opacity-40 disabled:cursor-not-allowed relative overflow-hidden"
+                 className="jelly-btn jelly-btn-yellow flex-1 px-6 py-3.5 text-base"
                  data-testid="button-generate-notes"
                >
-                 <div className="absolute inset-0 bg-white/20 opacity-0 hover:opacity-100 transition-opacity" />
                  <motion.div
                    animate={!isInfographicLoading && images.length > 0 ? { rotate: [0, 360] } : {}}
                    transition={{ duration: 2.5, repeat: Infinity }}
                  >
                    <Sparkles className="w-5 h-5" />
                  </motion.div>
-                 <span className="relative">
+                 <span>
                    {isInfographicLoading ? "Creating..." : "Generate Notes"}
                  </span>
-               </motion.button>
-               <motion.button 
+               </button>
+               <button 
                  onClick={handleGenerateQuiz}
                  disabled={isQuizLoading || images.length === 0}
-                 whileHover={{ scale: 1.02, y: -2 }}
-                 whileTap={{ scale: 0.98 }}
-                 className="flex-1 flex items-center justify-center gap-2 px-6 py-3.5 bg-black text-yellow-400 rounded-2xl font-semibold text-base transition-all shadow-lg hover:shadow-2xl hover:shadow-yellow-400/30 disabled:opacity-40 disabled:cursor-not-allowed border-2 border-yellow-400 hover:border-yellow-300 relative overflow-hidden group"
+                 className="jelly-btn jelly-btn-dark flex-1 px-6 py-3.5 text-base"
                  data-testid="button-quiz"
                >
-                 <div className="absolute inset-0 bg-yellow-400/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                  <motion.div
                    animate={isQuizLoading ? { rotate: 360 } : {}}
                    transition={{ duration: 2, repeat: Infinity }}
                  >
                    <GraduationCap className="w-5 h-5" />
                  </motion.div>
-                 <span className="relative">
+                 <span>
                    {isQuizLoading ? "Creating..." : "Pop Quiz"}
                  </span>
-               </motion.button>
+               </button>
              </motion.div>
            )}
 
