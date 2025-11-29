@@ -581,10 +581,10 @@ export default function Home() {
                            initial={{ opacity: 0, scale: 0.9 }}
                            animate={{ opacity: 1, scale: 1 }}
                            transition={{ delay: 0.45 + index * 0.1 }}
-                           className="bg-neutral-800/60 backdrop-blur-sm border border-yellow-400/20 hover:border-yellow-400/50 rounded-2xl p-6 text-center shadow-lg transition-all group"
+                           className="bg-neutral-800/60 backdrop-blur-sm border border-yellow-400/20 hover:border-yellow-400/50 rounded-2xl p-8 text-center shadow-lg transition-all group h-full flex flex-col justify-center min-h-[180px]"
                          >
-                           <p className="text-3xl font-bold text-yellow-400 mb-2 group-hover:text-yellow-300 transition-colors">{stat.value}</p>
-                           <p className="text-sm font-semibold text-neutral-300">{stat.label}</p>
+                           <p className="text-2xl font-bold text-yellow-400 mb-3 group-hover:text-yellow-300 transition-colors line-clamp-2">{stat.value}</p>
+                           <p className="text-xs font-semibold text-neutral-300 line-clamp-3">{stat.label}</p>
                          </motion.div>
                        ))}
                      </div>
