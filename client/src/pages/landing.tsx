@@ -126,25 +126,8 @@ const LandingPage = () => {
           </motion.div>
 
           {/* Main Heading */}
-          <h1 className="text-7xl md:text-8xl text-center leading-tight mb-6" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", sans-serif', fontWeight: 900, letterSpacing: '-0.02em' }}>
-            <span style={{
-              background: 'linear-gradient(to-bottom, #ffffff 0%, #708090 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-              display: 'inline-block',
-            }}>
-              F*ck Bad
-            </span>{" "}
-            <span style={{
-              background: 'linear-gradient(to-bottom, #ffffff 0%, #708090 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-              display: 'inline-block',
-            }}>
-              Grades
-            </span>
+          <h1 className="text-7xl md:text-8xl text-center leading-tight mb-6" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", sans-serif', fontWeight: 900, letterSpacing: '-0.02em', color: '#e5e7eb', textShadow: '0 2px 10px rgba(0, 0, 0, 0.5)' }}>
+            F*ck Bad Grades
           </h1>
 
           {/* Subheading in Frosted Glass Box */}
