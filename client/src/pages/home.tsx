@@ -310,9 +310,7 @@ export default function Home() {
                         className={`w-48 h-48 rounded-full flex items-center justify-center transition-all duration-500 relative backdrop-blur-md border border-white/30 ${
                           isListening 
                             ? 'bg-red-500/70 shadow-[0_0_80px_rgba(239,68,68,0.6),0_0_40px_rgba(239,68,68,0.4)]' 
-                            : mode === 'tutor' 
-                               ? 'bg-primary/40 text-black shadow-[0_0_80px_rgba(255,215,0,0.5),0_0_40px_rgba(255,215,0,0.3)]' 
-                               : 'bg-white/20 text-black shadow-[0_0_80px_rgba(255,255,255,0.4),0_0_40px_rgba(255,255,255,0.2)]'
+                            : 'bg-primary/40 text-black shadow-[0_0_80px_rgba(255,215,0,0.6),0_0_40px_rgba(255,215,0,0.4)]'
                         }`}
                       >
                          {isListening ? (
@@ -338,7 +336,7 @@ export default function Home() {
                 </div>
 
                 {/* Analyze Button (Check Mode) */}
-                {!isListening && transcript.length > 5 && mode === 'check' && viewState === 'idle' && (
+                {!isListening && mode === 'check' && viewState === 'idle' && transcript && transcript.trim().length > 0 && (
                   <motion.div 
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -352,6 +350,18 @@ export default function Home() {
                       {isProcessing ? <Sparkles className="w-6 h-6 animate-spin" /> : <Play className="w-6 h-6 fill-current" />}
                       Analyze Now
                     </button>
+                  </motion.div>
+                )}
+
+                {/* Camera Section - Separate from Mic */}
+                {isSelfieMode && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="relative mt-8 px-4 py-3 rounded-full bg-neutral-800/50 border border-white/10 backdrop-blur-md flex items-center gap-3 z-20"
+                  >
+                    <div className="w-3 h-3 rounded-full bg-red-500 animate-pulse" />
+                    <span className="text-sm text-white font-medium">Camera Active</span>
                   </motion.div>
                 )}
              </div>
@@ -452,7 +462,7 @@ export default function Home() {
                   </div>
 
                   {/* Ask Button */}
-                  {!isListening && transcript.length > 0 && !tutorResponse && (
+                  {!isListening && transcript && transcript.trim().length > 0 && (
                     <motion.button
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
