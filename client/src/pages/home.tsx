@@ -347,34 +347,36 @@ export default function Home() {
                    </div>
 
                    {/* Analyze/Ask Buttons */}
-                   <motion.div 
-                     initial={{ opacity: 0, y: 10 }}
-                     animate={{ opacity: transcript && transcript.trim().length > 0 ? 1 : 0, pointerEvents: transcript && transcript.trim().length > 0 ? 'auto' : 'none', y: 0 }}
-                     className="relative z-30 flex gap-4"
-                   >
-                     {mode === 'check' && (
-                       <button 
-                         onClick={handleAnalyze}
-                         disabled={isProcessing || !transcript.trim()}
-                         className="bg-white text-black px-10 py-4 rounded-full font-bold text-lg hover:scale-105 transition-transform shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-3"
-                         data-testid="button-analyze"
-                       >
-                         {isProcessing ? <Sparkles className="w-5 h-5 animate-spin" /> : <Play className="w-5 h-5 fill-current" />}
-                         Analyze Now
-                       </button>
-                     )}
-                     
-                     {mode === 'tutor' && (
-                       <button 
-                         onClick={() => handleTutorChat(transcript)}
-                         disabled={isProcessing || !transcript.trim()}
-                         className="bg-primary text-black px-10 py-4 rounded-full font-bold text-lg hover:scale-105 transition-transform shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-3"
-                         data-testid="button-ask-tutor"
-                       >
-                         {isProcessing ? <Sparkles className="w-5 h-5 animate-spin" /> : '✨ Ask'}
-                       </button>
-                     )}
-                   </motion.div>
+                   {transcript && transcript.trim().length > 0 && (
+                     <motion.div 
+                       initial={{ opacity: 0, y: 10 }}
+                       animate={{ opacity: 1, y: 0 }}
+                       className="relative z-30 flex gap-4"
+                     >
+                       {mode === 'check' && (
+                         <button 
+                           onClick={handleAnalyze}
+                           disabled={isProcessing}
+                           className="bg-white text-black px-10 py-4 rounded-full font-bold text-lg hover:scale-105 transition-transform shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-3"
+                           data-testid="button-analyze"
+                         >
+                           {isProcessing ? <Sparkles className="w-5 h-5 animate-spin" /> : <Play className="w-5 h-5 fill-current" />}
+                           Analyze Now
+                         </button>
+                       )}
+                       
+                       {mode === 'tutor' && (
+                         <button 
+                           onClick={() => handleTutorChat(transcript)}
+                           disabled={isProcessing}
+                           className="bg-primary text-black px-10 py-4 rounded-full font-bold text-lg hover:scale-105 transition-transform shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-3"
+                           data-testid="button-ask-tutor"
+                         >
+                           {isProcessing ? <Sparkles className="w-5 h-5 animate-spin" /> : '✨ Ask'}
+                         </button>
+                       )}
+                     </motion.div>
+                   )}
                 </div>
              </div>
           </div>
