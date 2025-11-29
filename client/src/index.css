@@ -111,6 +111,7 @@
   border-radius: 50%;
   background-color: transparent;
   user-select: none;
+  letter-spacing: 0.15em;
 }
 
 .loader {
@@ -129,34 +130,36 @@
   0% {
     transform: rotate(90deg);
     box-shadow:
-      0 10px 20px 0 #fff inset,
-      0 20px 30px 0 #ad5fff inset,
-      0 60px 60px 0 #471eec inset;
+      0 10px 15px 0 rgba(250, 204, 21, 0.4) inset,
+      0 20px 30px 0 rgba(168, 85, 247, 0.3) inset,
+      0 60px 60px 0 rgba(139, 92, 246, 0.2) inset;
   }
   50% {
     transform: rotate(270deg);
     box-shadow:
-      0 10px 20px 0 #fff inset,
-      0 20px 10px 0 #d60a47 inset,
-      0 40px 60px 0 #311e80 inset;
+      0 10px 15px 0 rgba(250, 204, 21, 0.3) inset,
+      0 20px 20px 0 rgba(168, 85, 247, 0.25) inset,
+      0 40px 50px 0 rgba(147, 51, 234, 0.15) inset;
   }
   100% {
     transform: rotate(450deg);
     box-shadow:
-      0 10px 20px 0 #fff inset,
-      0 20px 30px 0 #ad5fff inset,
-      0 60px 60px 0 #471eec inset;
+      0 10px 15px 0 rgba(250, 204, 21, 0.4) inset,
+      0 20px 30px 0 rgba(168, 85, 247, 0.3) inset,
+      0 60px 60px 0 rgba(139, 92, 246, 0.2) inset;
   }
 }
 
 .loader-letter {
   display: inline-block;
-  opacity: 0.4;
+  opacity: 0.3;
   transform: translateY(0);
   animation: loader-letter-anim 2s infinite;
   z-index: 1;
   border-radius: 50ch;
   border: none;
+  font-weight: 400;
+  letter-spacing: 0.05em;
 }
 
 .loader-letter:nth-child(1) {
@@ -190,15 +193,15 @@
 @keyframes loader-letter-anim {
   0%,
   100% {
-    opacity: 0.4;
+    opacity: 0.25;
     transform: translateY(0);
   }
   20% {
-    opacity: 1;
-    transform: scale(1.15);
+    opacity: 0.8;
+    transform: scale(1.1);
   }
   40% {
-    opacity: 0.7;
+    opacity: 0.4;
     transform: translateY(0);
   }
 }
