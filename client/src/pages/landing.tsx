@@ -310,16 +310,34 @@ const LandingPage = () => {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-yellow-600/20 py-12 px-6">
-        <div className="max-w-6xl mx-auto flex items-center justify-between text-neutral-500 text-sm">
-          <p>© 2025 Cortex. No excuses.</p>
-          <div className="flex gap-6">
-            <a href="#" className="hover:text-yellow-500 transition">
-              Privacy
-            </a>
-            <a href="#" className="hover:text-yellow-500 transition">
-              Terms
-            </a>
+      <footer className="bg-black/50 border-t border-gray-700/50 py-24 px-6">
+        <div className="max-w-6xl mx-auto">
+          {/* CORTEX Logo Text */}
+          <div className="text-center mb-12">
+            <h3 className="text-7xl md:text-8xl font-bold" style={{
+              fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif',
+              background: 'linear-gradient(180deg, #FFFFFF 10%, #5a5a5a 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              color: 'transparent',
+              letterSpacing: '-0.02em',
+            }}>
+              CORTEX
+            </h3>
+          </div>
+
+          {/* Separator Line */}
+          <div className="border-t border-gray-600/40 my-8" />
+
+          {/* Footer Navigation */}
+          <div className="flex items-center justify-between text-neutral-400 text-sm">
+            <div className="flex gap-8">
+              <a href="#" className="hover:text-white transition">Home</a>
+              <a href="#" className="hover:text-white transition">Contact us</a>
+              <a href="#" className="hover:text-white transition">Policies</a>
+            </div>
+            <p>© 2025 Cortex | All rights reserved</p>
           </div>
         </div>
       </footer>
