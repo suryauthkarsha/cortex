@@ -391,46 +391,18 @@ const LandingPage = () => {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
-                className="p-8 bg-gradient-to-br from-yellow-50 to-yellow-100"
+                className="p-8"
                 style={{
-                  transform: `rotate(${i === 0 ? '-2deg' : i === 1 ? '1deg' : '2deg'}) perspective(1000px)`,
-                  boxShadow: `${i === 0 ? '-4px' : i === 1 ? '2px' : '4px'} 12px 28px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3)`,
+                  transform: `rotate(${i === 0 ? '-3deg' : i === 1 ? '0deg' : '3deg'})`,
+                  backgroundColor: '#ffd700',
+                  boxShadow: `${i === 0 ? '-6px' : i === 1 ? '0px' : '6px'} 16px 32px rgba(0, 0, 0, 0.35)`,
                   position: 'relative',
-                  backgroundColor: '#fef9e7',
-                  backgroundImage: `
-                    repeating-linear-gradient(
-                      90deg,
-                      transparent,
-                      transparent 2px,
-                      rgba(251, 191, 36, 0.03) 2px,
-                      rgba(251, 191, 36, 0.03) 4px
-                    ),
-                    repeating-linear-gradient(
-                      0deg,
-                      transparent,
-                      transparent 2px,
-                      rgba(251, 191, 36, 0.03) 2px,
-                      rgba(251, 191, 36, 0.03) 4px
-                    )
-                  `,
                 }}
               >
-                {/* Post-it top tape effect */}
-                <div style={{
-                  position: 'absolute',
-                  top: '-8px',
-                  left: '50%',
-                  transform: 'translateX(-50%)',
-                  width: '60%',
-                  height: '8px',
-                  background: 'linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.1), transparent)',
-                  borderRadius: '1px',
-                }} />
-
-                <p className="text-neutral-800 mb-6 font-light leading-relaxed italic">"{testimonial.quote}"</p>
+                <p className="text-black mb-6 font-medium leading-relaxed">"{testimonial.quote}"</p>
                 <div>
-                  <p className="font-bold text-yellow-700">{testimonial.name}</p>
-                  <p className="text-sm text-yellow-600">{testimonial.role}</p>
+                  <p className="font-bold text-black">{testimonial.name}</p>
+                  <p className="text-sm text-gray-800">{testimonial.role}</p>
                 </div>
               </motion.div>
             ))}
