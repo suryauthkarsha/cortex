@@ -69,17 +69,7 @@ export function useSpeech() {
 
     recognition.onend = () => {
       console.log("Speech recognition ended");
-      // If user wants to keep listening, restart
-      if (listeningRef.current) {
-        console.log("Restarting recognition...");
-        try {
-          recognition.start();
-        } catch (e) {
-          console.warn("Failed to restart:", e);
-        }
-      } else {
-        setIsListening(false);
-      }
+      setIsListening(false);
     };
 
     recognitionRef.current = recognition;
@@ -94,36 +84,26 @@ export function useSpeech() {
   const toggleListening = useCallback(() => {
     if (!recognitionRef.current) return;
 
-    // Only process if state is not already being processed
     if (isListening) {
       console.log("Stopping listening");
       listeningRef.current = false;
       try {
-        recognitionRef.current.abort();
+        recognitionRef.current.stop();
       } catch (e) {
-        console.warn("Abort error:", e);
+        console.warn("Stop error:", e);
       }
-      setIsListening(false);
     } else {
       console.log("Starting listening");
       listeningRef.current = true;
       setTranscript('');
       setError(null);
       try {
-        recognitionRef.current.abort(); // Make sure it's stopped first
-        setTimeout(() => {
-          try {
-            recognitionRef.current.start();
-            setIsListening(true);
-          } catch (e) {
-            console.warn("Start error:", e);
-            setError("Could not start listening");
-            setIsListening(false);
-          }
-        }, 100);
+        recognitionRef.current.start();
+        setIsListening(true);
       } catch (e) {
-        console.warn("Setup error:", e);
+        console.warn("Start error:", e);
         setError("Could not start listening");
+        listeningRef.current = false;
       }
     }
   }, [isListening]);
