@@ -36,7 +36,7 @@ export function FeedbackDisplay({ response, isProcessing, error }: FeedbackDispl
 
   if (error) {
     return (
-      <div className="h-full flex flex-col items-center justify-center p-12 text-red-500 space-y-6">
+      <div className="h-full flex flex-col items-center justify-center p-12 bg-black text-red-400 space-y-6">
         <AlertTriangle className="w-16 h-16 stroke-1" />
         <p className="text-xl font-medium text-center max-w-md leading-relaxed">{error}</p>
       </div>
@@ -45,16 +45,16 @@ export function FeedbackDisplay({ response, isProcessing, error }: FeedbackDispl
 
   if (!response) {
     return (
-      <div className="h-full flex flex-col items-center justify-center p-12 space-y-8">
+      <div className="h-full flex flex-col items-center justify-center p-12 space-y-8 bg-black">
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.6 }}
           className="relative"
         >
-          <div className="absolute inset-0 bg-primary/10 rounded-full blur-3xl" />
-          <div className="relative bg-neutral-900/40 border border-primary/20 rounded-full p-6">
-            <Lightbulb className="w-12 h-12 text-primary/60" />
+          <div className="absolute inset-0 bg-yellow-400/10 rounded-full blur-3xl" />
+          <div className="relative bg-neutral-900 border border-yellow-400/30 rounded-full p-6">
+            <Lightbulb className="w-12 h-12 text-yellow-400" />
           </div>
         </motion.div>
 
@@ -64,7 +64,7 @@ export function FeedbackDisplay({ response, isProcessing, error }: FeedbackDispl
               key={i}
               animate={{ opacity: [0.4, 1, 0.4] }}
               transition={{ duration: 2, delay: i * 0.3, repeat: Infinity }}
-              className="w-1.5 h-1.5 bg-primary rounded-full"
+              className="w-1.5 h-1.5 bg-yellow-400 rounded-full"
             />
           ))}
         </div>
@@ -73,7 +73,7 @@ export function FeedbackDisplay({ response, isProcessing, error }: FeedbackDispl
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="text-neutral-500 text-sm"
+          className="text-neutral-400 text-sm"
         >
           Record and analyze to begin
         </motion.p>

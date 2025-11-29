@@ -486,7 +486,7 @@ export default function Home() {
            )}
 
            {/* Main Content Area - Infographic/Notes */}
-           <div className="flex-1 bg-gradient-to-br from-slate-100 via-slate-50 to-white border border-slate-200 rounded-[2.5rem] overflow-hidden flex flex-col relative shadow-xl">
+           <div className="flex-1 bg-black border border-white/10 rounded-[2.5rem] overflow-hidden flex flex-col relative shadow-xl">
              {infographic && (
                <motion.div
                  initial={{ opacity: 0, y: 20 }}
