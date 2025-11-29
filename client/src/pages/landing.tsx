@@ -102,9 +102,9 @@ const LandingPage = () => {
           <div className="flex items-center gap-8">
             <Link href="/app">
               <button className="gradient-button">
-                <div className="gradient"></div>
+                <span className="transition"></span>
+                <span className="gradient"></span>
                 <span className="label">App</span>
-                <div className="transition"></div>
               </button>
             </Link>
           </div>

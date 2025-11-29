@@ -802,7 +802,7 @@
   font-size: 17px;
   padding: 1em 2.7em;
   font-weight: 500;
-  background: #1f2937;
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
   color: white;
   border: none;
   position: relative;
