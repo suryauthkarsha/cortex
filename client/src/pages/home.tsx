@@ -332,6 +332,21 @@ export default function Home() {
                            ? "Ask me anything, no cap." 
                            : "Tap to record your explanation."}
                      </p>
+                     {transcript && (
+                       <p className="text-sm text-yellow-400 mt-4 italic">
+                         Transcript: {transcript.length} chars | Click below to analyze
+                       </p>
+                     )}
+                     
+                     {/* Fallback Manual Input */}
+                     {!isListening && !transcript && (
+                       <textarea
+                         value={transcript}
+                         onChange={(e) => setTranscript(e.target.value)}
+                         placeholder="Or type here to test..."
+                         className="mt-4 w-64 h-20 bg-neutral-800/50 text-white text-sm rounded-lg p-3 border border-white/10 focus:outline-none focus:border-primary/50 resize-none"
+                       />
+                     )}
                    </div>
                 </div>
 
@@ -340,12 +355,13 @@ export default function Home() {
                   <motion.div 
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="absolute bottom-12 left-1/2 transform -translate-x-1/2 z-40"
+                    className="relative mt-8 z-40"
                   >
                     <button 
                        onClick={handleAnalyze}
                        disabled={isProcessing}
                        className="bg-white text-black px-10 py-4 rounded-full font-bold text-xl hover:scale-105 transition-transform shadow-xl flex items-center gap-3"
+                       data-testid="button-analyze"
                     >
                       {isProcessing ? <Sparkles className="w-6 h-6 animate-spin" /> : <Play className="w-6 h-6 fill-current" />}
                       Analyze Now
@@ -463,6 +479,13 @@ export default function Home() {
                     )}
                   </div>
 
+                  {/* Debug Info */}
+                  {!isListening && (
+                    <p className="text-xs text-neutral-500 text-center mb-4">
+                      Transcript: {transcript.length} chars
+                    </p>
+                  )}
+
                   {/* Ask Button */}
                   {!isListening && transcript && transcript.trim().length > 0 && (
                     <motion.button
@@ -471,6 +494,7 @@ export default function Home() {
                       onClick={() => handleTutorChat(transcript)}
                       disabled={isProcessing}
                       className="w-full bg-primary text-black px-6 py-3 rounded-full font-bold text-lg hover:scale-105 transition-transform shadow-lg disabled:opacity-50"
+                      data-testid="button-ask-tutor"
                     >
                       {isProcessing ? <Sparkles className="w-5 h-5 inline-block animate-spin mr-2" /> : '✨ Ask'}
                     </motion.button>
