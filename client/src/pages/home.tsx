@@ -454,17 +454,18 @@ export default function Home() {
                </>
              ) : (
                /* Tutor Mode - Chat History */
-               <div className="flex-1 p-8 flex flex-col gap-6">
-                  <div className="flex-1">
+               <div className="flex-1 flex flex-col gap-6 justify-between">
+                  {/* Response Area */}
+                  <div className="flex-1 min-h-64 flex items-center justify-center">
                     {tutorResponse || error ? (
                       <motion.div 
                         initial={{ opacity: 0, y: 20, scale: 0.9 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
-                        className={`p-6 rounded-2xl border ${error && !tutorResponse ? 'bg-red-900/30 border-red-500/30' : 'bg-neutral-800/50 border-white/10'}`}
+                        className={`w-full p-8 rounded-2xl border ${error && !tutorResponse ? 'bg-red-900/30 border-red-500/30' : 'bg-neutral-800/50 border-white/10'}`}
                       >
                         {tutorResponse && (
                           <>
-                            <span className="text-primary text-xs font-bold uppercase tracking-widest mb-3 block">Tutor says:</span>
+                            <span className="text-primary text-xs font-bold uppercase tracking-widest mb-4 block">✨ Tutor says:</span>
                             <p className="text-lg text-white leading-relaxed">{tutorResponse}</p>
                           </>
                         )}
@@ -473,19 +474,12 @@ export default function Home() {
                         )}
                       </motion.div>
                     ) : (
-                      <div className="flex-1 flex flex-col justify-center items-center text-center text-neutral-600">
-                        <MessageCircle className="w-12 h-12 mb-4 opacity-20" />
-                        <p>Your chat history appears here.</p>
+                      <div className="flex flex-col items-center text-center text-neutral-600">
+                        <MessageCircle className="w-16 h-16 mb-4 opacity-30" />
+                        <p className="text-lg">Ask me anything!</p>
                       </div>
                     )}
                   </div>
-
-                  {/* Debug Info */}
-                  {!isListening && (
-                    <p className="text-xs text-neutral-500 text-center mb-4">
-                      Transcript: {transcript.length} chars
-                    </p>
-                  )}
 
                   {/* Ask Button */}
                   {!isListening && transcript && transcript.trim().length > 0 && (
@@ -494,10 +488,10 @@ export default function Home() {
                       animate={{ opacity: 1, y: 0 }}
                       onClick={() => handleTutorChat(transcript)}
                       disabled={isProcessing}
-                      className="w-full bg-primary text-black px-6 py-3 rounded-full font-bold text-lg hover:scale-105 transition-transform shadow-lg disabled:opacity-50"
+                      className="w-full bg-primary text-black px-8 py-4 rounded-full font-bold text-lg hover:scale-105 transition-transform shadow-xl disabled:opacity-50 flex items-center justify-center gap-3"
                       data-testid="button-ask-tutor"
                     >
-                      {isProcessing ? <Sparkles className="w-5 h-5 inline-block animate-spin mr-2" /> : '✨ Ask'}
+                      {isProcessing ? <Sparkles className="w-5 h-5 animate-spin" /> : '✨ Ask Tutor'}
                     </motion.button>
                   )}
                </div>
