@@ -485,101 +485,112 @@ export default function Home() {
              </motion.div>
            )}
 
-           {/* Main Content Area */}
-           <div className="flex-1 bg-neutral-900/20 border border-white/5 rounded-[2.5rem] overflow-hidden backdrop-blur-sm flex flex-col relative">
+           {/* Main Content Area - Infographic/Notes */}
+           <div className="flex-1 bg-gradient-to-br from-slate-100 via-slate-50 to-white border border-slate-200 rounded-[2.5rem] overflow-hidden flex flex-col relative shadow-xl">
              {infographic && (
                <motion.div
                  initial={{ opacity: 0, y: 20 }}
                  animate={{ opacity: 1, y: 0 }}
-                 className="flex-1 overflow-y-auto space-y-6 p-6 custom-scrollbar"
+                 className="flex-1 overflow-y-auto space-y-6 p-8 custom-scrollbar"
                >
-                 <div className="flex items-center justify-between mb-6">
+                 {/* Header */}
+                 <div className="flex items-center justify-between mb-4">
                    <button 
                      onClick={() => setInfographic(null)}
-                     className="p-2 hover:bg-white/10 rounded-full transition-colors text-white"
+                     className="p-2 hover:bg-slate-200 rounded-full transition-colors text-slate-700"
                    >
                      <ArrowLeft className="w-6 h-6" />
                    </button>
-                   <h3 className="text-lg font-bold text-white">Study Notes</h3>
+                   <h3 className="text-xl font-bold text-slate-900">Study Notes</h3>
                    <div className="w-6"></div>
                  </div>
 
-                 <div className="bg-gradient-to-br from-neutral-900/80 to-black border border-white/10 rounded-3xl p-8 space-y-8">
-                   <motion.div
-                     initial={{ opacity: 0, y: -20 }}
-                     animate={{ opacity: 1, y: 0 }}
-                     transition={{ delay: 0.1 }}
-                     className="text-center space-y-2 border-b border-white/10 pb-6"
-                   >
-                     <h2 className="text-4xl font-bold bg-gradient-to-r from-yellow-400 to-yellow-500 bg-clip-text text-transparent">
-                       {infographic.title}
-                     </h2>
-                     <p className="text-neutral-400 text-lg">{infographic.subtitle}</p>
-                   </motion.div>
+                 {/* Main Title */}
+                 <div className="mb-8">
+                   <h2 className="text-5xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent mb-2">
+                     {infographic.title}
+                   </h2>
+                   <p className="text-lg text-slate-600">{infographic.subtitle}</p>
+                 </div>
 
-                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                     {infographic.concepts.map((concept, index) => (
-                       <motion.div
-                         key={index}
-                         initial={{ opacity: 0, scale: 0.95 }}
-                         animate={{ opacity: 1, scale: 1 }}
-                         transition={{ delay: 0.15 + index * 0.1 }}
-                         className="bg-neutral-800/50 border border-white/10 rounded-2xl p-6 hover:border-white/20 transition-colors"
-                         style={{ borderLeftColor: concept.color, borderLeftWidth: '4px' }}
-                       >
-                         <div className="flex items-start gap-4">
+                 {/* Mindmap-style Concepts */}
+                 <div className="space-y-6">
+                   {infographic.concepts.map((concept, index) => (
+                     <motion.div
+                       key={index}
+                       initial={{ opacity: 0, x: -20 }}
+                       animate={{ opacity: 1, x: 0 }}
+                       transition={{ delay: 0.1 + index * 0.1 }}
+                       className="relative"
+                     >
+                       {/* Connector Line */}
+                       {index > 0 && (
+                         <div className="absolute left-8 -top-4 w-1 h-4 bg-gradient-to-b from-slate-300 to-transparent"></div>
+                       )}
+                       
+                       <div className="flex gap-6 items-start">
+                         {/* Circle Icon */}
+                         <div className="flex-shrink-0 relative">
                            <div
-                             className="w-12 h-12 rounded-lg flex items-center justify-center text-white text-xl font-bold flex-shrink-0"
+                             className="w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg ring-2 ring-white"
                              style={{ backgroundColor: concept.color }}
                            >
-                             {String.fromCharCode(65 + index)}
+                             {index + 1}
                            </div>
-                           <div className="flex-1">
-                             <h3 className="text-lg font-bold text-white mb-2">{concept.title}</h3>
-                             <p className="text-sm text-neutral-400 leading-relaxed">{concept.description}</p>
-                           </div>
+                           {index < infographic.concepts.length - 1 && (
+                             <div className="absolute left-8 top-16 w-1 h-8 bg-gradient-to-b from-slate-300 to-slate-200"></div>
+                           )}
                          </div>
-                       </motion.div>
-                     ))}
-                   </div>
-
-                   {infographic.keyStats.length > 0 && (
-                     <motion.div
-                       initial={{ opacity: 0, y: 20 }}
-                       animate={{ opacity: 1, y: 0 }}
-                       transition={{ delay: 0.4 }}
-                       className="border-t border-white/10 pt-6 space-y-3"
-                     >
-                       <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                         <Sparkles className="w-5 h-5 text-yellow-400" />
-                         Key Takeaways
-                       </h3>
-                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                         {infographic.keyStats.map((stat, index) => (
-                           <motion.div
-                             key={index}
-                             initial={{ opacity: 0, x: -10 }}
-                             animate={{ opacity: 1, x: 0 }}
-                             transition={{ delay: 0.45 + index * 0.1 }}
-                             className="bg-neutral-800/30 border border-primary/20 rounded-lg p-4 text-center"
-                           >
-                             <p className="text-2xl font-bold text-primary mb-1">{stat.value}</p>
-                             <p className="text-sm text-neutral-400">{stat.label}</p>
-                           </motion.div>
-                         ))}
+                         
+                         {/* Content Card */}
+                         <div className="flex-1 bg-white rounded-2xl p-6 border border-slate-200 shadow-md hover:shadow-lg transition-all">
+                           <h3 className="text-xl font-bold text-slate-900 mb-2">{concept.title}</h3>
+                           <p className="text-base text-slate-700 leading-relaxed">{concept.description}</p>
+                         </div>
                        </div>
                      </motion.div>
-                   )}
-
-                   <motion.div
-                     initial={{ opacity: 0 }}
-                     animate={{ opacity: 1 }}
-                     transition={{ delay: 0.55 }}
-                     className="bg-gradient-to-r from-primary/20 to-primary/10 border border-primary/30 rounded-2xl p-6"
-                   >
-                     <p className="text-neutral-100 leading-relaxed">{infographic.summary}</p>
-                   </motion.div>
+                   ))}
                  </div>
+
+                 {/* Key Takeaways */}
+                 {infographic.keyStats.length > 0 && (
+                   <motion.div
+                     initial={{ opacity: 0, y: 20 }}
+                     animate={{ opacity: 1, y: 0 }}
+                     transition={{ delay: 0.4 }}
+                     className="mt-10 pt-8 border-t border-slate-300"
+                   >
+                     <h3 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-3">
+                       <Sparkles className="w-6 h-6" style={{ color: '#FBBF24' }} />
+                       Key Takeaways
+                     </h3>
+                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                       {infographic.keyStats.map((stat, index) => (
+                         <motion.div
+                           key={index}
+                           initial={{ opacity: 0, scale: 0.9 }}
+                           animate={{ opacity: 1, scale: 1 }}
+                           transition={{ delay: 0.45 + index * 0.1 }}
+                           className="bg-gradient-to-br from-slate-50 to-slate-100 border border-slate-300 rounded-xl p-5 text-center shadow-sm hover:shadow-md transition-all"
+                         >
+                           <p className="text-3xl font-bold text-slate-900 mb-2">{stat.value}</p>
+                           <p className="text-sm font-semibold text-slate-700">{stat.label}</p>
+                         </motion.div>
+                       ))}
+                     </div>
+                   </motion.div>
+                 )}
+
+                 {/* Summary */}
+                 <motion.div
+                   initial={{ opacity: 0, y: 20 }}
+                   animate={{ opacity: 1, y: 0 }}
+                   transition={{ delay: 0.55 }}
+                   className="mt-10 bg-gradient-to-r from-slate-100 to-slate-50 border border-slate-300 rounded-2xl p-8 backdrop-blur-sm"
+                 >
+                   <h4 className="text-lg font-bold text-slate-900 mb-3">Summary</h4>
+                   <p className="text-base text-slate-800 leading-relaxed font-medium">{infographic.summary}</p>
+                 </motion.div>
                </motion.div>
              )}
              {!infographic && mode === 'check' ? (
