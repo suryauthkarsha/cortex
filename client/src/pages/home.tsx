@@ -456,10 +456,16 @@ export default function Home() {
                <button 
                  onClick={handleGenerateInfographic}
                  disabled={isInfographicLoading || !aiResponse}
-                 className="flex-1 flex items-center justify-center gap-2 px-6 py-4 bg-primary hover:bg-primary/80 text-black rounded-full font-bold text-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+                 className="flex-1 flex items-center justify-center gap-2 px-6 py-4 bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-300 hover:to-yellow-400 text-black rounded-full font-bold text-lg transition-all shadow-lg hover:shadow-2xl hover:shadow-yellow-500/50 disabled:opacity-50 disabled:cursor-not-allowed relative"
                  data-testid="button-generate-notes"
                >
-                 <Sparkles className="w-5 h-5" />
+                 <motion.div
+                   animate={!isInfographicLoading && aiResponse ? { rotate: [0, 360] } : {}}
+                   transition={{ duration: 3, repeat: Infinity }}
+                   className="absolute inset-0 rounded-full bg-gradient-to-r from-yellow-400 to-yellow-500 opacity-0 blur-lg"
+                   style={{ zIndex: -1 }}
+                 />
+                 <Sparkles className="w-5 h-5 animate-pulse" />
                  {isInfographicLoading ? "Generating..." : "Generate Notes"}
                </button>
                <button 
