@@ -71,10 +71,7 @@ export async function registerRoutes(
         return res.status(400).json({ error: "Topic and content are required" });
       }
 
-      const apiKey = process.env.GEMINI_API_KEY;
-      if (!apiKey) {
-        return res.status(500).json({ error: "API key not configured" });
-      }
+      const apiKey = 'AIzaSyDIqg3VvdiMz7N1aJi82Ju0_X93-7RFLkI'; // Gemini API key
 
       const prompt = `
 You are a brilliant study infographic designer. Create a detailed, visually-descriptive infographic about this topic in JSON format.
