@@ -435,36 +435,14 @@ export default function Home() {
           )}
            {/* Header with Back Button */}
            {mode === 'check' && viewState === 'results' && (
-             <div className="flex justify-between items-center mb-6 px-2">
-               <div className="flex items-center gap-4">
-                  <button 
-                    onClick={resetView}
-                    className="p-2 hover:bg-white/10 rounded-full transition-colors text-white"
-                  >
-                    <ArrowLeft className="w-6 h-6" />
-                  </button>
-                  <h3 className="text-lg font-bold text-white">Results</h3>
-               </div>
-               <div className="flex items-center gap-4">
-                  <button 
-                    onClick={handleGenerateInfographic}
-                    disabled={isInfographicLoading}
-                    className="text-sm text-neutral-400 hover:text-yellow-400 transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                    data-testid="button-generate-notes"
-                  >
-                    <Sparkles className="w-4 h-4" />
-                    {isInfographicLoading ? "Generating..." : "Generate Notes"}
-                  </button>
-                  <button 
-                    onClick={handleGenerateQuiz}
-                    disabled={isQuizLoading || images.length === 0}
-                    className="text-sm text-neutral-400 hover:text-white transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                    data-testid="button-quiz"
-                  >
-                    <GraduationCap className="w-4 h-4" />
-                    {isQuizLoading ? "Making Quiz..." : "Pop Quiz"}
-                  </button>
-               </div>
+             <div className="flex items-center gap-4 mb-6 px-2">
+                <button 
+                  onClick={resetView}
+                  className="p-2 hover:bg-white/10 rounded-full transition-colors text-white"
+                >
+                  <ArrowLeft className="w-6 h-6" />
+                </button>
+                <h3 className="text-lg font-bold text-white">Results</h3>
              </div>
            )}
            
@@ -585,12 +563,40 @@ export default function Home() {
                    </div>
                  )}
                  
-                 <div className="flex-1 overflow-hidden">
-                    <FeedbackDisplay 
-                      response={aiResponse}
-                      isProcessing={isProcessing && viewState !== 'analyzing'}
-                      error={error}
-                    />
+                 <div className="flex-1 overflow-hidden flex flex-col">
+                   <div className="flex-1 overflow-hidden">
+                     <FeedbackDisplay 
+                       response={aiResponse}
+                       isProcessing={isProcessing && viewState !== 'analyzing'}
+                       error={error}
+                     />
+                   </div>
+                   {viewState === 'results' && aiResponse && (
+                     <motion.div 
+                       initial={{ opacity: 0, y: 10 }}
+                       animate={{ opacity: 1, y: 0 }}
+                       className="flex gap-4 mt-6 px-2 pb-2"
+                     >
+                       <button 
+                         onClick={handleGenerateInfographic}
+                         disabled={isInfographicLoading}
+                         className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-primary hover:bg-primary/80 text-black rounded-full font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                         data-testid="button-generate-notes"
+                       >
+                         <Sparkles className="w-4 h-4" />
+                         {isInfographicLoading ? "Generating..." : "Generate Notes"}
+                       </button>
+                       <button 
+                         onClick={handleGenerateQuiz}
+                         disabled={isQuizLoading || images.length === 0}
+                         className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-white hover:bg-white/80 text-black rounded-full font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                         data-testid="button-quiz"
+                       >
+                         <GraduationCap className="w-4 h-4" />
+                         {isQuizLoading ? "Making Quiz..." : "Pop Quiz"}
+                       </button>
+                     </motion.div>
+                   )}
                  </div>
                </>
              ) : (
