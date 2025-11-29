@@ -572,10 +572,10 @@ export default function Home() {
                      initial={{ opacity: 0, y: 20 }}
                      animate={{ opacity: 1, y: 0 }}
                      transition={{ delay: 0.4 }}
-                     className="mt-10 pt-8 border-t border-slate-300"
+                     className="mt-10 pt-8 border-t border-yellow-400/30"
                    >
-                     <h3 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-3">
-                       <Sparkles className="w-6 h-6" style={{ color: '#FBBF24' }} />
+                     <h3 className="text-2xl font-bold text-yellow-400 mb-6 flex items-center gap-3">
+                       <Sparkles className="w-6 h-6" />
                        Key Takeaways
                      </h3>
                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -585,10 +585,10 @@ export default function Home() {
                            initial={{ opacity: 0, scale: 0.9 }}
                            animate={{ opacity: 1, scale: 1 }}
                            transition={{ delay: 0.45 + index * 0.1 }}
-                           className="bg-gradient-to-br from-slate-50 to-slate-100 border border-slate-300 rounded-xl p-5 text-center shadow-sm hover:shadow-md transition-all"
+                           className="bg-neutral-800/60 backdrop-blur-sm border border-yellow-400/20 hover:border-yellow-400/50 rounded-2xl p-6 text-center shadow-lg transition-all group"
                          >
-                           <p className="text-3xl font-bold text-slate-900 mb-2">{stat.value}</p>
-                           <p className="text-sm font-semibold text-slate-700">{stat.label}</p>
+                           <p className="text-3xl font-bold text-yellow-400 mb-2 group-hover:text-yellow-300 transition-colors">{stat.value}</p>
+                           <p className="text-sm font-semibold text-neutral-300">{stat.label}</p>
                          </motion.div>
                        ))}
                      </div>
@@ -600,10 +600,10 @@ export default function Home() {
                    initial={{ opacity: 0, y: 20 }}
                    animate={{ opacity: 1, y: 0 }}
                    transition={{ delay: 0.55 }}
-                   className="mt-10 bg-gradient-to-r from-slate-100 to-slate-50 border border-slate-300 rounded-2xl p-8 backdrop-blur-sm"
+                   className="mt-10 bg-neutral-800/60 backdrop-blur-sm border border-yellow-400/20 rounded-2xl p-8 hover:border-yellow-400/40 transition-all"
                  >
-                   <h4 className="text-lg font-bold text-slate-900 mb-3">Summary</h4>
-                   <p className="text-base text-slate-800 leading-relaxed font-medium">{infographic.summary}</p>
+                   <h4 className="text-lg font-bold text-yellow-400 mb-3">Summary</h4>
+                   <p className="text-base text-neutral-200 leading-relaxed font-medium">{infographic.summary}</p>
                  </motion.div>
                </motion.div>
              )}
