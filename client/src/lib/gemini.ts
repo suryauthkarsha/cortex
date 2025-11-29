@@ -158,16 +158,21 @@ export interface InfographicData {
 }
 
 export const generateInfographic = async (topic: string, content: string, images: string[] = []): Promise<InfographicData> => {
-  const response = await fetch('/api/generate-infographic', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ topic, content, images })
-  });
-
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || 'Failed to generate infographic');
-  }
-
-  return response.json();
+  const prompt = `Analyze the attached study materials and create study notes infographic.
+  
+Return valid JSON ONLY (no markdown):
+{
+  "title": "Study Notes",
+  "subtitle": "Key Concepts",
+  "colorScheme": ["#FBBF24", "#3B82F6", "#EC4899"],
+  "concepts": [
+    {"title": "Concept 1", "icon": "brain", "description": "Description", "color": "#FBBF24"},
+    {"title": "Concept 2", "icon": "lightbulb", "description": "Description", "color": "#3B82F6"},
+    {"title": "Concept 3", "icon": "sparkles", "description": "Description", "color": "#EC4899"}
+  ],
+  "keyStats": [{"label": "Key", "value": "Info", "icon": "check-circle"}],
+  "summary": "Study guide summary"
+}`;
+  
+  return callGemini(prompt, images);
 };
