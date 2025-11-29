@@ -94,13 +94,14 @@ export function useSpeech() {
   const toggleListening = useCallback(() => {
     if (!recognitionRef.current) return;
 
+    // Only process if state is not already being processed
     if (isListening) {
       console.log("Stopping listening");
       listeningRef.current = false;
       try {
-        recognitionRef.current.stop();
+        recognitionRef.current.abort();
       } catch (e) {
-        console.warn("Stop error:", e);
+        console.warn("Abort error:", e);
       }
       setIsListening(false);
     } else {
@@ -109,10 +110,19 @@ export function useSpeech() {
       setTranscript('');
       setError(null);
       try {
-        recognitionRef.current.start();
-        setIsListening(true);
+        recognitionRef.current.abort(); // Make sure it's stopped first
+        setTimeout(() => {
+          try {
+            recognitionRef.current.start();
+            setIsListening(true);
+          } catch (e) {
+            console.warn("Start error:", e);
+            setError("Could not start listening");
+            setIsListening(false);
+          }
+        }, 100);
       } catch (e) {
-        console.warn("Start error:", e);
+        console.warn("Setup error:", e);
         setError("Could not start listening");
       }
     }
