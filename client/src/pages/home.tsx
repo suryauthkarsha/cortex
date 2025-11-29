@@ -336,7 +336,7 @@ export default function Home() {
                 </div>
 
                 {/* Analyze Button (Check Mode) */}
-                {!isListening && mode === 'check' && viewState === 'idle' && transcript && transcript.trim().length > 0 && (
+                {!isListening && mode === 'check' && transcript.trim() && (
                   <motion.div 
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -350,18 +350,6 @@ export default function Home() {
                       {isProcessing ? <Sparkles className="w-6 h-6 animate-spin" /> : <Play className="w-6 h-6 fill-current" />}
                       Analyze Now
                     </button>
-                  </motion.div>
-                )}
-
-                {/* Camera Section - Separate from Mic */}
-                {isSelfieMode && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="relative mt-8 px-4 py-3 rounded-full bg-neutral-800/50 border border-white/10 backdrop-blur-md flex items-center gap-3 z-20"
-                  >
-                    <div className="w-3 h-3 rounded-full bg-red-500 animate-pulse" />
-                    <span className="text-sm text-white font-medium">Camera Active</span>
                   </motion.div>
                 )}
              </div>
@@ -380,6 +368,20 @@ export default function Home() {
           }}
           className={`h-full flex flex-col transition-all duration-500 ${viewState === 'results' ? 'w-full max-w-5xl mx-auto' : 'lg:w-[500px] xl:w-[650px]'}`}
         >
+          {/* Camera Preview Box */}
+          {isSelfieMode && viewState !== 'results' && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="mb-4 rounded-2xl overflow-hidden border border-white/10 bg-neutral-900/30 h-32 flex-shrink-0"
+            >
+              <video ref={videoRef} autoPlay playsInline muted className="w-full h-full object-cover" />
+              <div className="absolute top-2 right-2 flex items-center gap-2 text-xs text-red-400 font-semibold bg-black/60 px-2 py-1 rounded">
+                <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                LIVE
+              </div>
+            </motion.div>
+          )}
            {/* Header with Back Button */}
            {mode === 'check' && (
              <div className="flex justify-between items-center mb-6 px-2">
