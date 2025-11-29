@@ -446,6 +446,34 @@ export default function Home() {
              </div>
            )}
            
+           {/* Buttons Row - Always Visible at Bottom */}
+           {mode === 'check' && viewState === 'results' && (
+             <motion.div 
+               initial={{ opacity: 0, y: 10 }}
+               animate={{ opacity: 1, y: 0 }}
+               className="flex gap-4 px-2 pb-4"
+             >
+               <button 
+                 onClick={handleGenerateInfographic}
+                 disabled={isInfographicLoading || !aiResponse}
+                 className="flex-1 flex items-center justify-center gap-2 px-6 py-4 bg-primary hover:bg-primary/80 text-black rounded-full font-bold text-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+                 data-testid="button-generate-notes"
+               >
+                 <Sparkles className="w-5 h-5" />
+                 {isInfographicLoading ? "Generating..." : "Generate Notes"}
+               </button>
+               <button 
+                 onClick={handleGenerateQuiz}
+                 disabled={isQuizLoading || images.length === 0}
+                 className="flex-1 flex items-center justify-center gap-2 px-6 py-4 bg-white hover:bg-white/80 text-black rounded-full font-bold text-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+                 data-testid="button-quiz"
+               >
+                 <GraduationCap className="w-5 h-5" />
+                 {isQuizLoading ? "Making Quiz..." : "Pop Quiz"}
+               </button>
+             </motion.div>
+           )}
+
            {/* Main Content Area */}
            <div className="flex-1 bg-neutral-900/20 border border-white/5 rounded-[2.5rem] overflow-hidden backdrop-blur-sm flex flex-col relative">
              {infographic && (
@@ -563,40 +591,12 @@ export default function Home() {
                    </div>
                  )}
                  
-                 <div className="flex-1 overflow-hidden flex flex-col">
-                   <div className="flex-1 overflow-hidden">
-                     <FeedbackDisplay 
-                       response={aiResponse}
-                       isProcessing={isProcessing && viewState !== 'analyzing'}
-                       error={error}
-                     />
-                   </div>
-                   {viewState === 'results' && (
-                     <motion.div 
-                       initial={{ opacity: 0, y: 10 }}
-                       animate={{ opacity: 1, y: 0 }}
-                       className="flex gap-4 mt-6 px-2 pb-2"
-                     >
-                       <button 
-                         onClick={handleGenerateInfographic}
-                         disabled={isInfographicLoading || !aiResponse}
-                         className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-primary hover:bg-primary/80 text-black rounded-full font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                         data-testid="button-generate-notes"
-                       >
-                         <Sparkles className="w-4 h-4" />
-                         {isInfographicLoading ? "Generating..." : "Generate Notes"}
-                       </button>
-                       <button 
-                         onClick={handleGenerateQuiz}
-                         disabled={isQuizLoading || images.length === 0}
-                         className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-white hover:bg-white/80 text-black rounded-full font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                         data-testid="button-quiz"
-                       >
-                         <GraduationCap className="w-4 h-4" />
-                         {isQuizLoading ? "Making Quiz..." : "Pop Quiz"}
-                       </button>
-                     </motion.div>
-                   )}
+                 <div className="flex-1 overflow-hidden">
+                   <FeedbackDisplay 
+                     response={aiResponse}
+                     isProcessing={isProcessing && viewState !== 'analyzing'}
+                     error={error}
+                   />
                  </div>
                </>
              ) : (
