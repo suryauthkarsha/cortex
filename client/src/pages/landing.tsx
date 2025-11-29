@@ -381,21 +381,58 @@ const LandingPage = () => {
         <div className="max-w-6xl mx-auto">
           <h2 className="text-5xl font-bold text-center mb-4">Real Students</h2>
           <p className="text-neutral-400 text-center mb-16 max-w-2xl mx-auto">
-            People who actually use StudyTutor.
+            People who actually use Cortex.
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 perspective" style={{ perspective: '1000px' }}>
             {testimonials.map((testimonial, i) => (
-              <div
+              <motion.div
                 key={i}
-                className="p-6 rounded-lg border border-yellow-600/20"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+                className="p-8 bg-gradient-to-br from-yellow-50 to-yellow-100"
+                style={{
+                  transform: `rotate(${i === 0 ? '-2deg' : i === 1 ? '1deg' : '2deg'}) perspective(1000px)`,
+                  boxShadow: `${i === 0 ? '-4px' : i === 1 ? '2px' : '4px'} 12px 28px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3)`,
+                  position: 'relative',
+                  backgroundColor: '#fef9e7',
+                  backgroundImage: `
+                    repeating-linear-gradient(
+                      90deg,
+                      transparent,
+                      transparent 2px,
+                      rgba(251, 191, 36, 0.03) 2px,
+                      rgba(251, 191, 36, 0.03) 4px
+                    ),
+                    repeating-linear-gradient(
+                      0deg,
+                      transparent,
+                      transparent 2px,
+                      rgba(251, 191, 36, 0.03) 2px,
+                      rgba(251, 191, 36, 0.03) 4px
+                    )
+                  `,
+                }}
               >
-                <p className="text-neutral-300 mb-6">"{testimonial.quote}"</p>
+                {/* Post-it top tape effect */}
+                <div style={{
+                  position: 'absolute',
+                  top: '-8px',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  width: '60%',
+                  height: '8px',
+                  background: 'linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.1), transparent)',
+                  borderRadius: '1px',
+                }} />
+
+                <p className="text-neutral-800 mb-6 font-light leading-relaxed italic">"{testimonial.quote}"</p>
                 <div>
-                  <p className="font-bold text-yellow-500">{testimonial.name}</p>
-                  <p className="text-sm text-neutral-500">{testimonial.role}</p>
+                  <p className="font-bold text-yellow-700">{testimonial.name}</p>
+                  <p className="text-sm text-yellow-600">{testimonial.role}</p>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
