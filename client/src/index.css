@@ -654,7 +654,7 @@
   align-items: center;
   justify-content: center;
   --hue: 220deg;
-  --width: 15rem;
+  --width: 8rem;
   --accent-hue: 50deg;
   --duration: 0.6s;
   --easing: cubic-bezier(1, 0, 1, 1);
@@ -725,27 +725,6 @@
     20px 30px 30px hsl(var(--hue) 18% 50% / 60%);
 }
 
-.switch .button::before, 
-.switch .button::after {
-  content: '';
-  position: absolute;
-  top: 10%;
-  width: 41%;
-  height: 80%;
-  border-radius: 100%;
-}
-
-.switch .button::before {
-  left: 5%;
-  box-shadow: inset 1px 1px 2px hsl(var(--hue) 20% 85%);
-  background-image: linear-gradient(-50deg, hsl(var(--hue) 20% 95%) 20%, hsl(var(--hue) 20% 85%) 80%);
-}
-
-.switch .button::after {
-  right: 5%;
-  box-shadow: inset 1px 1px 3px hsl(var(--hue) 20% 70%);
-  background-image: linear-gradient(-50deg, hsl(var(--hue) 20% 95%) 20%, hsl(var(--hue) 20% 75%) 80%);
-}
 
 .togglesw:checked ~ .button {
   left: 40%;
