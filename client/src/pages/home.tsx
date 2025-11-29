@@ -431,15 +431,17 @@ export default function Home() {
                  {/* Loading Overlay */}
                  {viewState === 'analyzing' && (
                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/50 backdrop-blur-sm z-20">
-                      <div className="flex items-center gap-3">
-                        {[0, 1, 2].map((i) => (
-                          <motion.div
-                            key={i}
-                            animate={{ scale: [1, 1.5, 1], opacity: [0.4, 1, 0.4] }}
-                            transition={{ duration: 1.5, delay: i * 0.2, repeat: Infinity }}
-                            className="w-3 h-3 bg-primary rounded-full"
-                          />
-                        ))}
+                      <div className="loader-wrapper">
+                        <span className="loader-letter">A</span>
+                        <span className="loader-letter">n</span>
+                        <span className="loader-letter">a</span>
+                        <span className="loader-letter">l</span>
+                        <span className="loader-letter">y</span>
+                        <span className="loader-letter">s</span>
+                        <span className="loader-letter">i</span>
+                        <span className="loader-letter">n</span>
+                        <span className="loader-letter">g</span>
+                        <div className="loader"></div>
                       </div>
                    </div>
                  )}
