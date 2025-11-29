@@ -654,7 +654,7 @@
   align-items: center;
   justify-content: center;
   --hue: 220deg;
-  --width: 8rem;
+  --width: 5rem;
   --accent-hue: 50deg;
   --duration: 0.6s;
   --easing: cubic-bezier(1, 0, 1, 1);
@@ -674,6 +674,7 @@
   height: calc(var(--width) / 2.5);
   border-radius: var(--width);
   background: hsl(var(--hue) 20% 88%);
+  box-shadow: none;
 }
 
 .indicator {
