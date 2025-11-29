@@ -334,18 +334,8 @@ export default function Home() {
                      </p>
                      {transcript && (
                        <p className="text-sm text-yellow-400 mt-4 italic">
-                         Transcript: {transcript.length} chars | Click below to analyze
+                         Recording captured • Click below to analyze
                        </p>
-                     )}
-                     
-                     {/* Fallback Manual Input */}
-                     {!isListening && !transcript && (
-                       <textarea
-                         value={transcript}
-                         onChange={(e) => setTranscript(e.target.value)}
-                         placeholder="Or type here to test..."
-                         className="mt-4 w-64 h-20 bg-neutral-800/50 text-white text-sm rounded-lg p-3 border border-white/10 focus:outline-none focus:border-primary/50 resize-none"
-                       />
                      )}
                    </div>
                 </div>

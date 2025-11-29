@@ -15,32 +15,52 @@ export function useSpeech() {
       recognitionRef.current = new SpeechRecognition();
       recognitionRef.current.continuous = true;
       recognitionRef.current.interimResults = true;
+      recognitionRef.current.lang = 'en-US';
+      recognitionRef.current.maxAlternatives = 1;
 
       recognitionRef.current.onresult = (event: any) => {
+        let interimTranscript = '';
         let finalTranscript = '';
+        
         for (let i = event.resultIndex; i < event.results.length; ++i) {
+          const transcript = event.results[i][0].transcript;
+          
           if (event.results[i].isFinal) {
-            finalTranscript += event.results[i][0].transcript;
+            finalTranscript += transcript + ' ';
+          } else {
+            interimTranscript += transcript;
           }
         }
+        
         if (finalTranscript) {
-          setTranscript(prev => prev + ' ' + finalTranscript);
+          setTranscript(prev => (prev + ' ' + finalTranscript).trim());
         }
       };
 
       recognitionRef.current.onerror = (event: any) => {
         console.error("Speech recognition error", event.error);
-        setIsListening(false);
-        if (event.error === 'not-allowed') {
-          setError("Microphone access denied.");
+        
+        // Auto-retry on recoverable errors
+        if (event.error === 'audio-capture' || event.error === 'network' || event.error === 'no-speech') {
+          console.log("Retrying speech recognition...");
+          try {
+            if (isListening) {
+              setTimeout(() => {
+                recognitionRef.current?.start();
+              }, 500);
+            }
+          } catch (e) {
+            console.warn("Retry failed:", e);
+          }
+        } else if (event.error === 'not-allowed') {
+          setError("Microphone access denied. Please allow microphone access.");
+          setIsListening(false);
         }
       };
       
       recognitionRef.current.onend = () => {
-        // Optional: Auto-restart if we want it always on, but for now manual toggle is safer
         if (isListening) {
-           // recognitionRef.current.start(); 
-           setIsListening(false);
+          setIsListening(false);
         }
       };
     } else {
@@ -48,10 +68,14 @@ export function useSpeech() {
     }
 
     return () => {
-      if (recognitionRef.current) recognitionRef.current.stop();
+      if (recognitionRef.current) {
+        try {
+          recognitionRef.current.abort();
+        } catch (e) {}
+      }
       if (synthRef.current) synthRef.current.cancel();
     };
-  }, []);
+  }, [isListening]);
 
   const toggleListening = useCallback(() => {
     if (!recognitionRef.current) return;
