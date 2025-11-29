@@ -321,7 +321,7 @@ export default function Home() {
                       </motion.button>
                    </div>
 
-                   <div className="text-center space-y-2 relative z-20">
+                   <div className="text-center space-y-4 relative z-20 w-full max-w-2xl">
                      <h2 className="text-4xl font-bold text-white tracking-tight">
                        {isListening ? "Listening..." : mode === 'tutor' ? "Ask Gen Z Tutor" : "Explain Concept"}
                      </h2>
@@ -332,32 +332,53 @@ export default function Home() {
                            ? "Ask me anything, no cap." 
                            : "Tap to record your explanation."}
                      </p>
+                     
+                     {/* Text Input */}
+                     <textarea
+                       value={transcript}
+                       onChange={(e) => setTranscript(e.target.value)}
+                       placeholder={mode === 'check' ? "Type or speak your explanation..." : "Type or speak your question..."}
+                       className="w-full bg-neutral-800/50 text-white text-sm rounded-2xl p-4 border border-white/10 focus:outline-none focus:border-primary/50 resize-none placeholder-neutral-500"
+                       rows={3}
+                     />
+
                      {transcript && (
-                       <p className="text-sm text-yellow-400 mt-4 italic">
-                         Recording captured • Click below to analyze
+                       <p className="text-xs text-yellow-400 italic">
+                         {transcript.length} characters • Ready to {mode === 'check' ? 'analyze' : 'ask'}
                        </p>
                      )}
                    </div>
-                </div>
 
-                {/* Analyze Button (Check Mode) */}
-                {!isListening && mode === 'check' && transcript && transcript.trim().length > 0 && (
-                  <motion.div 
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="relative mt-8 z-40"
-                  >
-                    <button 
-                       onClick={handleAnalyze}
-                       disabled={isProcessing}
-                       className="bg-white text-black px-10 py-4 rounded-full font-bold text-xl hover:scale-105 transition-transform shadow-xl flex items-center gap-3"
-                       data-testid="button-analyze"
-                    >
-                      {isProcessing ? <Sparkles className="w-6 h-6 animate-spin" /> : <Play className="w-6 h-6 fill-current" />}
-                      Analyze Now
-                    </button>
-                  </motion.div>
-                )}
+                   {/* Analyze/Ask Buttons */}
+                   <motion.div 
+                     initial={{ opacity: 0, y: 10 }}
+                     animate={{ opacity: transcript && transcript.trim().length > 0 ? 1 : 0, pointerEvents: transcript && transcript.trim().length > 0 ? 'auto' : 'none', y: 0 }}
+                     className="relative z-30 flex gap-4"
+                   >
+                     {mode === 'check' && (
+                       <button 
+                         onClick={handleAnalyze}
+                         disabled={isProcessing || !transcript.trim()}
+                         className="bg-white text-black px-10 py-4 rounded-full font-bold text-lg hover:scale-105 transition-transform shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-3"
+                         data-testid="button-analyze"
+                       >
+                         {isProcessing ? <Sparkles className="w-5 h-5 animate-spin" /> : <Play className="w-5 h-5 fill-current" />}
+                         Analyze Now
+                       </button>
+                     )}
+                     
+                     {mode === 'tutor' && (
+                       <button 
+                         onClick={() => handleTutorChat(transcript)}
+                         disabled={isProcessing || !transcript.trim()}
+                         className="bg-primary text-black px-10 py-4 rounded-full font-bold text-lg hover:scale-105 transition-transform shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-3"
+                         data-testid="button-ask-tutor"
+                       >
+                         {isProcessing ? <Sparkles className="w-5 h-5 animate-spin" /> : '✨ Ask'}
+                       </button>
+                     )}
+                   </motion.div>
+                </div>
              </div>
           </div>
         )}
