@@ -336,11 +336,11 @@ export default function Home() {
                 </div>
 
                 {/* Analyze Button (Check Mode) */}
-                {!isListening && mode === 'check' && transcript.trim() && (
+                {!isListening && mode === 'check' && transcript && transcript.trim().length > 0 && (
                   <motion.div 
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="relative mt-12 z-30"
+                    className="absolute bottom-12 left-1/2 transform -translate-x-1/2 z-40"
                   >
                     <button 
                        onClick={handleAnalyze}
