@@ -119,16 +119,17 @@ export default function Home() {
   };
 
   const handleGenerateInfographic = async () => {
-    if (!aiResponse) {
-      setError("Analyze your answer first.");
+    if (images.length === 0) {
+      setError("Upload study material first.");
       return;
     }
     setIsInfographicLoading(true);
     setError(null);
     try {
+      const content = aiResponse?.detailed_feedback || "Generate comprehensive study notes from the uploaded material.";
       const result = await generateInfographic(
         "Study Notes",
-        aiResponse.detailed_feedback,
+        content,
         images
       );
       setInfographic(result);
@@ -455,12 +456,12 @@ export default function Home() {
              >
                <button 
                  onClick={handleGenerateInfographic}
-                 disabled={isInfographicLoading || !aiResponse}
+                 disabled={isInfographicLoading || images.length === 0}
                  className="flex-1 flex items-center justify-center gap-2 px-6 py-4 bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-300 hover:to-yellow-400 text-black rounded-full font-bold text-lg transition-all shadow-lg hover:shadow-2xl hover:shadow-yellow-500/50 disabled:opacity-50 disabled:cursor-not-allowed relative"
                  data-testid="button-generate-notes"
                >
                  <motion.div
-                   animate={!isInfographicLoading && aiResponse ? { rotate: [0, 360] } : {}}
+                   animate={!isInfographicLoading && images.length > 0 ? { rotate: [0, 360] } : {}}
                    transition={{ duration: 3, repeat: Infinity }}
                    className="absolute inset-0 rounded-full bg-gradient-to-r from-yellow-400 to-yellow-500 opacity-0 blur-lg"
                    style={{ zIndex: -1 }}
