@@ -128,7 +128,8 @@ export default function Home() {
     try {
       const result = await generateInfographic(
         "Study Notes",
-        aiResponse.detailed_feedback
+        aiResponse.detailed_feedback,
+        images
       );
       setInfographic(result);
     } catch (err: any) {

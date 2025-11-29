@@ -66,7 +66,7 @@ export async function registerRoutes(
   // Infographic Generation Endpoint
   app.post("/api/generate-infographic", async (req, res) => {
     try {
-      const { topic, content } = req.body;
+      const { topic, content, images = [] } = req.body;
       if (!topic || !content) {
         return res.status(400).json({ error: "Topic and content are required" });
       }
@@ -80,9 +80,9 @@ Topic: ${topic}
 Content: ${content}
 
 Generate an infographic that includes:
-1. A catchy title
+1. A catchy title based on the study material
 2. 3-4 key concepts with icons
-3. Visual statistics or key points
+3. Visual statistics or key points from the material
 4. Color scheme (use vibrant, study-friendly colors)
 5. Layout suggestions
 
@@ -110,16 +110,31 @@ Return ONLY valid JSON with this structure:
 }
       `;
 
+      // Build request with images if available
+      const imageParts = images.map(img => ({
+        inlineData: {
+          mimeType: "image/jpeg",
+          data: img.split(',')[1]
+        }
+      }));
+
+      const requestBody = {
+        contents: [{
+          parts: [
+            ...imageParts,
+            { text: prompt }
+          ]
+        }]
+      };
+
+      console.log("Calling Gemini with", imageParts.length, "images for infographic generation");
+
       const response = await fetch(
         `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            contents: [{
-              parts: [{ text: prompt }]
-            }]
-          })
+          body: JSON.stringify(requestBody)
         }
       );
 
@@ -128,6 +143,11 @@ Return ONLY valid JSON with this structure:
       if (data.error) {
         console.error("Infographic generation error:", data.error);
         throw new Error(data.error.message || "Infographic generation failed");
+      }
+
+      if (!data.candidates || !data.candidates[0] || !data.candidates[0].content) {
+        console.error("Invalid response structure:", data);
+        throw new Error("Invalid response from AI");
       }
 
       const textResponse = data.candidates[0].content.parts[0].text;

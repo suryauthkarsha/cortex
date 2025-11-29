@@ -157,15 +157,16 @@ export interface InfographicData {
   summary: string;
 }
 
-export const generateInfographic = async (topic: string, content: string): Promise<InfographicData> => {
+export const generateInfographic = async (topic: string, content: string, images: string[] = []): Promise<InfographicData> => {
   const response = await fetch('/api/generate-infographic', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ topic, content })
+    body: JSON.stringify({ topic, content, images })
   });
 
   if (!response.ok) {
-    throw new Error('Failed to generate infographic');
+    const error = await response.json();
+    throw new Error(error.error || 'Failed to generate infographic');
   }
 
   return response.json();
