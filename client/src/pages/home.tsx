@@ -497,20 +497,20 @@ export default function Home() {
                  <div className="flex items-center justify-between mb-4">
                    <button 
                      onClick={() => setInfographic(null)}
-                     className="p-2 hover:bg-slate-200 rounded-full transition-colors text-slate-700"
+                     className="p-2 hover:bg-white/10 rounded-full transition-colors text-white"
                    >
                      <ArrowLeft className="w-6 h-6" />
                    </button>
-                   <h3 className="text-xl font-bold text-slate-900">Study Notes</h3>
+                   <h3 className="text-xl font-bold text-yellow-400">Study Notes</h3>
                    <div className="w-6"></div>
                  </div>
 
                  {/* Main Title */}
                  <div className="mb-8">
-                   <h2 className="text-5xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent mb-2">
+                   <h2 className="text-5xl font-bold bg-gradient-to-r from-yellow-400 to-yellow-300 bg-clip-text text-transparent mb-2">
                      {infographic.title}
                    </h2>
-                   <p className="text-lg text-slate-600">{infographic.subtitle}</p>
+                   <p className="text-lg text-neutral-300">{infographic.subtitle}</p>
                  </div>
 
                  {/* Mindmap-style Concepts */}
@@ -543,9 +543,9 @@ export default function Home() {
                          </div>
                          
                          {/* Content Card - Dark */}
-                         <div className="flex-1 bg-neutral-800/60 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:border-white/20 transition-all shadow-lg">
-                           <h3 className="text-xl font-bold text-white mb-2">{concept.title}</h3>
-                           <p className="text-base text-neutral-300 leading-relaxed">{concept.description}</p>
+                         <div className="flex-1 bg-neutral-800/60 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:border-yellow-400/30 transition-all shadow-lg">
+                           <h3 className="text-xl font-bold text-yellow-300 mb-2">{concept.title}</h3>
+                           <p className="text-base text-neutral-200 leading-relaxed">{concept.description}</p>
                          </div>
                        </div>
                      </motion.div>
