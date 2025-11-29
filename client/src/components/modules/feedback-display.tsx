@@ -35,15 +35,6 @@ export function FeedbackDisplay({ response, isProcessing, error }: FeedbackDispl
   if (isProcessing) {
     return (
       <div className="h-full flex flex-col items-center justify-center p-12 space-y-8 relative">
-        {/* Dark quote background */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-          {/* Dark overlay behind quote */}
-          <div className="absolute w-96 h-48 bg-neutral-950/60 rounded-2xl blur-2xl -z-10" />
-          <p className="text-xl font-light text-neutral-600 text-center max-w-md italic px-8 py-6 relative z-0">
-            "{randomQuote}"
-          </p>
-        </div>
-
         {/* Bigger animated dots */}
         <div className="flex items-center gap-4 relative z-10">
           {[0, 1, 2].map((i) => (
