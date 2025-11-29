@@ -486,7 +486,7 @@ export default function Home() {
            )}
 
            {/* Main Content Area - Infographic/Notes */}
-           <div className="flex-1 bg-black border border-white/10 rounded-[2.5rem] overflow-hidden flex flex-col relative shadow-xl">
+           <div className="flex-1 bg-black border-0 border-x border-b border-white/10 rounded-[2.5rem] overflow-hidden flex flex-col relative shadow-xl">
              {infographic && (
                <motion.div
                  initial={{ opacity: 0, y: 20 }}
