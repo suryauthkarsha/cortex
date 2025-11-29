@@ -384,50 +384,78 @@ const LandingPage = () => {
             People who actually use Cortex.
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 perspective" style={{ perspective: '1200px' }}>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-16 perspective" style={{ perspective: '1500px' }}>
             {testimonials.map((testimonial, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 30, rotateX: 10 }}
+                initial={{ opacity: 0, y: 40, rotateX: 15 }}
                 whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
-                transition={{ delay: i * 0.15, duration: 0.6 }}
-                className="p-8 group cursor-pointer"
+                transition={{ delay: i * 0.2, duration: 0.7 }}
+                className="p-8 group"
                 style={{
-                  transform: `rotateZ(${i === 0 ? '-4deg' : i === 1 ? '1deg' : '4deg'}) rotateX(${i === 0 ? '2deg' : i === 1 ? '-1deg' : '2deg'})`,
+                  transform: `rotateZ(${i === 0 ? '-5deg' : i === 1 ? '0.5deg' : '5deg'}) rotateX(${i === 0 ? '3deg' : i === 1 ? '-2deg' : '3deg'}) rotateY(${i === 0 ? '-2deg' : i === 1 ? '1deg' : '2deg'})`,
                   backgroundColor: '#ffd700',
                   backgroundImage: `
-                    linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 50%),
-                    linear-gradient(90deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 30%, rgba(0, 0, 0, 0.05) 100%),
-                    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.02) 2px, rgba(0, 0, 0, 0.02) 4px)
+                    url("data:image/svg+xml,%3Csvg width='100%' height='100%' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' seed='2'/%3E%3CfeDisplacementMap in='SourceGraphic' scale='0.5'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E"),
+                    linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.1) 100%),
+                    linear-gradient(90deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 25%, rgba(0, 0, 0, 0.08) 100%)
                   `,
                   boxShadow: `
-                    ${i === 0 ? '-8px' : i === 1 ? '2px' : '8px'} 24px 48px rgba(0, 0, 0, 0.4),
-                    ${i === 0 ? '-4px' : i === 1 ? '1px' : '4px'} 12px 24px rgba(0, 0, 0, 0.25),
-                    inset 0 1px 2px rgba(255, 255, 255, 0.4),
-                    inset 0 -2px 4px rgba(0, 0, 0, 0.08)
+                    ${i === 0 ? '-12px 28px 56px' : i === 1 ? '0px 32px 64px' : '12px 28px 56px'} rgba(0, 0, 0, 0.5),
+                    ${i === 0 ? '-6px 14px 28px' : i === 1 ? '0px 16px 32px' : '6px 14px 28px'} rgba(0, 0, 0, 0.3),
+                    inset -1px 1px 0 rgba(255, 255, 255, 0.5),
+                    inset 1px -1px 2px rgba(0, 0, 0, 0.15)
                   `,
                   position: 'relative',
-                  minHeight: '240px',
+                  minHeight: '260px',
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'space-between',
-                  borderRadius: '1px',
+                  borderRadius: '0.5px',
+                  clipPath: `polygon(
+                    ${Math.random() * 2}% ${Math.random() * 2}%,
+                    ${98 + Math.random() * 2}% ${Math.random() * 1.5}%,
+                    ${100 - Math.random() * 1.5}% ${98 + Math.random() * 2}%,
+                    ${Math.random() * 2}% ${98 + Math.random() * 1.5}%
+                  )`,
                 }}
               >
-                {/* Paper crease effect */}
+                {/* Tape effect at top */}
+                <div style={{
+                  position: 'absolute',
+                  top: '-12px',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  width: '55%',
+                  height: '10px',
+                  background: 'linear-gradient(90deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0.6) 100%)',
+                  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
+                  borderRadius: '1px',
+                  opacity: 0.7,
+                }} />
+
+                {/* Worn paper edge highlights */}
                 <div style={{
                   position: 'absolute',
                   top: 0,
                   left: 0,
                   right: 0,
+                  height: '1px',
+                  background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent)',
+                }} />
+                <div style={{
+                  position: 'absolute',
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
                   height: '0.5px',
-                  background: 'linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.1), transparent)',
+                  background: 'linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.2), transparent)',
                 }} />
 
-                <p className="text-black mb-8 font-medium leading-relaxed text-base">"{testimonial.quote}"</p>
-                <div className="pt-4 border-t border-black/10">
+                <p className="text-black mb-8 font-medium leading-relaxed text-base italic">"{testimonial.quote}"</p>
+                <div className="pt-4 border-t-2 border-black/20">
                   <p className="font-bold text-black text-sm">{testimonial.name}</p>
-                  <p className="text-xs text-gray-700">{testimonial.role}</p>
+                  <p className="text-xs text-gray-800">{testimonial.role}</p>
                 </div>
               </motion.div>
             ))}
