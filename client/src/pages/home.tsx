@@ -108,7 +108,8 @@ export default function Home() {
     } else {
       toggleListening();
       if (mode === 'check') {
-        setAiResponse(null); 
+        setAiResponse(null);
+        setViewState('idle');
       }
     }
   };
