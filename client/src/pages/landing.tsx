@@ -105,7 +105,7 @@ const LandingPage = () => {
         <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-black to-transparent z-0" />
         
         {/* Main Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/50 to-black/60 z-0" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/80 to-black/90 z-0" />
 
         <div className="max-w-5xl mx-auto relative z-10">
           {/* Badge with Animation - Frosted Glass */}
@@ -129,7 +129,7 @@ const LandingPage = () => {
           <h1 className="text-7xl md:text-8xl text-center leading-tight mb-6" style={{ 
             fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif',
             fontWeight: 700,
-            background: 'linear-gradient(180deg, #FFFFFF 20%, #8a8a8a 100%)',
+            background: 'linear-gradient(180deg, #FFFFFF 10%, #5a5a5a 100%)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',
