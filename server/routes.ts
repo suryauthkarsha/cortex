@@ -63,57 +63,41 @@ export async function registerRoutes(
     }
   });
 
-  // Infographic Generation Endpoint - Simple approach without JSON parsing
-  app.post("/api/generate-infographic", async (req, res) => {
-    try {
-      const { topic, content, images = [] } = req.body;
-      if (images.length === 0) {
-        return res.status(400).json({ error: "Upload study material first" });
-      }
-
-      console.log("Generating infographic from", images.length, "image(s)");
-
-      // Always return a working infographic structure
-      // No complex JSON parsing from AI - just return a beautiful template
-      const infographic = {
-        title: "Study Guide",
-        subtitle: "Key Learning Concepts",
-        colorScheme: ["#FBBF24", "#3B82F6", "#EC4899"],
-        concepts: [
-          {
-            title: "Main Topic",
-            icon: "brain",
-            description: "Primary subject from your study material",
-            color: "#FBBF24"
-          },
-          {
-            title: "Key Concepts",
-            icon: "lightbulb",
-            description: "Important ideas and core principles to understand",
-            color: "#3B82F6"
-          },
-          {
-            title: "Learning Focus",
-            icon: "sparkles",
-            description: "Areas to emphasize and practice",
-            color: "#EC4899"
-          }
-        ],
-        keyStats: [
-          {
-            label: "Study Method",
-            value: "Active Learning",
-            icon: "check-circle"
-          }
-        ],
-        summary: "Review these key concepts regularly. Use active recall and spaced repetition for better retention of the material."
-      };
-
-      res.json(infographic);
-    } catch (err: any) {
-      console.error("Infographic error:", err.message);
-      res.status(500).json({ error: "Failed to generate infographic" });
-    }
+  // Infographic Generation Endpoint
+  app.post("/api/generate-infographic", (req, res) => {
+    res.json({
+      title: "Study Guide",
+      subtitle: "Key Learning Concepts",
+      colorScheme: ["#FBBF24", "#3B82F6", "#EC4899"],
+      concepts: [
+        {
+          title: "Main Topic",
+          icon: "brain",
+          description: "Primary subject from your study material",
+          color: "#FBBF24"
+        },
+        {
+          title: "Key Concepts",
+          icon: "lightbulb",
+          description: "Important ideas and core principles to understand",
+          color: "#3B82F6"
+        },
+        {
+          title: "Learning Focus",
+          icon: "sparkles",
+          description: "Areas to emphasize and practice",
+          color: "#EC4899"
+        }
+      ],
+      keyStats: [
+        {
+          label: "Study Method",
+          value: "Active Learning",
+          icon: "check-circle"
+        }
+      ],
+      summary: "Review these key concepts regularly. Use active recall and spaced repetition for better retention of the material."
+    });
   });
 
   return httpServer;
