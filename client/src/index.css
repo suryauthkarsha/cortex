@@ -673,8 +673,7 @@
   width: var(--width);
   height: calc(var(--width) / 2.5);
   border-radius: var(--width);
-  box-shadow: inset 10px 10px 10px hsl(var(--hue) 20% 80%),
-    inset -10px -10px 10px hsl(var(--hue) 20% 93%);
+  background: hsl(var(--hue) 20% 88%);
 }
 
 .indicator {
