@@ -83,8 +83,8 @@ const LandingPage = () => {
         right: 0,
         height: '2.5vh',
         background: 'linear-gradient(to-bottom, transparent 0%, transparent 60%, rgba(0, 0, 0, 0.1) 75%, rgba(0, 0, 0, 0.4) 85%, rgba(0, 0, 0, 0.85) 100%)',
-        backdropFilter: 'blur(12px) brightness(0.85)',
-        WebkitBackdropFilter: 'blur(12px) brightness(0.85)',
+        backdropFilter: 'blur(16px) brightness(0.85)',
+        WebkitBackdropFilter: 'blur(16px) brightness(0.85)',
         pointerEvents: 'none',
         zIndex: 40,
       }} />
