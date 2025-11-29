@@ -11,7 +11,7 @@ import { Mic, Square, Play, VolumeX, Sparkles, Upload, X, Video, Image as ImageI
 import { motion, AnimatePresence } from 'framer-motion';
 
 type Mode = 'check' | 'tutor';
-type ViewState = 'idle' | 'analyzing' | 'results';
+type ViewState = 'idle' | 'analyzing' | 'results' | 'infographic';
 
 export default function Home() {
   // Hooks
@@ -125,6 +125,7 @@ export default function Home() {
     }
     setIsInfographicLoading(true);
     setError(null);
+    setViewState('analyzing');
     try {
       const content = aiResponse?.detailed_feedback || "Generate comprehensive study notes from the uploaded material.";
       const result = await generateInfographic(
@@ -133,8 +134,10 @@ export default function Home() {
         images
       );
       setInfographic(result);
+      setViewState('infographic');
     } catch (err: any) {
       setError(err.message || 'Failed to generate infographic.');
+      setViewState('idle');
     } finally {
       setIsInfographicLoading(false);
     }
@@ -191,6 +194,7 @@ export default function Home() {
   const resetView = () => {
     setViewState('idle');
     setAiResponse(null);
+    setInfographic(null);
     setTranscript('');
     setError(null);
   };
@@ -253,7 +257,7 @@ export default function Home() {
       <main className="relative z-10 flex-1 container mx-auto px-6 py-4 flex flex-col lg:flex-row gap-8 h-[calc(100vh-100px)]">
         
         {/* LEFT COLUMN: Tools (Collapsible/Minimal) - Hidden in Results Mode */}
-        {viewState !== 'results' && (
+        {viewState !== 'results' && viewState !== 'infographic' && (
           <motion.div 
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -296,7 +300,7 @@ export default function Home() {
         )}
 
         {/* MIDDLE: Stage - Shrinks/Disappears in Results Mode */}
-        {viewState !== 'results' && (
+        {viewState !== 'results' && viewState !== 'infographic' && (
           <div className="flex-1 flex flex-col gap-8 justify-center relative">
              
              {/* Central Visualizer */}
@@ -415,10 +419,10 @@ export default function Home() {
           animate={{ 
             opacity: 1, 
             x: 0,
-            width: viewState === 'results' ? '100%' : undefined,
-            flex: viewState === 'results' ? 1 : undefined
+            width: (viewState === 'results' || viewState === 'infographic') ? '100%' : undefined,
+            flex: (viewState === 'results' || viewState === 'infographic') ? 1 : undefined
           }}
-          className={`h-full flex flex-col transition-all duration-500 ${viewState === 'results' ? 'w-full max-w-5xl mx-auto' : 'lg:w-[500px] xl:w-[650px]'}`}
+          className={`h-full flex flex-col transition-all duration-500 ${(viewState === 'results' || viewState === 'infographic') ? 'w-full max-w-5xl mx-auto' : 'lg:w-[500px] xl:w-[650px]'}`}
         >
           {/* Camera Preview Box */}
           {isSelfieMode && viewState !== 'results' && (
@@ -435,7 +439,7 @@ export default function Home() {
             </motion.div>
           )}
            {/* Header with Back Button */}
-           {mode === 'check' && viewState === 'results' && (
+           {mode === 'check' && (viewState === 'results' || viewState === 'infographic') && (
              <div className="flex items-center gap-4 mb-6 px-2">
                 <button 
                   onClick={resetView}
@@ -443,12 +447,12 @@ export default function Home() {
                 >
                   <ArrowLeft className="w-6 h-6" />
                 </button>
-                <h3 className="text-lg font-bold text-white">Results</h3>
+                <h3 className="text-lg font-bold text-white">{viewState === 'infographic' ? 'Study Notes' : 'Results'}</h3>
              </div>
            )}
            
-           {/* Buttons Row - Always Visible at Bottom */}
-           {mode === 'check' && (
+           {/* Buttons Row - Always Visible at Bottom - Hidden in infographic view */}
+           {mode === 'check' && viewState !== 'infographic' && (
              <motion.div 
                initial={{ opacity: 0, y: 10 }}
                animate={{ opacity: 1, y: 0 }}
