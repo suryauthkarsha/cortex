@@ -342,27 +342,27 @@ export default function Home() {
                       )}
                       <motion.button
                         onClick={handleVoiceInteraction}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className={`w-48 h-48 rounded-full flex items-center justify-center transition-all duration-500 relative backdrop-blur-md border border-white/30 ${
+                        whileHover={{ scale: 1.03 }}
+                        whileTap={{ scale: 0.97 }}
+                        className={`w-44 h-44 rounded-full flex items-center justify-center transition-all duration-300 relative border ${
                           isListening 
-                            ? 'bg-red-500/70 shadow-[0_0_80px_rgba(239,68,68,0.6),0_0_40px_rgba(239,68,68,0.4)]' 
-                            : 'bg-primary/40 text-black shadow-[0_0_80px_rgba(255,215,0,0.6),0_0_40px_rgba(255,215,0,0.4)]'
+                            ? 'bg-red-500/60 border-red-400/50 shadow-[0_0_30px_rgba(239,68,68,0.3)]' 
+                            : 'bg-neutral-900/40 border-yellow-400/40 shadow-[0_0_20px_rgba(250,204,21,0.2)]'
                         }`}
                       >
                          {isListening ? (
-                           <StopCircle className="w-20 h-20 fill-current text-white animate-pulse" />
+                           <StopCircle className="w-16 h-16 fill-current text-white animate-pulse" />
                          ) : (
-                           <Mic className="w-20 h-20" />
+                           <Mic className="w-16 h-16 text-yellow-400/90" />
                          )}
                       </motion.button>
                    </div>
 
-                   <div className="text-center space-y-2 relative z-20">
-                     <h2 className="text-4xl font-bold text-white tracking-tight">
+                   <div className="text-center space-y-2 relative z-20 mt-4">
+                     <h2 className="text-3xl font-bold text-white tracking-tight letter-spacing-[0.5px]">
                        {isListening ? "Listening..." : mode === 'tutor' ? "Ask Gen Z Tutor" : "Explain Concept"}
                      </h2>
-                     <p className="text-neutral-500 text-lg font-medium">
+                     <p className="text-neutral-400 text-sm font-light">
                        {isListening 
                          ? "I'm all ears." 
                          : mode === 'tutor' 
@@ -387,11 +387,11 @@ export default function Home() {
                          <button 
                            onClick={handleAnalyze}
                            disabled={isProcessing}
-                           className="bg-white text-black px-10 py-4 rounded-full font-bold text-lg hover:scale-105 transition-transform shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-3"
+                           className="bg-white text-black px-8 py-3 rounded-full font-semibold text-base hover:scale-103 transition-transform shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 border border-white/20"
                            data-testid="button-analyze"
                          >
-                           {isProcessing ? <Sparkles className="w-5 h-5 animate-spin" /> : <Play className="w-5 h-5 fill-current" />}
-                           Analyze Now
+                           {isProcessing ? <Sparkles className="w-4 h-4 animate-spin" /> : <Play className="w-4 h-4 fill-current" />}
+                           Analyze
                          </button>
                        )}
                        
@@ -399,7 +399,7 @@ export default function Home() {
                          <button 
                            onClick={() => handleTutorChat(transcript)}
                            disabled={isProcessing}
-                           className="bg-primary text-black px-10 py-4 rounded-full font-bold text-lg hover:scale-105 transition-transform shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-3"
+                           className="bg-yellow-400 text-black px-8 py-3 rounded-full font-semibold text-base hover:scale-103 transition-transform shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 border border-yellow-300/30"
                            data-testid="button-ask-tutor"
                          >
                            {isProcessing ? <Sparkles className="w-5 h-5 animate-spin" /> : '✨ Ask'}
