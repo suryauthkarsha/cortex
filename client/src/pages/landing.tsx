@@ -134,6 +134,8 @@ const LandingPage = () => {
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',
             color: 'transparent',
+            maskImage: 'linear-gradient(to-bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0) 100%)',
+            WebkitMaskImage: 'linear-gradient(to-bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 0) 100%)',
           }}>
             F*ck Bad Grades
           </h1>
