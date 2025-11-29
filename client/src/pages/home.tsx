@@ -447,7 +447,7 @@ export default function Home() {
            )}
            
            {/* Buttons Row - Always Visible at Bottom */}
-           {mode === 'check' && viewState === 'results' && (
+           {mode === 'check' && (
              <motion.div 
                initial={{ opacity: 0, y: 10 }}
                animate={{ opacity: 1, y: 0 }}
