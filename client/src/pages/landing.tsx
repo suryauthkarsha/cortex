@@ -81,6 +81,8 @@ const LandingPage = () => {
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
         boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 8px 32px rgba(0, 0, 0, 0.3)',
+        maskImage: 'linear-gradient(to-bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.8) 80%, rgba(0, 0, 0, 0) 100%)',
+        WebkitMaskImage: 'linear-gradient(to-bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.8) 80%, rgba(0, 0, 0, 0) 100%)',
       }}>
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="text-3xl font-black text-yellow-500 uppercase tracking-widest" style={{ fontFamily: 'DM Sans, sans-serif', letterSpacing: '0.12em', fontWeight: 700 }}>CORTEX</div>
