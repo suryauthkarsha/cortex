@@ -190,8 +190,7 @@ export default function Home() {
           </div>
 
           {/* Center: Mode Switcher */}
-          <div className="flex items-center gap-3">
-            <span className={`text-xs font-semibold transition-colors ${mode === 'check' ? 'text-white' : 'text-neutral-500'}`}>Check Me</span>
+          <div className="flex items-center gap-3 relative">
             <div className="container-toggle">
               <label className="switch">
                 <input 
@@ -206,9 +205,9 @@ export default function Home() {
                 <div className="indicator left"></div>
                 <div className="indicator right"></div>
                 <div className="button"></div>
+                <span className="toggle-label">Gen Z</span>
               </label>
             </div>
-            <span className={`text-xs font-semibold transition-colors ${mode === 'tutor' ? 'text-primary' : 'text-neutral-500'}`}>Gen Z</span>
           </div>
 
           {/* Right: Controls */}
