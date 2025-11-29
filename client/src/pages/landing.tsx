@@ -217,6 +217,17 @@ const LandingPage = () => {
             </Link>
           </div>
 
+          {/* 3D Rotating Cards Carousel */}
+          <div className="wrapper mt-20">
+            <div className="inner" style={{ '--quantity': 8 } as any}>
+              {[0, 1, 2, 3, 4, 5, 6, 7].map((index) => (
+                <div key={index} className="card" style={{ '--index': index, '--color-card': '255, 184, 28' } as any}>
+                  <div className="img"></div>
+                </div>
+              ))}
+            </div>
+          </div>
+
           {/* Hero Stats */}
           <div className="grid grid-cols-3 gap-8 mt-20 pt-16 border-t border-yellow-600/20">
             <div className="text-center">

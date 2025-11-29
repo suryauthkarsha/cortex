@@ -735,3 +735,64 @@
     inset 20px 20px 10px hsl(var(--hue) 20% 15% / 100%),
     inset 20px 20px 15px hsl(var(--hue) 20% 45% / 100%);
 }
+
+/* 3D Rotating Cards Carousel */
+.wrapper {
+  width: 100%;
+  height: 300px;
+  position: relative;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.inner {
+  --w: 100px;
+  --h: 150px;
+  --translateZ: calc((var(--w) + var(--h)) + 0px);
+  --rotateX: -15deg;
+  --perspective: 1000px;
+  position: absolute;
+  width: var(--w);
+  height: var(--h);
+  z-index: 2;
+  transform-style: preserve-3d;
+  transform: perspective(var(--perspective));
+  animation: rotating 20s linear infinite;
+}
+
+@keyframes rotating {
+  from {
+    transform: perspective(var(--perspective)) rotateX(var(--rotateX))
+      rotateY(0);
+  }
+  to {
+    transform: perspective(var(--perspective)) rotateX(var(--rotateX))
+      rotateY(1turn);
+  }
+}
+
+.card {
+  position: absolute;
+  border: 2px solid rgba(var(--color-card), 0.8);
+  border-radius: 12px;
+  overflow: hidden;
+  inset: 0;
+  transform: rotateY(calc((360deg / var(--quantity)) * var(--index)))
+    translateZ(var(--translateZ));
+  box-shadow: 0 0 20px rgba(var(--color-card), 0.4);
+}
+
+.card .img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: radial-gradient(
+    circle,
+    rgba(var(--color-card), 0.2) 0%,
+    rgba(var(--color-card), 0.4) 50%,
+    rgba(var(--color-card), 0.6) 100%
+  );
+}
