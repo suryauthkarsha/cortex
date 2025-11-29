@@ -799,16 +799,21 @@
 
 /* Gradient Button */
 .gradient-button {
-  font-size: 17px;
-  padding: 1em 2.7em;
+  font-size: 14px;
+  padding: 0.6em 1.5em;
   font-weight: 500;
   background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-  color: white;
+  color: black;
   border: none;
   position: relative;
   overflow: hidden;
   border-radius: 0.6em;
   cursor: pointer;
+  transition: background 300ms ease;
+}
+
+.gradient-button:hover {
+  background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
 }
 
 .gradient-button .gradient {
