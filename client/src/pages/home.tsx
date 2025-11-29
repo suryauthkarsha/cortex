@@ -542,10 +542,10 @@ export default function Home() {
                            )}
                          </div>
                          
-                         {/* Content Card */}
-                         <div className="flex-1 bg-white rounded-2xl p-6 border border-slate-200 shadow-md hover:shadow-lg transition-all">
-                           <h3 className="text-xl font-bold text-slate-900 mb-2">{concept.title}</h3>
-                           <p className="text-base text-slate-700 leading-relaxed">{concept.description}</p>
+                         {/* Content Card - Dark */}
+                         <div className="flex-1 bg-neutral-800/60 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:border-white/20 transition-all shadow-lg">
+                           <h3 className="text-xl font-bold text-white mb-2">{concept.title}</h3>
+                           <p className="text-base text-neutral-300 leading-relaxed">{concept.description}</p>
                          </div>
                        </div>
                      </motion.div>
