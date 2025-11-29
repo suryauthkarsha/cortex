@@ -34,7 +34,10 @@ export function FeedbackDisplay({ response, isProcessing, error }: FeedbackDispl
 
   if (isProcessing) {
     return (
-      <div className="h-full flex flex-col items-center justify-center p-12 space-y-8 relative">
+      <div className="h-full flex flex-col items-center justify-center p-12 space-y-8 relative bg-black/80 backdrop-blur-sm">
+        {/* Dark overlay */}
+        <div className="absolute inset-0 bg-black/60 z-0" />
+
         {/* Bigger animated dots */}
         <div className="flex items-center gap-4 relative z-10">
           {[0, 1, 2].map((i) => (
