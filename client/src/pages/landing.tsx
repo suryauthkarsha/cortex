@@ -193,68 +193,122 @@ const LandingPage = () => {
       {/* Features Book Section */}
       <section className="py-20 px-6 border-t border-yellow-600/20">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-5xl font-bold text-center mb-16">What You Get</h2>
+          <h2 className="text-5xl font-bold text-center mb-20">What You Get</h2>
 
-          <div className="flex items-center justify-center gap-12">
+          <div className="flex items-center justify-center gap-16">
             {/* Left Arrow */}
             <button
               onClick={() => setCurrentFeature((prev) => (prev === 0 ? features.length - 1 : prev - 1))}
-              className="p-3 rounded-full border border-yellow-600/40 hover:border-yellow-500 hover:bg-yellow-500/10 transition flex-shrink-0"
+              className="p-4 rounded-full border border-yellow-600/40 hover:border-yellow-500 hover:bg-yellow-500/10 transition flex-shrink-0"
             >
               <ChevronLeft className="w-6 h-6 text-yellow-500" />
             </button>
 
             {/* Book Container */}
-            <div className="flex-1 max-w-4xl perspective" style={{ perspective: '1200px' }}>
-              <div className="flex gap-0 justify-center items-stretch" style={{
+            <div className="flex-1 max-w-5xl" style={{ perspective: '1400px' }}>
+              <div style={{
                 position: 'relative',
-                height: '400px',
+                height: '480px',
+                transformStyle: 'preserve-3d',
               }}>
-                {/* Left Page */}
-                <motion.div
-                  key={`left-${currentFeature}`}
-                  initial={{ rotateY: 90, opacity: 0 }}
-                  animate={{ rotateY: 0, opacity: 1 }}
-                  exit={{ rotateY: -90, opacity: 0 }}
-                  transition={{ duration: 0.6, ease: "easeInOut" }}
-                  className="w-1/2 p-8 border border-yellow-600/30 bg-gradient-to-br from-gray-900 via-black to-black flex flex-col justify-center"
-                  style={{
-                    transformStyle: 'preserve-3d',
-                    boxShadow: 'inset 2px 0 10px rgba(0, 0, 0, 0.5), -8px 0 20px rgba(0, 0, 0, 0.8)',
-                    borderRight: '1px solid rgba(251, 191, 36, 0.1)',
-                  }}
-                >
-                  <div className="text-xs text-yellow-600/50 mb-4 uppercase tracking-widest">Page {currentFeature + 1}</div>
-                  <h3 className="text-3xl font-bold mb-4 text-yellow-400">{features[currentFeature].title}</h3>
-                  <p className="text-lg text-neutral-300 leading-relaxed">{features[currentFeature].description}</p>
-                </motion.div>
+                {/* Book Outer Container */}
+                <div style={{
+                  display: 'flex',
+                  height: '100%',
+                  position: 'relative',
+                  transformStyle: 'preserve-3d',
+                }}>
+                  {/* Book Spine/Binding */}
+                  <div style={{
+                    width: '20px',
+                    background: 'linear-gradient(90deg, rgba(251, 191, 36, 0.3) 0%, rgba(251, 191, 36, 0.1) 100%)',
+                    boxShadow: 'inset -2px 0 8px rgba(0, 0, 0, 0.8), 2px 0 12px rgba(251, 191, 36, 0.2)',
+                  }} />
 
-                {/* Right Page */}
-                <motion.div
-                  key={`right-${currentFeature}`}
-                  initial={{ rotateY: -90, opacity: 0 }}
-                  animate={{ rotateY: 0, opacity: 1 }}
-                  exit={{ rotateY: 90, opacity: 0 }}
-                  transition={{ duration: 0.6, ease: "easeInOut" }}
-                  className="w-1/2 p-8 border border-yellow-600/30 bg-gradient-to-bl from-gray-900 via-black to-black flex flex-col justify-center"
-                  style={{
-                    transformStyle: 'preserve-3d',
-                    boxShadow: 'inset -2px 0 10px rgba(0, 0, 0, 0.5), 8px 0 20px rgba(0, 0, 0, 0.8)',
-                    borderLeft: '1px solid rgba(251, 191, 36, 0.1)',
-                  }}
-                >
-                  <div className="text-xs text-yellow-600/50 mb-4 uppercase tracking-widest">Page {currentFeature + 2}</div>
-                  <h3 className="text-3xl font-bold mb-4 text-yellow-400">
-                    {features[(currentFeature + 1) % features.length].title}
-                  </h3>
-                  <p className="text-lg text-neutral-300 leading-relaxed">
-                    {features[(currentFeature + 1) % features.length].description}
-                  </p>
-                </motion.div>
+                  {/* Left Page */}
+                  <motion.div
+                    key={`left-${currentFeature}`}
+                    initial={{ rotateY: 60, opacity: 0, x: -30 }}
+                    animate={{ rotateY: 0, opacity: 1, x: 0 }}
+                    exit={{ rotateY: -60, opacity: 0, x: 30 }}
+                    transition={{ duration: 0.7, ease: "easeOut" }}
+                    className="flex-1 p-10 flex flex-col justify-center relative"
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(40, 40, 40, 0.8) 0%, rgba(20, 20, 20, 0.9) 100%)',
+                      borderLeft: '1px solid rgba(251, 191, 36, 0.15)',
+                      borderTop: '1px solid rgba(251, 191, 36, 0.1)',
+                      borderBottom: '1px solid rgba(251, 191, 36, 0.1)',
+                      transformStyle: 'preserve-3d',
+                      boxShadow: 'inset 8px 0 30px rgba(0, 0, 0, 0.6), inset -2px 0 10px rgba(251, 191, 36, 0.05)',
+                    }}
+                  >
+                    <div style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      height: '1px',
+                      background: 'linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.2), transparent)',
+                    }} />
+                    <div className="mb-6">
+                      <div className="text-xs text-yellow-600/40 mb-3 uppercase tracking-widest font-medium">Chapter {currentFeature + 1}</div>
+                      <h3 className="text-4xl font-bold text-yellow-400 leading-tight">{features[currentFeature].title}</h3>
+                    </div>
+                    <p className="text-lg text-neutral-300 leading-relaxed font-light">{features[currentFeature].description}</p>
+                  </motion.div>
+
+                  {/* Right Page */}
+                  <motion.div
+                    key={`right-${currentFeature}`}
+                    initial={{ rotateY: -60, opacity: 0, x: 30 }}
+                    animate={{ rotateY: 0, opacity: 1, x: 0 }}
+                    exit={{ rotateY: 60, opacity: 0, x: -30 }}
+                    transition={{ duration: 0.7, ease: "easeOut" }}
+                    className="flex-1 p-10 flex flex-col justify-center relative"
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(20, 20, 20, 0.9) 0%, rgba(40, 40, 40, 0.8) 100%)',
+                      borderRight: '1px solid rgba(251, 191, 36, 0.15)',
+                      borderTop: '1px solid rgba(251, 191, 36, 0.1)',
+                      borderBottom: '1px solid rgba(251, 191, 36, 0.1)',
+                      transformStyle: 'preserve-3d',
+                      boxShadow: 'inset -8px 0 30px rgba(0, 0, 0, 0.6), inset 2px 0 10px rgba(251, 191, 36, 0.05), 16px 0 40px rgba(0, 0, 0, 0.8)',
+                    }}
+                  >
+                    <div style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      height: '1px',
+                      background: 'linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.2), transparent)',
+                    }} />
+                    <div className="mb-6">
+                      <div className="text-xs text-yellow-600/40 mb-3 uppercase tracking-widest font-medium">Chapter {currentFeature + 2}</div>
+                      <h3 className="text-4xl font-bold text-yellow-400 leading-tight">
+                        {features[(currentFeature + 1) % features.length].title}
+                      </h3>
+                    </div>
+                    <p className="text-lg text-neutral-300 leading-relaxed font-light">
+                      {features[(currentFeature + 1) % features.length].description}
+                    </p>
+                  </motion.div>
+                </div>
+
+                {/* Page Shadow Effect */}
+                <div style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  pointerEvents: 'none',
+                  boxShadow: 'inset 0 0 60px rgba(0, 0, 0, 0.5)',
+                  borderRadius: '2px',
+                }} />
               </div>
 
               {/* Page Indicator */}
-              <div className="flex justify-center gap-2 mt-8">
+              <div className="flex justify-center gap-2 mt-10">
                 {features.map((_, idx) => (
                   <button
                     key={idx}
@@ -270,7 +324,7 @@ const LandingPage = () => {
             {/* Right Arrow */}
             <button
               onClick={() => setCurrentFeature((prev) => (prev === features.length - 1 ? 0 : prev + 1))}
-              className="p-3 rounded-full border border-yellow-600/40 hover:border-yellow-500 hover:bg-yellow-500/10 transition flex-shrink-0"
+              className="p-4 rounded-full border border-yellow-600/40 hover:border-yellow-500 hover:bg-yellow-500/10 transition flex-shrink-0"
             >
               <ChevronRight className="w-6 h-6 text-yellow-500" />
             </button>
