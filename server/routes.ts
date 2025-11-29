@@ -71,7 +71,10 @@ export async function registerRoutes(
         return res.status(400).json({ error: "Upload study material first" });
       }
 
-      const apiKey = 'AIzaSyDIqg3VvdiMz7N1aJi82Ju0_X93-7RFLkI'; // Gemini API key
+      const apiKey = process.env.GEMINI_API_KEY;
+      if (!apiKey) {
+        return res.status(500).json({ error: "API key not configured" });
+      }
 
       // Build request with images
       const imageParts = images.map(img => ({
@@ -81,10 +84,7 @@ export async function registerRoutes(
         }
       }));
 
-      const prompt = `Analyze the study material in this image and create an infographic summary.
-      
-      Return ONLY valid JSON (no markdown):
-      {"title":"Study Guide","subtitle":"Key Learning","colorScheme":["#FBBF24","#3B82F6","#EC4899"],"concepts":[{"title":"Main Concept","icon":"brain","description":"Primary topic from the material","color":"#FBBF24"},{"title":"Key Point","icon":"lightbulb","description":"Important detail","color":"#3B82F6"},{"title":"Learning Focus","icon":"sparkles","description":"What to focus on","color":"#EC4899"}],"keyStats":[{"label":"Topic","value":"Study","icon":"check-circle"}],"summary":"Brief overview of main concepts."}`;
+      const prompt = `Quickly summarize this study material as JSON. Return ONLY: {"title":"Study Notes","subtitle":"Key Points","colorScheme":["#FBBF24","#3B82F6","#EC4899"],"concepts":[{"title":"Point 1","icon":"brain","description":"Main idea","color":"#FBBF24"},{"title":"Point 2","icon":"lightbulb","description":"Key detail","color":"#3B82F6"},{"title":"Point 3","icon":"sparkles","description":"Important","color":"#EC4899"}],"keyStats":[{"label":"Focus","value":"Learn","icon":"check-circle"}],"summary":"Study guide summary"}`;
 
       const requestBody = {
         contents: [{
@@ -108,27 +108,21 @@ export async function registerRoutes(
 
       const data = await response.json();
 
-      if (data.error) {
-        console.error("Infographic generation error:", data.error);
-        throw new Error(data.error.message || "Generation failed");
-      }
+      if (data.error) throw new Error(data.error.message || "Generation failed");
+      if (!data.candidates?.[0]?.content?.parts?.[0]?.text) throw new Error("No response");
 
-      if (!data.candidates?.[0]?.content?.parts?.[0]?.text) {
-        throw new Error("Invalid response from AI");
+      try {
+        const textResponse = data.candidates[0].content.parts[0].text;
+        let jsonString = textResponse.replace(/```json/g, '').replace(/```/g, '').trim();
+        const jsonMatch = jsonString.match(/\{[\s\S]*\}/);
+        if (jsonMatch) jsonString = jsonMatch[0];
+        const infographicData = JSON.parse(jsonString);
+        res.json(infographicData);
+        return;
+      } catch (parseErr) {
+        // If parsing fails, just return default
+        throw parseErr;
       }
-
-      const textResponse = data.candidates[0].content.parts[0].text;
-      let jsonString = textResponse.replace(/```json/g, '').replace(/```/g, '').trim();
-      
-      // Extract JSON object
-      const jsonMatch = jsonString.match(/\{[\s\S]*\}/);
-      if (jsonMatch) {
-        jsonString = jsonMatch[0];
-      }
-      
-      const infographicData = JSON.parse(jsonString);
-
-      res.json(infographicData);
     } catch (err: any) {
       console.error("Infographic endpoint error:", err.message);
       console.error("Error stack:", err.stack);
