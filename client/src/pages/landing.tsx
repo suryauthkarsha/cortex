@@ -103,7 +103,7 @@ const LandingPage = () => {
             <Link href="/app">
               <button className="px-6 py-2 rounded-full font-medium text-white text-sm hover:shadow-lg transition" style={{
                 background: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)',
-                boxShadow: '0 4px 15px rgba(251, 191, 36, 0.4)',
+                boxShadow: '0 2px 6px rgba(251, 191, 36, 0.16)',
               }}>
                 App
               </button>
