@@ -433,24 +433,22 @@ export default function Home() {
             </motion.div>
           )}
            {/* Header with Back Button */}
-           {mode === 'check' && (
+           {mode === 'check' && viewState === 'results' && (
              <div className="flex justify-between items-center mb-6 px-2">
                <div className="flex items-center gap-4">
-                  {viewState === 'results' && (
-                    <button 
-                      onClick={resetView}
-                      className="p-2 hover:bg-white/10 rounded-full transition-colors text-white"
-                    >
-                      <ArrowLeft className="w-6 h-6" />
-                    </button>
-                  )}
+                  <button 
+                    onClick={resetView}
+                    className="p-2 hover:bg-white/10 rounded-full transition-colors text-white"
+                  >
+                    <ArrowLeft className="w-6 h-6" />
+                  </button>
                   <h3 className="text-lg font-bold text-white">Results</h3>
                </div>
                <div className="flex items-center gap-4">
                   <button 
                     onClick={handleGenerateInfographic}
-                    disabled={isInfographicLoading || !aiResponse}
-                    className="text-sm text-neutral-400 hover:text-yellow-400 transition-colors flex items-center gap-2 disabled:opacity-30"
+                    disabled={isInfographicLoading}
+                    className="text-sm text-neutral-400 hover:text-yellow-400 transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                     data-testid="button-generate-notes"
                   >
                     <Sparkles className="w-4 h-4" />
@@ -459,7 +457,7 @@ export default function Home() {
                   <button 
                     onClick={handleGenerateQuiz}
                     disabled={isQuizLoading || images.length === 0}
-                    className="text-sm text-neutral-400 hover:text-white transition-colors flex items-center gap-2 disabled:opacity-30"
+                    className="text-sm text-neutral-400 hover:text-white transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                     data-testid="button-quiz"
                   >
                     <GraduationCap className="w-4 h-4" />
