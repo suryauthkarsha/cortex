@@ -126,18 +126,22 @@ const LandingPage = () => {
           </motion.div>
 
           {/* Main Heading */}
-          <h1 className="text-7xl md:text-8xl text-center leading-tight mb-6" style={{ fontFamily: 'Times New Roman, serif', fontWeight: 700 }}>
+          <h1 className="text-7xl md:text-8xl text-center leading-tight mb-6" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", sans-serif', fontWeight: 900, letterSpacing: '-0.02em' }}>
             <span style={{
-              color: '#d1d5db',
-              textShadow: '0 2px 8px rgba(0, 0, 0, 0.4)',
-              letterSpacing: '0.02em',
+              background: 'linear-gradient(to-bottom, #ffffff 0%, #708090 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              display: 'inline-block',
             }}>
               F*ck Bad
             </span>{" "}
             <span style={{
-              color: '#fcd34d',
-              textShadow: '0 2px 8px rgba(0, 0, 0, 0.4)',
-              letterSpacing: '0.02em',
+              background: 'linear-gradient(to-bottom, #ffffff 0%, #708090 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              display: 'inline-block',
             }}>
               Grades
             </span>
