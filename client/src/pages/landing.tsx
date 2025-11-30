@@ -99,9 +99,9 @@ const LandingPage = () => {
         maskImage: 'linear-gradient(to-bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.8) 80%, rgba(0, 0, 0, 0) 100%)',
         WebkitMaskImage: 'linear-gradient(to-bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.8) 80%, rgba(0, 0, 0, 0) 100%)',
       }}>
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
           <div className="text-3xl font-black text-yellow-500 uppercase tracking-widest" style={{ fontFamily: 'DM Sans, sans-serif', letterSpacing: '0.12em', fontWeight: 700 }}>CORTEX</div>
-          <div className="flex items-center gap-8">
+          <div className="flex items-center gap-6">
             <Link href="/app">
               <GoldenJellyButton data-testid="button-app-nav" kbd="A">App</GoldenJellyButton>
             </Link>
