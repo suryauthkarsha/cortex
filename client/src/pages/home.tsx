@@ -7,7 +7,9 @@ import { QuizModal } from '@/components/modules/quiz-modal';
 import { FeedbackDisplay } from '@/components/modules/feedback-display';
 import { RealtimeClock } from '@/components/modules/realtime-clock';
 import { PomodoroTimerHeader } from '@/components/modules/pomodoro-timer-header';
-import { Mic, Square, Play, VolumeX, Sparkles, Upload, X, Video, Image as ImageIcon, MessageCircle, GraduationCap, StopCircle, Brain, ArrowLeft, Download } from 'lucide-react';
+import { Mic, Square, Play, VolumeX, Sparkles, Upload, X, Video, Image as ImageIcon, MessageCircle, GraduationCap, StopCircle, Brain, ArrowLeft, Download, FileText } from 'lucide-react';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 import { motion, AnimatePresence } from 'framer-motion';
 import { JellyMic } from '@/components/modules/jelly-mic';
 import { JellyPhysicsLoader } from '@/components/modules/jelly-physics-loader';
@@ -59,6 +61,61 @@ export default function Home() {
   // Infographic State
   const [infographic, setInfographic] = useState<InfographicData | null>(null);
   const [isInfographicLoading, setIsInfographicLoading] = useState(false);
+
+  // Download handlers
+  const downloadInfographicAsPDF = async () => {
+    const element = document.getElementById('infographic-content-inline');
+    if (!element) return;
+
+    try {
+      const canvas = await html2canvas(element, {
+        backgroundColor: '#000000',
+        scale: 2,
+      });
+
+      const imgWidth = 210;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      
+      let heightLeft = imgHeight;
+      let position = 0;
+
+      const imgData = canvas.toDataURL('image/png');
+      
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= 297;
+
+      while (heightLeft >= 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= 297;
+      }
+
+      pdf.save(`${infographic?.title?.replace(/\s+/g, '-') || 'notes'}.pdf`);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+    }
+  };
+
+  const downloadInfographicAsImage = async () => {
+    const element = document.getElementById('infographic-content-inline');
+    if (!element) return;
+
+    try {
+      const canvas = await html2canvas(element, {
+        backgroundColor: '#000000',
+        scale: 2,
+      });
+
+      const link = document.createElement('a');
+      link.href = canvas.toDataURL('image/png');
+      link.download = `${infographic?.title?.replace(/\s+/g, '-') || 'notes'}.png`;
+      link.click();
+    } catch (error) {
+      console.error('Error generating image:', error);
+    }
+  };
 
   // Actions
   const handleAnalyze = async () => {
@@ -504,11 +561,26 @@ export default function Home() {
                      <ArrowLeft className="w-6 h-6" />
                    </button>
                    <h3 className="text-xl font-bold text-neutral-300">Study Notes</h3>
-                   <div className="w-6"></div>
+                   <div className="flex gap-2">
+                     <button
+                       onClick={downloadInfographicAsPDF}
+                       className="p-2 hover:bg-white/10 rounded-full transition-colors text-white"
+                       title="Download as PDF"
+                     >
+                       <FileText className="w-5 h-5" />
+                     </button>
+                     <button
+                       onClick={downloadInfographicAsImage}
+                       className="p-2 hover:bg-white/10 rounded-full transition-colors text-white"
+                       title="Download as Image"
+                     >
+                       <Download className="w-5 h-5" />
+                     </button>
+                   </div>
                  </div>
 
                  {/* Main Title */}
-                 <div className="mb-8">
+                 <div id="infographic-content-inline" className="mb-8">
                    <h2 className="text-5xl font-bold text-white mb-2">
                      {infographic.title}
                    </h2>
