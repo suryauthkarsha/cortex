@@ -506,7 +506,10 @@ export default function Home() {
                  {/* Header */}
                  <div className="flex items-center justify-between mb-1">
                    <button 
-                     onClick={() => setInfographic(null)}
+                     onClick={() => {
+                       setInfographic(null);
+                       setViewState('idle');
+                     }}
                      className="p-1.5 hover:bg-white/10 rounded-full transition-colors text-white"
                    >
                      <ArrowLeft className="w-5 h-5" />
