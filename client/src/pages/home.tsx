@@ -9,6 +9,7 @@ import { RealtimeClock } from '@/components/modules/realtime-clock';
 import { PomodoroTimerHeader } from '@/components/modules/pomodoro-timer-header';
 import { Mic, Square, Play, VolumeX, Sparkles, Upload, X, Video, Image as ImageIcon, MessageCircle, GraduationCap, StopCircle, Brain, ArrowLeft, Download } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { JellyMic } from '@/components/modules/jelly-mic';
 
 type Mode = 'check' | 'tutor';
 type ViewState = 'idle' | 'analyzing' | 'results' | 'infographic';
@@ -326,7 +327,7 @@ export default function Home() {
                 <div className="relative z-20 flex flex-col items-center gap-8 pt-12">
                    <div className="relative">
                       {isListening && (
-                        <div className="absolute inset-0 flex items-center justify-center gap-2 pointer-events-none">
+                        <div className="absolute inset-0 flex items-center justify-center gap-2 pointer-events-none" style={{ top: '-60px' }}>
                           {visualizerBars.map((height, idx) => (
                             <motion.div
                               key={idx}
@@ -338,22 +339,11 @@ export default function Home() {
                           ))}
                         </div>
                       )}
-                      <motion.button
+                      <JellyMic 
+                        isActive={isListening}
                         onClick={handleVoiceInteraction}
-                        whileHover={{ scale: 1.03 }}
-                        whileTap={{ scale: 0.97 }}
-                        className={`w-44 h-44 rounded-full flex items-center justify-center transition-all duration-300 relative border ${
-                          isListening 
-                            ? 'bg-red-500/60 border-red-400/50 shadow-[0_0_30px_rgba(239,68,68,0.3)]' 
-                            : 'bg-neutral-900/40 border-yellow-400/40 shadow-[0_0_20px_rgba(250,204,21,0.2)]'
-                        }`}
-                      >
-                         {isListening ? (
-                           <StopCircle className="w-16 h-16 fill-current text-white animate-pulse" />
-                         ) : (
-                           <Mic className="w-16 h-16 text-yellow-400/90" />
-                         )}
-                      </motion.button>
+                        data-testid="button-mic-toggle"
+                      />
                    </div>
 
                    {viewState !== 'analyzing' && (

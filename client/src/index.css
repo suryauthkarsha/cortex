@@ -820,3 +820,132 @@
     transform: scale(1, 1);
   }
 }
+
+/* --- JELLY MIC STYLES --- */
+
+.mic-wrapper {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform-style: preserve-3d;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mic-btn {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #2e2e2e, #1c1c1c);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  box-shadow: 
+      inset 4px 4px 10px rgba(255, 255, 255, 0.15),
+      inset -6px -6px 15px rgba(0, 0, 0, 0.6),
+      inset 0 0 0 2px rgba(255, 255, 255, 0.05),
+      0 10px 0 #0f0f0f,
+      0 25px 40px rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background 0.4s ease, box-shadow 0.4s ease, transform 0.2s ease;
+  transform-style: preserve-3d;
+  user-select: none;
+}
+
+.mic-wrapper:hover .mic-btn {
+  transform: translateY(-2px);
+}
+
+.mic-btn::after {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: 15%;
+  right: 15%;
+  height: 60px;
+  background: radial-gradient(ellipse at center top, 
+      rgba(255, 255, 255, 0.3) 0%, 
+      rgba(255, 255, 255, 0.0) 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(1px);
+  transition: background 0.4s ease;
+}
+
+.mic-icon {
+  width: 60px;
+  height: 60px;
+  fill: #666;
+  filter: drop-shadow(0 2px 2px rgba(0,0,0,0.5));
+  transition: all 0.4s ease;
+  z-index: 5;
+  transform: translateZ(10px);
+}
+
+.slash {
+  position: absolute;
+  width: 75px;
+  height: 5px;
+  background-color: #ff5555;
+  border-radius: 4px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg) translateZ(12px);
+  opacity: 1;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.4);
+  pointer-events: none;
+}
+
+.mic-btn[data-active="true"] {
+  background: radial-gradient(circle at 30% 30%, #ffeb3b, #ff9800);
+  box-shadow: 
+      inset 8px 8px 25px rgba(255, 255, 255, 0.6),
+      inset -8px -8px 25px rgba(184, 117, 4, 0.4),
+      0 10px 0 #cc7a00, 
+      0 30px 60px rgba(255, 152, 0, 0.4), 
+      0 0 50px rgba(255, 215, 0, 0.5);
+  animation: jelly-bop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.mic-btn[data-active="true"] .mic-icon {
+  fill: #fff;
+  filter: drop-shadow(0 4px 6px rgba(160, 90, 0, 0.5));
+  transform: translateZ(10px) scale(1.1);
+}
+
+.mic-btn[data-active="true"] .slash {
+  width: 0;
+  opacity: 0;
+}
+
+.mic-btn[data-active="true"]::after {
+  background: radial-gradient(ellipse at center top, 
+      rgba(255, 255, 255, 0.8) 0%, 
+      rgba(255, 255, 255, 0.0) 70%);
+}
+
+.mic-btn[data-active="false"] {
+  animation: jelly-shrink 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes jelly-bop {
+  0% { transform: scale(1); }
+  30% { transform: scale(0.9, 1.1); }
+  50% { transform: scale(1.1, 0.9) translateY(4px); }
+  70% { transform: scale(0.95, 1.05) translateY(-2px); }
+  100% { transform: scale(1) translateY(0); }
+}
+
+@keyframes jelly-shrink {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.1, 0.9); }
+  50% { transform: scale(0.9, 1.1) translateY(4px); }
+  70% { transform: scale(1.05, 0.95) translateY(-2px); }
+  100% { transform: scale(1) translateY(0); }
+}
