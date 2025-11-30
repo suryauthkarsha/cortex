@@ -503,13 +503,13 @@ export default function Home() {
                    >
                      <ArrowLeft className="w-6 h-6" />
                    </button>
-                   <h3 className="text-xl font-bold text-yellow-400">Study Notes</h3>
+                   <h3 className="text-xl font-bold text-neutral-300">Study Notes</h3>
                    <div className="w-6"></div>
                  </div>
 
                  {/* Main Title */}
                  <div className="mb-8">
-                   <h2 className="text-5xl font-bold bg-gradient-to-r from-yellow-400 to-yellow-300 bg-clip-text text-transparent mb-2">
+                   <h2 className="text-5xl font-bold text-white mb-2">
                      {infographic.title}
                    </h2>
                    <p className="text-lg text-neutral-300">{infographic.subtitle}</p>

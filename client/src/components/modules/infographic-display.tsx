@@ -1,6 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Sparkles, Download, ArrowLeft } from 'lucide-react';
+import { Sparkles, Download, ArrowLeft, FileText } from 'lucide-react';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 import type { InfographicData } from '@/lib/gemini';
 
 interface InfographicDisplayProps {
@@ -51,6 +53,41 @@ export function InfographicDisplay({ data, onBack }: InfographicDisplayProps) {
     link.click();
   };
 
+  const downloadAsPDF = async () => {
+    const element = document.getElementById('infographic-content');
+    if (!element) return;
+
+    try {
+      const canvas = await html2canvas(element, {
+        backgroundColor: '#000000',
+        scale: 2,
+      });
+
+      const imgWidth = 210;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      
+      let heightLeft = imgHeight;
+      let position = 0;
+
+      const imgData = canvas.toDataURL('image/png');
+      
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= 297;
+
+      while (heightLeft >= 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= 297;
+      }
+
+      pdf.save(`${data.title.replace(/\s+/g, '-')}.pdf`);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -65,13 +102,22 @@ export function InfographicDisplay({ data, onBack }: InfographicDisplayProps) {
         >
           <ArrowLeft className="w-6 h-6" />
         </button>
-        <button
-          onClick={downloadAsImage}
-          className="flex items-center gap-2 px-4 py-2 bg-neutral-800/60 hover:bg-neutral-700/60 border border-white/20 hover:border-white/40 text-white rounded-full font-semibold transition-colors"
-        >
-          <Download className="w-4 h-4" />
-          Download
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={downloadAsPDF}
+            className="flex items-center gap-2 px-4 py-2 bg-neutral-800/60 hover:bg-neutral-700/60 border border-white/20 hover:border-white/40 text-white rounded-full font-semibold transition-colors"
+          >
+            <FileText className="w-4 h-4" />
+            PDF
+          </button>
+          <button
+            onClick={downloadAsImage}
+            className="flex items-center gap-2 px-4 py-2 bg-neutral-800/60 hover:bg-neutral-700/60 border border-white/20 hover:border-white/40 text-white rounded-full font-semibold transition-colors"
+          >
+            <Download className="w-4 h-4" />
+            Image
+          </button>
+        </div>
       </div>
 
       {/* Main Infographic */}
@@ -83,7 +129,7 @@ export function InfographicDisplay({ data, onBack }: InfographicDisplayProps) {
           transition={{ delay: 0.1 }}
           className="text-center space-y-2 border-b border-white/10 pb-6"
         >
-          <h2 className="text-4xl font-bold bg-gradient-to-r from-yellow-400 to-yellow-500 bg-clip-text text-transparent">
+          <h2 className="text-4xl font-bold text-white">
             {data.title}
           </h2>
           <p className="text-neutral-400 text-lg">{data.subtitle}</p>
