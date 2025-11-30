@@ -3,6 +3,7 @@ import { Link } from "wouter";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { JellyPearlButton } from "@/components/modules/jelly-pearl-button";
+import { GoldenJellyButton } from "@/components/modules/golden-jelly-button";
 
 const LandingPage = () => {
   const [currentFeature, setCurrentFeature] = useState(0);
@@ -102,11 +103,7 @@ const LandingPage = () => {
           <div className="text-3xl font-black text-yellow-500 uppercase tracking-widest" style={{ fontFamily: 'DM Sans, sans-serif', letterSpacing: '0.12em', fontWeight: 700 }}>CORTEX</div>
           <div className="flex items-center gap-8">
             <Link href="/app">
-              <button className="gradient-button" data-testid="button-app-nav">
-                <span className="transition"></span>
-                <span className="gradient"></span>
-                <span className="label">App</span>
-              </button>
+              <GoldenJellyButton data-testid="button-app-nav" kbd="A">App</GoldenJellyButton>
             </Link>
           </div>
         </div>

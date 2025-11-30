@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Golden Jelly 3D Button</title>
+<style>
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #121212; /* Dark background */
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    /* Add perspective for 3D elements */
+    perspective: 1000px;
+  }
+
+/* --- GOLDEN JELLY 3D BUTTON --- */
+/* Based on Uiverse.io by SelfMadeSystem */
+:root {
+    --gold-light: #ffeb3b;
+    --gold-mid: #ffc107;
+    --gold-dark: #ff9800;
+    --gold-shadow: #b06a00;
+    /* Custom bounce for jelly feel */
+    --jelly-bounce: cubic-bezier(0.35, 1.6, 0.65, 0.8);
+}
+
+.btn {
+  margin: 0.5rem;
+  padding: 0.8rem 1.4rem;
+  border-radius: 1rem; /* Rounder corners for jelly feel */
+  border: none;
+  font-weight: 700;
+  font-size: 1.1rem;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Jelly transition on transform and border */
+  transition: transform 0.4s var(--jelly-bounce), border-bottom 0.4s var(--jelly-bounce), box-shadow 0.4s ease, background 0.4s ease;
+  transform-style: preserve-3d;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-primary {
+  /* Rich Golden Gradient */
+  background: linear-gradient(to bottom, var(--gold-light), var(--gold-mid));
+  color: #4a2e00; /* Dark brown text for contrast */
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
+
+  /* Initial 3D Setup */
+  border-bottom: 4px solid var(--gold-shadow); /* Thick base */
+  transform: translateY(0);
+
+  /* 3D Shadow Stack - Golden hues */
+  box-shadow:
+    inset 0 3px 5px rgba(255, 255, 255, 0.7), /* Top glossy highlight */
+    inset 0 -3px 5px rgba(176, 106, 0, 0.3), /* Bottom inner shadow */
+    0 5px 10px rgba(0,0,0,0.3), /* Drop shadow */
+    0 10px 20px rgba(255, 193, 7, 0.3); /* Golden ambient glow */
+}
+
+/* --- HOVER STATE: Lift, grow, and wobble --- */
+.btn-primary:hover {
+  /* Lift up and grow slightly */
+  transform: translateY(-6px) scale(1.03);
+  /* Increase 3D base thickness */
+  border-bottom: 10px solid var(--gold-shadow);
+  /* Brighter gradient */
+  background: linear-gradient(to bottom, #fff59d, var(--gold-light));
+
+  /* Enhanced shadows for lifted state */
+  box-shadow:
+    inset 0 3px 5px rgba(255, 255, 255, 0.8),
+    inset 0 -3px 5px rgba(176, 106, 0, 0.2),
+    0 15px 25px rgba(0,0,0,0.3), /* Deeper drop shadow */
+    0 20px 35px rgba(255, 193, 7, 0.5); /* Stronger golden glow */
+
+  /* Start jelly wobble */
+  animation: jelly-wobble 1.2s infinite ease-in-out;
+}
+
+/* --- ACTIVE STATE: Click and squash --- */
+.btn-primary:active {
+  /* Squash down: shrink vertically, widen horizontally, move down */
+  transform: translateY(3px) scale(0.97, 1.03);
+  /* Decrease 3D base thickness */
+  border-bottom: 2px solid var(--gold-shadow);
+  /* Darker gradient */
+  background: linear-gradient(to bottom, var(--gold-mid), var(--gold-dark));
+
+  /* Pressed shadows */
+  box-shadow:
+    inset 0 4px 8px rgba(0, 0, 0, 0.2), /* Inner shadow prominent */
+    0 2px 4px rgba(0,0,0,0.3), /* Small drop shadow */
+    0 4px 8px rgba(255, 193, 7, 0.2); /* Subtle glow */
+
+  /* Snappy transition for click */
+  transition: all 0.1s ease-out;
+  animation: none; /* Stop wobble */
+}
+
+
+/* --- KEYBOARD SHORTCUT STYLING --- */
+.btn kbd {
+  margin-left: 0.8rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.9em;
+  box-shadow: 0 2px 2px rgba(0,0,0,0.1);
+}
+
+.btn-primary kbd {
+  /* Darker golden background for KBD */
+  background: linear-gradient(to bottom, var(--gold-mid), var(--gold-dark));
+  color: #3d2700;
+  border: 1px solid #a16200;
+  box-shadow:
+    inset 0 1px 3px rgba(255,255,255,0.3),
+    0 1px 2px rgba(0,0,0,0.1);
+}
+.btn-primary:hover kbd {
+    background: linear-gradient(to bottom, var(--gold-light), var(--gold-mid));
+}
+
+
+/* --- JELLY WOBBLE ANIMATION --- */
+@keyframes jelly-wobble {
+  0%, 100% { transform: translateY(-6px) scale(1.03); }
+  25% { transform: translateY(-6px) scale(1.05, 1.01) rotate(-1deg); }
+  50% { transform: translateY(-6px) scale(1.01, 1.05) rotate(1deg); }
+  75% { transform: translateY(-6px) scale(1.04, 1.02) rotate(0deg); }
+}
+</style>
+</head>
+<body>
+
+<button class="btn btn-primary">
+  <span class="btn-txt">Get started</span>
+  <kbd class="btn-kbd">G</kbd>
+</button>
+
+</body>
+</html>
