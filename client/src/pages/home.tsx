@@ -499,29 +499,29 @@ export default function Home() {
                <motion.div
                  initial={{ opacity: 0, y: 20 }}
                  animate={{ opacity: 1, y: 0 }}
-                 className="flex-1 overflow-y-auto space-y-4 px-8 py-4 custom-scrollbar"
+                 className="flex-1 overflow-y-auto space-y-6 p-8 custom-scrollbar"
                >
                  {/* Header */}
-                 <div className="flex items-center justify-between mb-1">
+                 <div className="flex items-center justify-between mb-4">
                    <button 
                      onClick={() => {
                        setInfographic(null);
                        setViewState('idle');
                      }}
-                     className="p-1.5 hover:bg-white/10 rounded-full transition-colors text-white"
+                     className="p-2 hover:bg-white/10 rounded-full transition-colors text-white"
                    >
-                     <ArrowLeft className="w-5 h-5" />
+                     <ArrowLeft className="w-6 h-6" />
                    </button>
-                   <h3 className="text-base font-semibold text-yellow-400">Study Notes</h3>
-                   <div className="w-5"></div>
+                   <h3 className="text-xl font-bold text-yellow-400">Study Notes</h3>
+                   <div className="w-6"></div>
                  </div>
 
                  {/* Main Title */}
-                 <div className="mb-3">
-                   <h2 className="text-3xl font-bold bg-gradient-to-r from-yellow-400 to-yellow-300 bg-clip-text text-transparent mb-0.5">
+                 <div className="mb-8">
+                   <h2 className="text-5xl font-bold bg-gradient-to-r from-yellow-400 to-yellow-300 bg-clip-text text-transparent mb-2">
                      {infographic.title}
                    </h2>
-                   <p className="text-xs text-neutral-500">{infographic.subtitle}</p>
+                   <p className="text-lg text-neutral-300">{infographic.subtitle}</p>
                  </div>
 
                  {/* Mindmap-style Concepts */}
