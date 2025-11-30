@@ -579,16 +579,18 @@ export default function Home() {
                    </div>
                  </div>
 
-                 {/* Main Title */}
-                 <div id="infographic-content-inline" className="mb-8">
-                   <h2 className="text-5xl font-bold text-white mb-2">
-                     {infographic.title}
-                   </h2>
-                   <p className="text-lg text-neutral-300">{infographic.subtitle}</p>
-                 </div>
+                 {/* Main Content for Download */}
+                 <div id="infographic-content-inline">
+                   {/* Main Title */}
+                   <div className="mb-8">
+                     <h2 className="text-5xl font-bold text-white mb-2">
+                       {infographic.title}
+                     </h2>
+                     <p className="text-lg text-neutral-300">{infographic.subtitle}</p>
+                   </div>
 
-                 {/* Mindmap-style Concepts */}
-                 <div className="space-y-6">
+                   {/* Mindmap-style Concepts */}
+                   <div className="space-y-6">
                    {infographic.concepts.map((concept, index) => (
                      <motion.div
                        key={index}
@@ -655,16 +657,17 @@ export default function Home() {
                    </motion.div>
                  )}
 
-                 {/* Summary */}
-                 <motion.div
-                   initial={{ opacity: 0, y: 20 }}
-                   animate={{ opacity: 1, y: 0 }}
-                   transition={{ delay: 0.55 }}
-                   className="mt-10 bg-neutral-800/60 backdrop-blur-sm border border-yellow-400/20 rounded-2xl p-8 hover:border-yellow-400/40 transition-all"
-                 >
-                   <h4 className="text-lg font-bold text-yellow-400 mb-3">Summary</h4>
-                   <p className="text-base text-neutral-200 leading-relaxed font-medium">{infographic.summary}</p>
-                 </motion.div>
+                   {/* Summary */}
+                   <motion.div
+                     initial={{ opacity: 0, y: 20 }}
+                     animate={{ opacity: 1, y: 0 }}
+                     transition={{ delay: 0.55 }}
+                     className="mt-10 bg-neutral-800/60 backdrop-blur-sm border border-yellow-400/20 rounded-2xl p-8 hover:border-yellow-400/40 transition-all"
+                   >
+                     <h4 className="text-lg font-bold text-yellow-400 mb-3">Summary</h4>
+                     <p className="text-base text-neutral-200 leading-relaxed font-medium">{infographic.summary}</p>
+                   </motion.div>
+                 </div>
                </motion.div>
              )}
              {!infographic && mode === 'check' ? (
