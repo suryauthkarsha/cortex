@@ -338,20 +338,22 @@ export default function Home() {
                           ))}
                         </div>
                       )}
-                      <label className="mic-wrapper">
-                        <input 
-                          type="checkbox"
-                          checked={isListening}
-                          onChange={handleVoiceInteraction}
-                        />
-                        <div className="mic-btn">
-                          <svg className="mic-icon" viewBox="0 0 24 24">
-                            <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
-                            <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
-                          </svg>
-                          <div className="slash"></div>
-                        </div>
-                      </label>
+                      <motion.button
+                        onClick={handleVoiceInteraction}
+                        whileHover={{ scale: 1.03 }}
+                        whileTap={{ scale: 0.97 }}
+                        className={`w-44 h-44 rounded-full flex items-center justify-center transition-all duration-300 relative border ${
+                          isListening 
+                            ? 'bg-red-500/60 border-red-400/50 shadow-[0_0_30px_rgba(239,68,68,0.3)]' 
+                            : 'bg-neutral-900/40 border-yellow-400/40 shadow-[0_0_20px_rgba(250,204,21,0.2)]'
+                        }`}
+                      >
+                         {isListening ? (
+                           <StopCircle className="w-16 h-16 fill-current text-white animate-pulse" />
+                         ) : (
+                           <Mic className="w-16 h-16 text-yellow-400/90" />
+                         )}
+                      </motion.button>
                    </div>
 
                    {viewState !== 'analyzing' && (
