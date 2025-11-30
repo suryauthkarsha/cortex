@@ -62,59 +62,43 @@ export default function Home() {
   const [infographic, setInfographic] = useState<InfographicData | null>(null);
   const [isInfographicLoading, setIsInfographicLoading] = useState(false);
 
-  // Download handlers
-  const downloadInfographicAsPDF = async () => {
-    const element = document.getElementById('infographic-content-inline');
-    if (!element) return;
+  // Download as text
+  const downloadNotesAsText = () => {
+    if (!infographic) return;
 
-    try {
-      const canvas = await html2canvas(element, {
-        backgroundColor: '#000000',
-        scale: 2,
-      });
-
-      const imgWidth = 210;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      const pdf = new jsPDF('p', 'mm', 'a4');
-      
-      let heightLeft = imgHeight;
-      let position = 0;
-
-      const imgData = canvas.toDataURL('image/png');
-      
-      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-      heightLeft -= 297;
-
-      while (heightLeft >= 0) {
-        position = heightLeft - imgHeight;
-        pdf.addPage();
-        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-        heightLeft -= 297;
-      }
-
-      pdf.save(`${infographic?.title?.replace(/\s+/g, '-') || 'notes'}.pdf`);
-    } catch (error) {
-      console.error('Error generating PDF:', error);
+    let text = `${infographic.title}\n`;
+    text += `${'='.repeat(infographic.title.length)}\n\n`;
+    
+    if (infographic.subtitle) {
+      text += `${infographic.subtitle}\n\n`;
     }
-  };
 
-  const downloadInfographicAsImage = async () => {
-    const element = document.getElementById('infographic-content-inline');
-    if (!element) return;
+    text += 'CONCEPTS:\n';
+    text += '-'.repeat(40) + '\n\n';
+    infographic.concepts.forEach((concept, index) => {
+      text += `${index + 1}. ${concept.title}\n`;
+      text += `${concept.description}\n\n`;
+    });
 
-    try {
-      const canvas = await html2canvas(element, {
-        backgroundColor: '#000000',
-        scale: 2,
+    if (infographic.keyStats && infographic.keyStats.length > 0) {
+      text += '\nKEY TAKEAWAYS:\n';
+      text += '-'.repeat(40) + '\n\n';
+      infographic.keyStats.forEach((stat) => {
+        text += `• ${stat.value} - ${stat.label}\n`;
       });
-
-      const link = document.createElement('a');
-      link.href = canvas.toDataURL('image/png');
-      link.download = `${infographic?.title?.replace(/\s+/g, '-') || 'notes'}.png`;
-      link.click();
-    } catch (error) {
-      console.error('Error generating image:', error);
+      text += '\n';
     }
+
+    if (infographic.summary) {
+      text += '\nSUMMARY:\n';
+      text += '-'.repeat(40) + '\n\n';
+      text += infographic.summary + '\n';
+    }
+
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(new Blob([text], { type: 'text/plain' }));
+    link.download = `${infographic.title.replace(/\s+/g, '-')}.txt`;
+    link.click();
   };
 
   // Actions
@@ -563,16 +547,9 @@ export default function Home() {
                    <h3 className="text-xl font-bold text-neutral-300">Study Notes</h3>
                    <div className="flex gap-2">
                      <button
-                       onClick={downloadInfographicAsPDF}
+                       onClick={downloadNotesAsText}
                        className="p-2 hover:bg-white/10 rounded-full transition-colors text-white"
-                       title="Download as PDF"
-                     >
-                       <FileText className="w-5 h-5" />
-                     </button>
-                     <button
-                       onClick={downloadInfographicAsImage}
-                       className="p-2 hover:bg-white/10 rounded-full transition-colors text-white"
-                       title="Download as Image"
+                       title="Download as Text"
                      >
                        <Download className="w-5 h-5" />
                      </button>
