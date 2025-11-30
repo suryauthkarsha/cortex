@@ -10,6 +10,7 @@ import { PomodoroTimerHeader } from '@/components/modules/pomodoro-timer-header'
 import { Mic, Square, Play, VolumeX, Sparkles, Upload, X, Video, Image as ImageIcon, MessageCircle, GraduationCap, StopCircle, Brain, ArrowLeft, Download } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { JellyMic } from '@/components/modules/jelly-mic';
+import { JellyPhysicsLoader } from '@/components/modules/jelly-physics-loader';
 
 type Mode = 'check' | 'tutor';
 type ViewState = 'idle' | 'analyzing' | 'results' | 'infographic';
@@ -599,18 +600,7 @@ export default function Home() {
                  {/* Loading Overlay */}
                  {viewState === 'analyzing' && (
                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/50 backdrop-blur-sm z-20">
-                      <div className="loader-wrapper">
-                        <span className="loader-letter">A</span>
-                        <span className="loader-letter">n</span>
-                        <span className="loader-letter">a</span>
-                        <span className="loader-letter">l</span>
-                        <span className="loader-letter">y</span>
-                        <span className="loader-letter">s</span>
-                        <span className="loader-letter">i</span>
-                        <span className="loader-letter">n</span>
-                        <span className="loader-letter">g</span>
-                        <div className="loader"></div>
-                      </div>
+                      <JellyPhysicsLoader />
                    </div>
                  )}
                  

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>True Physics Jelly Loader</title>
+<style>
+  :root {
+      --gold-light: #fff59d;
+      --gold-mid: #ffc107;
+      --gold-dark: #ff8f00;
+      --gold-shadow: #b06a00;
+      --bg-color: #050505;
+  }
+
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: var(--bg-color);
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    overflow: hidden;
+    perspective: 800px; 
+  }
+
+  /* The 3D Scene Container */
+  .scene {
+    position: relative;
+    width: 300px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform-style: preserve-3d;
+    transform: rotateX(0deg) rotateY(0deg); 
+  }
+
+  .loader-stage {
+    display: flex;
+    gap: 2.5rem;
+    transform-style: preserve-3d;
+  }
+
+  /* --- THE BALL WRAPPER --- */
+  .ball-wrapper {
+    position: relative;
+    width: 3rem;
+    height: 3rem;
+    transform-style: preserve-3d;
+  }
+
+  /* --- THE GOLDEN JELLY BALL --- */
+  .jelly-ball {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    
+    background: radial-gradient(circle at 35% 25%, var(--gold-light) 0%, var(--gold-mid) 40%, var(--gold-dark) 100%);
+    
+    box-shadow:
+      inset 3px 3px 4px rgba(255, 255, 255, 0.9),
+      inset -2px -5px 8px rgba(176, 106, 0, 0.6),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.1),
+      0 0 20px rgba(255, 193, 7, 0.2);
+      
+    /* FASTER ANIMATION:
+       Reduced duration from 1.8s to 1.2s for a snappy feel.
+    */
+    animation: jelly-physics 1.2s infinite linear;
+    transform-origin: bottom center;
+    position: relative;
+    z-index: 2;
+    cursor: pointer;
+  }
+
+  /* --- FLOOR SHADOW --- */
+  .shadow {
+    position: absolute;
+    width: 140%; 
+    height: 30%; 
+    background: radial-gradient(ellipse at center, rgba(0,0,0,0.6), transparent 70%);
+    border-radius: 50%;
+    bottom: -5px; 
+    left: -20%;
+    
+    filter: blur(4px);
+    opacity: 0.6;
+    animation: shadow-physics 1.2s infinite linear;
+    pointer-events: none;
+  }
+
+  /* --- FLOOR REFLECTION --- */
+  .reflection {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: inherit; 
+    top: 100%;
+    left: 0;
+    transform: scaleY(-1) translateY(-10px); 
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,0.4), transparent);
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.4), transparent);
+    filter: blur(2px);
+    opacity: 0.5;
+    animation: reflection-physics 1.2s infinite linear;
+    transform-origin: top center;
+    pointer-events: none;
+  }
+
+
+  /* --- STAGGERED ANIMATION DELAYS --- */
+  /* Tightened delays to match faster duration */
+  .ball-wrapper:nth-child(1) .jelly-ball, 
+  .ball-wrapper:nth-child(1) .shadow,
+  .ball-wrapper:nth-child(1) .reflection { animation-delay: 0s; }
+
+  .ball-wrapper:nth-child(2) .jelly-ball, 
+  .ball-wrapper:nth-child(2) .shadow,
+  .ball-wrapper:nth-child(2) .reflection { animation-delay: 0.15s; }
+
+  .ball-wrapper:nth-child(3) .jelly-ball, 
+  .ball-wrapper:nth-child(3) .shadow,
+  .ball-wrapper:nth-child(3) .reflection { animation-delay: 0.3s; }
+
+
+  /* --- SMOOTHED PHYSICS KEYFRAMES --- */
+  @keyframes jelly-physics {
+    /* 1. SQUASHED (Start) */
+    0%   { transform: translateY(0) scale(1.25, 0.8); }
+    
+    /* 2. LAUNCH (Stretch up) - Removed the hold, smooth transition up */
+    15%  { transform: translateY(-10px) scale(0.9, 1.15); }
+    
+    /* 3. ASCENT (Decelerating) */
+    35%  { transform: translateY(-70px) scale(1.05, 0.95); } /* Slight wobble at top */
+    
+    /* 4. APEX (Weightless hang time) - Stays rounder longer */
+    45%  { transform: translateY(-75px) scale(1); }
+    55%  { transform: translateY(-70px) scale(0.98, 1.02); }
+    
+    /* 5. DESCENT (Accelerating) */
+    70%  { transform: translateY(-20px) scale(0.9, 1.1); } /* Stretch down */
+    
+    /* 6. IMPACT (Touch down) */
+    75%  { transform: translateY(0) scale(0.95, 1.05); } 
+    
+    /* 7. DEEP SQUASH (Energy absorption) */
+    82%  { transform: translateY(0) scale(1.3, 0.75); }
+    
+    /* 8. SETTLE (Rebound wobble) */
+    92%  { transform: translateY(0) scale(0.95, 1.05); }
+    
+    /* 9. RETURN TO LOOP (Squash) */
+    100% { transform: translateY(0) scale(1.25, 0.8); }
+  }
+
+  @keyframes reflection-physics {
+    0%   { transform: scaleY(-1) translateY(0) scale(1.25, 0.8); }
+    15%  { transform: scaleY(-1) translateY(0) scale(0.9, 1.15); }
+    
+    35%  { transform: scaleY(-1) translateY(70px) scale(1.05, 0.95); opacity: 0.2; }
+    45%  { transform: scaleY(-1) translateY(75px) scale(1); opacity: 0.1; }
+    55%  { transform: scaleY(-1) translateY(70px) scale(0.98, 1.02); opacity: 0.2; }
+    
+    70%  { transform: scaleY(-1) translateY(20px) scale(0.9, 1.1); opacity: 0.4; }
+    75%  { transform: scaleY(-1) translateY(0) scale(0.95, 1.05); opacity: 0.5; }
+    82%  { transform: scaleY(-1) translateY(0) scale(1.3, 0.75); opacity: 0.6; }
+    92%  { transform: scaleY(-1) translateY(0) scale(0.95, 1.05); }
+    100% { transform: scaleY(-1) translateY(0) scale(1.25, 0.8); }
+  }
+
+  @keyframes shadow-physics {
+    0%   { transform: scale(1.25); opacity: 0.7; }
+    15%  { transform: scale(1.0); opacity: 0.6; }
+    
+    35%  { transform: scale(0.6); opacity: 0.3; }
+    45%  { transform: scale(0.5); opacity: 0.2; }
+    55%  { transform: scale(0.6); opacity: 0.3; }
+    
+    70%  { transform: scale(0.8); opacity: 0.5; }
+    75%  { transform: scale(1.0); opacity: 0.6; }
+    82%  { transform: scale(1.3); opacity: 0.8; }
+    92%  { transform: scale(1.0); opacity: 0.7; }
+    100% { transform: scale(1.25); opacity: 0.7; }
+  }
+
+  /* Click Interaction Class */
+  .click-squash .jelly-ball {
+    animation: none;
+    transform: scale(1.5, 0.5) translateY(30px);
+    transition: transform 0.15s ease-out; /* Smoother click transition */
+    background: radial-gradient(circle at 35% 25%, #fff9c4 0%, #ffca28 40%, #ff6f00 100%);
+  }
+</style>
+</head>
+<body>
+
+<div class="scene" id="scene">
+  <div class="loader-stage">
+    <!-- Ball 1 -->
+    <div class="ball-wrapper">
+      <div class="jelly-ball"></div>
+      <div class="reflection"></div>
+      <div class="shadow"></div>
+    </div>
+    <!-- Ball 2 -->
+    <div class="ball-wrapper">
+      <div class="jelly-ball"></div>
+      <div class="reflection"></div>
+      <div class="shadow"></div>
+    </div>
+    <!-- Ball 3 -->
+    <div class="ball-wrapper">
+      <div class="jelly-ball"></div>
+      <div class="reflection"></div>
+      <div class="shadow"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Click Squash Interaction
+  document.addEventListener('mousedown', () => {
+    const balls = document.querySelectorAll('.ball-wrapper');
+    balls.forEach(ball => {
+      ball.classList.add('click-squash');
+    });
+  });
+
+  document.addEventListener('mouseup', () => {
+    const balls = document.querySelectorAll('.ball-wrapper');
+    balls.forEach(ball => {
+      ball.classList.remove('click-squash');
+    });
+  });
+</script>
+
+</body>
+</html>
