@@ -62,43 +62,110 @@ export default function Home() {
   const [infographic, setInfographic] = useState<InfographicData | null>(null);
   const [isInfographicLoading, setIsInfographicLoading] = useState(false);
 
-  // Download as text
-  const downloadNotesAsText = () => {
+  // Download as PDF with structured text
+  const downloadNotesAsPDF = () => {
     if (!infographic) return;
 
-    let text = `${infographic.title}\n`;
-    text += `${'='.repeat(infographic.title.length)}\n\n`;
-    
-    if (infographic.subtitle) {
-      text += `${infographic.subtitle}\n\n`;
-    }
+    try {
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      let yPosition = 20;
+      const pageHeight = pdf.internal.pageSize.getHeight();
+      const margin = 15;
+      const maxWidth = 180;
 
-    text += 'CONCEPTS:\n';
-    text += '-'.repeat(40) + '\n\n';
-    infographic.concepts.forEach((concept, index) => {
-      text += `${index + 1}. ${concept.title}\n`;
-      text += `${concept.description}\n\n`;
-    });
+      // Title
+      pdf.setFontSize(24);
+      pdf.setTextColor(0, 0, 0);
+      pdf.text(infographic.title, margin, yPosition);
+      yPosition += 15;
 
-    if (infographic.keyStats && infographic.keyStats.length > 0) {
-      text += '\nKEY TAKEAWAYS:\n';
-      text += '-'.repeat(40) + '\n\n';
-      infographic.keyStats.forEach((stat) => {
-        text += `• ${stat.value} - ${stat.label}\n`;
+      // Subtitle
+      if (infographic.subtitle) {
+        pdf.setFontSize(12);
+        pdf.setTextColor(80, 80, 80);
+        const subtitleLines = pdf.splitTextToSize(infographic.subtitle, maxWidth);
+        pdf.text(subtitleLines, margin, yPosition);
+        yPosition += subtitleLines.length * 5 + 10;
+      }
+
+      // Concepts
+      pdf.setFontSize(14);
+      pdf.setTextColor(0, 0, 0);
+      pdf.text('CONCEPTS', margin, yPosition);
+      yPosition += 10;
+
+      infographic.concepts.forEach((concept) => {
+        if (yPosition > pageHeight - margin) {
+          pdf.addPage();
+          yPosition = margin;
+        }
+
+        pdf.setFontSize(12);
+        pdf.setTextColor(0, 0, 0);
+        pdf.text(`• ${concept.title}`, margin + 5, yPosition);
+        yPosition += 7;
+
+        pdf.setFontSize(10);
+        pdf.setTextColor(60, 60, 60);
+        const descLines = pdf.splitTextToSize(concept.description, maxWidth - 10);
+        pdf.text(descLines, margin + 10, yPosition);
+        yPosition += descLines.length * 4 + 5;
       });
-      text += '\n';
-    }
 
-    if (infographic.summary) {
-      text += '\nSUMMARY:\n';
-      text += '-'.repeat(40) + '\n\n';
-      text += infographic.summary + '\n';
-    }
+      // Key Takeaways
+      if (infographic.keyStats && infographic.keyStats.length > 0) {
+        if (yPosition > pageHeight - margin - 20) {
+          pdf.addPage();
+          yPosition = margin;
+        }
 
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(new Blob([text], { type: 'text/plain' }));
-    link.download = `${infographic.title.replace(/\s+/g, '-')}.txt`;
-    link.click();
+        yPosition += 5;
+        pdf.setFontSize(14);
+        pdf.setTextColor(0, 0, 0);
+        pdf.text('KEY TAKEAWAYS', margin, yPosition);
+        yPosition += 10;
+
+        infographic.keyStats.forEach((stat) => {
+          if (yPosition > pageHeight - margin) {
+            pdf.addPage();
+            yPosition = margin;
+          }
+
+          pdf.setFontSize(10);
+          pdf.setTextColor(0, 0, 0);
+          pdf.text(`• ${stat.value}`, margin + 5, yPosition);
+
+          pdf.setFontSize(9);
+          pdf.setTextColor(80, 80, 80);
+          const statLines = pdf.splitTextToSize(stat.label, maxWidth - 15);
+          pdf.text(statLines, margin + 15, yPosition + 3);
+          yPosition += Math.max(5, statLines.length * 4) + 4;
+        });
+      }
+
+      // Summary
+      if (infographic.summary) {
+        if (yPosition > pageHeight - margin - 20) {
+          pdf.addPage();
+          yPosition = margin;
+        }
+
+        yPosition += 5;
+        pdf.setFontSize(14);
+        pdf.setTextColor(0, 0, 0);
+        pdf.text('SUMMARY', margin, yPosition);
+        yPosition += 10;
+
+        pdf.setFontSize(10);
+        pdf.setTextColor(60, 60, 60);
+        const summaryLines = pdf.splitTextToSize(infographic.summary, maxWidth);
+        pdf.text(summaryLines, margin, yPosition);
+      }
+
+      pdf.save(`${infographic.title.replace(/\s+/g, '-')}.pdf`);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+    }
   };
 
   // Actions
@@ -547,9 +614,9 @@ export default function Home() {
                    <h3 className="text-xl font-bold text-neutral-300">Study Notes</h3>
                    <div className="flex gap-2">
                      <button
-                       onClick={downloadNotesAsText}
+                       onClick={downloadNotesAsPDF}
                        className="p-2 hover:bg-white/10 rounded-full transition-colors text-white"
-                       title="Download as Text"
+                       title="Download as PDF"
                      >
                        <Download className="w-5 h-5" />
                      </button>
