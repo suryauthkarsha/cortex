@@ -986,10 +986,10 @@
 }
 
 .jelly-pearl-wrap {
-  font-size: 25px;
+  font-size: 16px;
   font-weight: 500;
   color: rgba(255, 255, 255, 0.8);
-  padding: 32px 60px;
+  padding: 18px 40px;
   border-radius: inherit;
   position: relative;
   overflow: hidden;
