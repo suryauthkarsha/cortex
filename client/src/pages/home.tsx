@@ -614,7 +614,14 @@ export default function Home() {
                </>
              ) : (
                /* Tutor Mode - Chat History */
-               <div className="flex-1 flex flex-col gap-6 justify-between">
+               <div className="flex-1 flex flex-col gap-6 justify-between relative">
+                  {/* Loading Overlay */}
+                  {isProcessing && (
+                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/50 backdrop-blur-sm z-20 rounded-2xl">
+                      <JellyPhysicsLoader />
+                    </div>
+                  )}
+
                   {/* Response Area */}
                   <div className="flex-1 min-h-64 flex items-center justify-center">
                     {tutorResponse || error ? (
