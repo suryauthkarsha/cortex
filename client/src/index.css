@@ -479,64 +479,26 @@
   }
 }
 
+/* From Uiverse.io by cssbuttons-io */
 .gradient-button {
-  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
-  --tw-gradient-from: rgb(148 163 184);
-  --gradient: linear-gradient(135deg, var(--tw-gradient-stops));
-  --gradient-hover: linear-gradient(135deg, rgb(100 116 139) 0%, rgb(71 85 105) 100%);
-  --gradient-active: linear-gradient(135deg, rgb(51 65 85) 0%, rgb(30 41 59) 100%);
-
-  position: relative;
-  z-index: 0;
-  display: inline-block;
-  width: 6em;
-  height: 3.2em;
-  line-height: 3.2em;
-  text-align: center;
-  border: none;
-  border-radius: 9999px;
-  background-color: #334155;
-  background: var(--gradient);
-  color: white;
-  font-size: 1em;
+  font-size: 17px;
+  padding: 1em 2.7em;
   font-weight: 500;
+  background: #1f2937;
+  color: white;
+  border: none;
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.6em;
   cursor: pointer;
-  transition-property: all;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
 }
 
-.gradient-button:hover {
-  --tw-gradient-from: rgb(100 116 139);
-  --tw-gradient-to: rgb(71 85 105);
-}
-
-.gradient-button:focus {
-  outline: 2px solid transparent;
-  outline-offset: 2px;
-}
-
-.gradient-button::before {
-  content: '';
+.gradient-button .gradient {
   position: absolute;
-  inset: 0;
-  z-index: -1;
-  border-radius: 9999px;
-  padding: 2px;
-  background: linear-gradient(135deg, rgb(148 163 184 / 0.5) 0%, rgb(71 85 105 / 0.5) 100%);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-}
-
-.gradient-button::after {
-  position: absolute;
-  content: '';
-  top: 0;
-  left: 0;
-  right: 0;
+  width: 100%;
   height: 100%;
-  background-color: transparent;
+  left: 0;
+  top: 0;
   border-radius: 0.6em;
   margin-top: -0.25em;
   background-image: linear-gradient(
@@ -549,7 +511,6 @@
 .gradient-button .label {
   position: relative;
   top: -1px;
-  z-index: 10;
 }
 
 .gradient-button .transition {
