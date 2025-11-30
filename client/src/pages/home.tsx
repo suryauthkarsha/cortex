@@ -260,7 +260,7 @@ export default function Home() {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
-            className="hidden lg:flex flex-col gap-4 w-20 items-center py-8 bg-neutral-900/30 rounded-full border border-white/5 h-fit self-center backdrop-blur-xl"
+            className="hidden lg:flex flex-col gap-4 w-20 items-center py-8 bg-neutral-900/30 rounded-3xl border border-white/5 h-fit self-center backdrop-blur-xl"
           >
              <label className="p-4 rounded-full hover:bg-white/10 text-neutral-400 hover:text-white cursor-pointer transition-all relative group">
                 <Upload className="w-6 h-6" />
@@ -309,14 +309,14 @@ export default function Home() {
                   <motion.div 
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    className="absolute inset-0 rounded-[3rem] overflow-hidden backdrop-blur-sm z-10"
+                    className="absolute inset-0 rounded-[4rem] overflow-hidden backdrop-blur-sm z-10"
                   >
                     <video ref={videoRef} autoPlay playsInline muted className="w-full h-full object-cover" />
                   </motion.div>
                 )}
 
                 {/* Background Layer */}
-                <div className="absolute inset-0 rounded-[3rem] overflow-hidden bg-neutral-900/20 border border-white/5">
+                <div className="absolute inset-0 rounded-[4rem] overflow-hidden bg-neutral-900/20 border border-white/5">
                    {!isSelfieMode && (
                       <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/20" />
                    )}
@@ -429,7 +429,7 @@ export default function Home() {
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="mb-4 rounded-2xl overflow-hidden border border-white/10 bg-neutral-900/30 h-32 flex-shrink-0"
+              className="mb-4 rounded-3xl overflow-hidden border border-white/10 bg-neutral-900/30 h-32 flex-shrink-0"
             >
               <video ref={videoRef} autoPlay playsInline muted className="w-full h-full object-cover" />
               <div className="absolute top-2 right-2 flex items-center gap-2 text-xs text-red-400 font-semibold bg-black/60 px-2 py-1 rounded">
@@ -494,7 +494,7 @@ export default function Home() {
            )}
 
            {/* Main Content Area - Infographic/Notes */}
-           <div className="flex-1 bg-black border-0 border-x border-b border-white/10 rounded-[2.5rem] overflow-hidden flex flex-col relative shadow-xl">
+           <div className="flex-1 bg-black border-0 border-x border-b border-white/10 rounded-[3.5rem] overflow-hidden flex flex-col relative shadow-xl">
              {infographic && (
                <motion.div
                  initial={{ opacity: 0, y: 20 }}
@@ -554,7 +554,7 @@ export default function Home() {
                          </div>
                          
                          {/* Content Card - Dark */}
-                         <div className="flex-1 bg-neutral-800/60 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:border-yellow-400/30 transition-all shadow-lg">
+                         <div className="flex-1 bg-neutral-800/60 backdrop-blur-sm rounded-3xl p-6 border border-white/10 hover:border-yellow-400/30 transition-all shadow-lg">
                            <h3 className="text-xl font-bold text-yellow-300 mb-2">{concept.title}</h3>
                            <p className="text-base text-neutral-200 leading-relaxed">{concept.description}</p>
                          </div>
@@ -582,7 +582,7 @@ export default function Home() {
                            initial={{ opacity: 0, scale: 0.9 }}
                            animate={{ opacity: 1, scale: 1 }}
                            transition={{ delay: 0.45 + index * 0.1 }}
-                           className="bg-neutral-800/60 backdrop-blur-sm border border-yellow-400/20 hover:border-yellow-400/50 rounded-2xl p-8 text-center shadow-lg transition-all group h-full flex flex-col justify-center min-h-[180px]"
+                           className="bg-neutral-800/60 backdrop-blur-sm border border-yellow-400/20 hover:border-yellow-400/50 rounded-3xl p-8 text-center shadow-lg transition-all group h-full flex flex-col justify-center min-h-[180px]"
                          >
                            <p className="text-2xl font-bold text-yellow-400 mb-3 group-hover:text-yellow-300 transition-colors line-clamp-2">{stat.value}</p>
                            <p className="text-xs font-semibold text-neutral-300 line-clamp-3">{stat.label}</p>
