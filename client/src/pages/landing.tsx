@@ -2,6 +2,7 @@ import { ArrowRight, CheckCircle2, X, ChevronLeft, ChevronRight } from "lucide-r
 import { Link } from "wouter";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { JellyPearlButton } from "@/components/modules/jelly-pearl-button";
 
 const LandingPage = () => {
   const [currentFeature, setCurrentFeature] = useState(0);
@@ -177,11 +178,7 @@ const LandingPage = () => {
           {/* CTA Button */}
           <div className="flex justify-center">
             <Link href="/app">
-              <button className="gradient-button" data-testid="button-start">
-                <span className="transition"></span>
-                <span className="gradient"></span>
-                <span className="label">Start Now</span>
-              </button>
+              <JellyPearlButton data-testid="button-start">Start Now</JellyPearlButton>
             </Link>
           </div>
 
