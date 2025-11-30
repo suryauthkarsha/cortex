@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jelly Switch UI</title>
+    <style>
+        /* Reset & Layout */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #0d0d0d; /* Deepest black */
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            overflow: hidden;
+            perspective: 800px; 
+        }
+
+        /* --- JELLY SWITCH CONTAINER --- */
+        .jelly-switch {
+            position: relative;
+            width: 110px; /* Made slightly wider */
+            height: 50px; /* Made taller to accommodate bigger track */
+            -webkit-tap-highlight-color: transparent;
+            display: flex;
+            align-items: center;
+            transform-style: preserve-3d;
+        }
+
+        /* Hide default checkbox */
+        .jelly-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+            position: absolute;
+        }
+
+        /* The Track (Big & Visible) */
+        .track {
+            position: absolute;
+            cursor: pointer;
+            left: 0;
+            right: 0;
+            height: 32px; /* Increased height significantly (was 20px) */
+            /* Lighter gray to be more visible against black bg */
+            background-color: #333; 
+            border-radius: 20px;
+            /* Deep inner shadows for that "carved" look */
+            box-shadow: 
+                inset 0 2px 6px rgba(0,0,0,0.8),
+                inset 0 -1px 2px rgba(255, 255, 255, 0.2), /* stronger rim light */
+                0 0 0 2px rgba(30,30,30, 0.5); /* subtle border ring */
+            transition: all 0.4s ease;
+        }
+
+        /* The Knob (Translucent Jelly Block) */
+        .knob {
+            position: absolute;
+            content: "";
+            height: 48px; /* Slightly bigger */
+            width: 48px;
+            left: 0;
+            top: 50%; 
+            margin-top: -24px;
+            
+            /* TRANSLUCENT JELLY GRADIENT (Lower opacity) */
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.65) 0%, rgba(255, 170, 0, 0.7) 100%);
+            
+            /* The key to real jelly: Blur what's behind it */
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            
+            border-radius: 14px;
+            
+            /* 3D Glassy Shadow Stack */
+            box-shadow: 
+                /* Strong inner highlight for volume */
+                inset 2px 2px 5px rgba(255, 255, 255, 0.6),
+                /* Inner colored depth */
+                inset -3px -3px 8px rgba(200, 100, 0, 0.4),
+                
+                /* Semi-transparent side wall to keep translucency */
+                0 8px 0 rgba(179, 116, 0, 0.8),
+                
+                /* Drop shadows */
+                0 15px 20px rgba(0, 0, 0, 0.6),
+                0 0 15px rgba(255, 215, 0, 0.3); /* Base glow */
+            
+            transform-origin: center;
+            z-index: 2;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            transform: translateZ(10px); 
+        }
+
+        /* Glossy Reflection (The "Wet" Look) */
+        .knob::after {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            right: 5px;
+            height: 18px;
+            /* Sharper white reflection */
+            background: linear-gradient(180deg, 
+                rgba(255, 255, 255, 0.8) 0%, 
+                rgba(255, 255, 255, 0.1) 100%);
+            border-radius: 8px 8px 12px 12px;
+            opacity: 0.9;
+        }
+
+        /* Bottom Caustic Reflection */
+        .knob::before {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 10px;
+            background: radial-gradient(ellipse at center, rgba(255, 165, 0, 0.5) 0%, rgba(0,0,0,0) 70%);
+            filter: blur(5px);
+            z-index: -1;
+            opacity: 0.4;
+            transition: opacity 0.4s;
+        }
+
+        /* --- STATES & ANIMATION --- */
+
+        input:checked ~ .track {
+            background-color: #3a3a3a;
+            box-shadow: 
+                inset 0 2px 6px rgba(0,0,0,0.8),
+                inset 0 -1px 2px rgba(255, 255, 255, 0.2),
+                0 0 20px rgba(255, 160, 0, 0.15); /* Orange ambient glow from track */
+        }
+
+        input:checked ~ .knob {
+            /* Increased duration to 0.8s for smoother travel */
+            animation: jelly-on 0.8s cubic-bezier(0.6, -0.28, 0.735, 0.045) forwards;
+            
+            /* Brighter, clearer yellow-gold when ON */
+            background: linear-gradient(135deg, rgba(255, 235, 59, 0.7) 0%, rgba(255, 145, 0, 0.75) 100%);
+            
+            box-shadow: 
+                inset 2px 2px 5px rgba(255, 255, 255, 0.8),
+                inset -3px -3px 8px rgba(255, 100, 0, 0.3),
+                
+                /* Lighter side wall */
+                0 8px 0 rgba(204, 132, 0, 0.8),
+                
+                /* Stronger Glows */
+                0 20px 25px rgba(255, 165, 0, 0.4),
+                0 0 30px rgba(255, 215, 0, 0.5);
+        }
+        
+        input:checked ~ .knob::before {
+            opacity: 0.8;
+            background: radial-gradient(ellipse at center, rgba(255, 215, 0, 0.7) 0%, rgba(0,0,0,0) 70%);
+        }
+
+        input:not(:checked) ~ .knob {
+            animation: jelly-off 0.8s cubic-bezier(0.6, -0.28, 0.735, 0.045) forwards;
+        }
+
+        .jelly-switch input:not(.interacted) ~ .knob {
+            animation: none;
+            left: 0;
+        }
+        
+        /* PHYSICS UPDATE: More wobbles for extra jiggle */
+        @keyframes jelly-on {
+            0% {
+                left: 0;
+                transform: scale(1, 1);
+            }
+            25% {
+                transform: scale(1.35, 0.75); /* Max Velocity Stretch */
+            }
+            50% {
+                left: 62px; /* Arrive at destination */
+                transform: scale(0.8, 1.2); /* Hard Impact Squash */
+            }
+            60% {
+                transform: scale(1.15, 0.85); /* First Rebound (Wide) */
+            }
+            75% {
+                transform: scale(0.95, 1.05); /* Second Squash (Tall) */
+            }
+            85% {
+                transform: scale(1.05, 0.95); /* Second Rebound (Wide) */
+            }
+            100% {
+                left: 62px;
+                transform: scale(1, 1); /* Settle */
+            }
+        }
+
+        @keyframes jelly-off {
+            0% {
+                left: 62px;
+                transform: scale(1, 1);
+            }
+            25% {
+                transform: scale(1.35, 0.75); /* Max Velocity Stretch */
+            }
+            50% {
+                left: 0; /* Arrive at destination */
+                transform: scale(0.8, 1.2); /* Hard Impact Squash */
+            }
+            60% {
+                transform: scale(1.15, 0.85); /* First Rebound (Wide) */
+            }
+            75% {
+                transform: scale(0.95, 1.05); /* Second Squash (Tall) */
+            }
+            85% {
+                transform: scale(1.05, 0.95); /* Second Rebound (Wide) */
+            }
+            100% {
+                left: 0;
+                transform: scale(1, 1); /* Settle */
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <label class="jelly-switch">
+        <input type="checkbox" id="jellyToggle">
+        <span class="track"></span>
+        <span class="knob"></span>
+    </label>
+
+    <script>
+        const toggle = document.getElementById('jellyToggle');
+        toggle.addEventListener('change', () => {
+            toggle.classList.add('interacted');
+        });
+    </script>
+
+</body>
+</html>

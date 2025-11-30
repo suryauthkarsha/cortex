@@ -274,558 +274,196 @@
 
 .hamster__eye {
   animation: hamsterEye var(--dur) linear infinite;
-  background-color: hsl(0,0%,0%);
+  background: hsl(0,0%,0%);
   border-radius: 50%;
-  top: 0.375em;
-  left: 1.25em;
+  bottom: 0.25em;
+  left: 0.75em;
   width: 0.5em;
   height: 0.5em;
 }
 
-.hamster__nose {
-  background: hsl(0,90%,75%);
-  border-radius: 35% 65% 85% 15% / 70% 50% 50% 30%;
-  top: 0.75em;
-  left: 0;
-  width: 0.2em;
+.hamster__mouth {
+  animation: hamsterMouth var(--dur) ease-in-out infinite;
+  background: hsl(0,0%,0%);
+  border-radius: 50%;
+  bottom: 0;
   height: 0.25em;
-}
-
-.hamster__body {
-  animation: hamsterBody var(--dur) ease-in-out infinite;
-  background: hsl(30,90%,90%);
-  border-radius: 50% 30% 50% 30% / 15% 60% 40% 40%;
-  box-shadow: 0.1em 0.75em 0 hsl(30,90%,55%) inset,
-                0.15em -0.5em 0 hsl(30,90%,80%) inset;
-  top: 0.25em;
-  left: 2em;
-  width: 4.5em;
-  height: 3em;
-  transform-origin: 17% 50%;
-  transform-style: preserve-3d;
-}
-
-.hamster__limb--fr,
-.hamster__limb--fl {
-  clip-path: polygon(0 0,100% 0,70% 80%,60% 100%,0% 100%,40% 80%);
-  top: 2em;
-  left: 0.5em;
-  width: 1em;
-  height: 1.5em;
-  transform-origin: 50% 0;
-}
-
-.hamster__limb--fr {
-  animation: hamsterFRLimb var(--dur) linear infinite;
-  background: linear-gradient(hsl(30,90%,80%) 80%,hsl(0,90%,75%) 80%);
-  transform: rotate(15deg) translateZ(-1px);
-}
-
-.hamster__limb--fl {
-  animation: hamsterFLLimb var(--dur) linear infinite;
-  background: linear-gradient(hsl(30,90%,90%) 80%,hsl(0,90%,85%) 80%);
-  transform: rotate(15deg);
-}
-
-.hamster__limb--br,
-.hamster__limb--bl {
-  border-radius: 0.75em 0.75em 0 0;
-  clip-path: polygon(0 0,100% 0,100% 30%,70% 90%,70% 100%,30% 100%,40% 90%,0% 30%);
-  top: 1em;
-  left: 2.8em;
-  width: 1.5em;
-  height: 2.5em;
-  transform-origin: 50% 30%;
-}
-
-.hamster__limb--br {
-  animation: hamsterBRLimb var(--dur) linear infinite;
-  background: linear-gradient(hsl(30,90%,80%) 90%,hsl(0,90%,75%) 90%);
-  transform: rotate(-25deg) translateZ(-1px);
-}
-
-.hamster__limb--bl {
-  animation: hamsterBLLimb var(--dur) linear infinite;
-  background: linear-gradient(hsl(30,90%,90%) 90%,hsl(0,90%,85%) 90%);
-  transform: rotate(-25deg);
+  left: 1.1em;
+  width: 0.3em;
 }
 
 .hamster__tail {
-  animation: hamsterTail var(--dur) linear infinite;
-  background: hsl(0,90%,85%);
-  border-radius: 0.25em 50% 50% 0.25em;
-  box-shadow: 0 -0.2em 0 hsl(0,90%,75%) inset;
-  top: 1.5em;
+  animation: hamsterTail var(--dur) ease-in-out infinite;
+  background: hsl(30,90%,55%);
+  border-radius: 0.25em 0 0 0.25em;
+  bottom: 0.5em;
   right: -0.5em;
   width: 1em;
-  height: 0.5em;
-  transform: rotate(30deg) translateZ(-1px);
-  transform-origin: 0.25em 0.25em;
+  height: 0.4em;
+  transform-origin: 0 0.2em;
 }
 
 .spoke {
-  animation: spoke var(--dur) linear infinite;
-  background: radial-gradient(100% 100% at center,hsl(0,0%,60%) 4.8%,hsla(0,0%,60%,0) 5%),
-                linear-gradient(hsla(0,0%,55%,0) 46.9%,hsl(0,0%,65%) 47% 52.9%,hsla(0,0%,65%,0) 53%) 50% 50% / 99% 99% no-repeat;
+  background: hsl(0,0%,60%);
 }
 
-/* Hamster Animations */
+.spoke:nth-child(1) {
+  transform: rotate(0deg);
+}
+
+.spoke:nth-child(2) {
+  transform: rotate(45deg);
+}
+
+.spoke:nth-child(3) {
+  transform: rotate(90deg);
+}
+
+.spoke:nth-child(4) {
+  transform: rotate(135deg);
+}
+
+.spoke:nth-child(5) {
+  transform: rotate(180deg);
+}
+
+.spoke:nth-child(6) {
+  transform: rotate(225deg);
+}
+
+.spoke:nth-child(7) {
+  transform: rotate(270deg);
+}
+
+.spoke:nth-child(8) {
+  transform: rotate(315deg);
+}
+
 @keyframes hamster {
-  from, to {
+  0%,100% {
+    left: calc(50% - 3.5em);
     transform: rotate(4deg) translate(-0.8em,1.85em);
   }
-
+  25% {
+    left: calc(50% + 2em);
+    transform: rotate(-4deg) translate(-0.8em,1.85em);
+  }
   50% {
-    transform: rotate(0) translate(-0.8em,1.85em);
+    left: calc(50% + 6em);
+    transform: rotate(4deg) translate(-0.8em,1.85em);
+  }
+  75% {
+    left: calc(50% + 2em);
+    transform: rotate(-4deg) translate(-0.8em,1.85em);
   }
 }
 
 @keyframes hamsterHead {
-  from, 25%, 50%, 75%, to {
-    transform: rotate(0);
+  0%, 25%, 75%, 100% {
+    transform: rotate(0deg);
   }
-
-  12.5%, 37.5%, 62.5%, 87.5% {
-    transform: rotate(8deg);
+  50% {
+    transform: rotate(10deg);
   }
 }
 
 @keyframes hamsterEye {
-  from, 90%, to {
-    transform: scaleY(1);
+  0%, 25%, 75%, 100% {
+    opacity: 1;
   }
-
-  95% {
-    transform: scaleY(0);
-  }
-}
-
-@keyframes hamsterEar {
-  from, 25%, 50%, 75%, to {
-    transform: rotate(0);
-  }
-
-  12.5%, 37.5%, 62.5%, 87.5% {
-    transform: rotate(12deg);
+  50% {
+    opacity: 0.2;
   }
 }
 
-@keyframes hamsterBody {
-  from, 25%, 50%, 75%, to {
-    transform: rotate(0);
+@keyframes hamsterMouth {
+  0%, 100% {
+    width: 0.3em;
   }
-
-  12.5%, 37.5%, 62.5%, 87.5% {
-    transform: rotate(-2deg);
+  25%, 75% {
+    width: 0.1em;
   }
-}
-
-@keyframes hamsterFRLimb {
-  from, 25%, 50%, 75%, to {
-    transform: rotate(50deg) translateZ(-1px);
-  }
-
-  12.5%, 37.5%, 62.5%, 87.5% {
-    transform: rotate(-30deg) translateZ(-1px);
-  }
-}
-
-@keyframes hamsterFLLimb {
-  from, 25%, 50%, 75%, to {
-    transform: rotate(-30deg);
-  }
-
-  12.5%, 37.5%, 62.5%, 87.5% {
-    transform: rotate(50deg);
-  }
-}
-
-@keyframes hamsterBRLimb {
-  from, 25%, 50%, 75%, to {
-    transform: rotate(-60deg) translateZ(-1px);
-  }
-
-  12.5%, 37.5%, 62.5%, 87.5% {
-    transform: rotate(20deg) translateZ(-1px);
-  }
-}
-
-@keyframes hamsterBLLimb {
-  from, 25%, 50%, 75%, to {
-    transform: rotate(20deg);
-  }
-
-  12.5%, 37.5%, 62.5%, 87.5% {
-    transform: rotate(-60deg);
+  50% {
+    width: 0.4em;
   }
 }
 
 @keyframes hamsterTail {
-  from, 25%, 50%, 75%, to {
-    transform: rotate(30deg) translateZ(-1px);
+  0%, 25%, 75%, 100% {
+    transform: rotate(0deg);
   }
-
-  12.5%, 37.5%, 62.5%, 87.5% {
-    transform: rotate(10deg) translateZ(-1px);
-  }
-}
-
-@keyframes spoke {
-  from {
-    transform: rotate(0);
-  }
-
-  to {
-    transform: rotate(-1turn);
+  50% {
+    transform: rotate(25deg);
   }
 }
 
-/* Premium Button with Sparkle */
-.button {
-  --black-700: hsla(0 0% 12% / 1);
-  --border_radius: 9999px;
-  --transtion: 0.3s ease-in-out;
-  --offset: 2px;
-
-  cursor: pointer;
-  position: relative;
-
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-
-  transform-origin: center;
-
-  padding: 1rem 2rem;
-  background-color: transparent;
-
-  border: none;
-  border-radius: var(--border_radius);
-  transform: scale(calc(1 + (var(--active, 0) * 0.1)));
-
-  transition: transform var(--transtion);
-}
-
-.button::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
-  width: 100%;
-  height: 100%;
-  background-color: var(--black-700);
-
-  border-radius: var(--border_radius);
-  box-shadow: inset 0 0.5px hsl(0, 0%, 100%), inset 0 -1px 2px 0 hsl(0, 0%, 0%),
-    0px 4px 10px -4px hsla(0 0% 0% / calc(1 - var(--active, 0))),
-    0 0 0 calc(var(--active, 0) * 0.2rem) hsl(50 100% 50% / 0.4);
-
-  transition: all var(--transtion);
-  z-index: 0;
-}
-
-.button::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
-  width: 100%;
-  height: 100%;
-  background-color: hsla(50 100% 60% / 0.3);
-  background-image: radial-gradient(
-      at 51% 89%,
-      hsla(50, 100%, 74%, 0.5) 0px,
-      transparent 50%
-    ),
-    radial-gradient(at 100% 100%, hsla(50, 100%, 60%, 0.4) 0px, transparent 50%),
-    radial-gradient(at 22% 91%, hsla(50, 100%, 60%, 0.4) 0px, transparent 50%);
-  background-position: top;
-
-  opacity: var(--active, 0);
-  border-radius: var(--border_radius);
-  transition: opacity var(--transtion);
-  z-index: 2;
-}
-
-.button:is(:hover, :focus-visible) {
-  --active: 1;
-}
-.button:active {
-  transform: scale(1);
-}
-
-.button .dots_border {
-  --size_border: calc(100% + 2px);
-
-  overflow: hidden;
-
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
-  width: var(--size_border);
-  height: var(--size_border);
-  background-color: transparent;
-
-  border-radius: var(--border_radius);
-  z-index: -10;
-}
-
-.button .dots_border::before {
-  content: "";
-  position: absolute;
-  top: 30%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  transform-origin: left;
-  transform: rotate(0deg);
-
-  width: 100%;
-  height: 2rem;
-  background-color: white;
-
-  mask: linear-gradient(transparent 0%, white 120%);
-  animation: rotate 2s linear infinite;
-}
-
-.button .sparkle {
-  position: relative;
-  z-index: 10;
-
-  width: 1.75rem;
-}
-
-.button .sparkle .path {
-  fill: currentColor;
-  stroke: currentColor;
-
-  transform-origin: center;
-
-  color: hsl(0, 0%, 100%);
-}
-
-.button:is(:hover, :focus) .sparkle .path {
-  animation: path 1.5s linear 0.5s infinite;
-}
-
-.button .sparkle .path:nth-child(1) {
-  --scale_path_1: 1.2;
-}
-.button .sparkle .path:nth-child(2) {
-  --scale_path_2: 1.2;
-}
-.button .sparkle .path:nth-child(3) {
-  --scale_path_3: 1.2;
-}
-
-@keyframes path {
-  0%,
-  34%,
-  71%,
-  100% {
-    transform: scale(1);
+@keyframes hamsterEar {
+  0%, 25%, 75%, 100% {
+    transform: rotate(-35deg);
   }
-  17% {
-    transform: scale(var(--scale_path_1, 1));
-  }
-  49% {
-    transform: scale(var(--scale_path_2, 1));
-  }
-  83% {
-    transform: scale(var(--scale_path_3, 1));
+  50% {
+    transform: rotate(-6deg);
   }
 }
 
-.button .text_button {
-  position: relative;
-  z-index: 10;
-
-  font-size: 1rem;
-  font-weight: bold;
-  color: white;
-  letter-spacing: 0.5px;
-}
-
-/* Gen Z Mode Toggle */
-.container-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  --hue: 220deg;
-  --width: 8rem;
-  --accent-hue: 50deg;
-  --duration: 0.6s;
-  --easing: cubic-bezier(1, 0, 1, 1);
-}
-
-.togglesw {
-  display: none;
-}
-
-.switch {
-  --shadow-offset: calc(var(--width) / 20);
-  position: relative;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  width: var(--width);
-  height: calc(var(--width) / 2.5);
-  border-radius: var(--width);
-  background: hsl(var(--hue) 20% 88%);
-  box-shadow: none;
-}
-
-.indicator {
-  content: '';
-  position: absolute;
-  width: 40%;
-  height: 60%;
-  transition: all var(--duration) var(--easing);
-  box-shadow: inset 0 0 2px hsl(var(--hue) 20% 15% / 60%),
-    inset 0 0 3px 2px hsl(var(--hue) 20% 15% / 60%),
-    inset 0 0 5px 2px hsl(var(--hue) 20% 45% / 60%);
-}
-
-.indicator.left {
-  --hue: var(--accent-hue);
-  overflow: hidden;
-  left: 10%;
-  border-radius: 100px 0 0 100px;
-  background: linear-gradient(180deg, hsl(calc(var(--accent-hue) + 20deg) 95% 80%) 10%, hsl(calc(var(--accent-hue) + 20deg) 100% 60%) 30%, hsl(var(--accent-hue) 90% 50%) 60%, hsl(var(--accent-hue) 90% 60%) 75%, hsl(var(--accent-hue) 90% 50%));
-}
-
-.indicator.left::after {
-  content: '';
-  position: absolute;
-  opacity: 0.6;
-  width: 100%;
-  height: 100%;
-}
-
-.indicator.right {
-  right: 10%;
-  border-radius: 0 100px 100px 0;
-  background-image: linear-gradient(180deg, hsl(var(--hue) 20% 95%), hsl(var(--hue) 20% 65%) 60%, hsl(var(--hue) 20% 70%) 70%, hsl(var(--hue) 20% 65%));
-}
-
-.switch .button {
-  position: absolute;
-  z-index: 1;
-  width: 55%;
-  height: 80%;
-  left: 5%;
-  border-radius: 100px;
-  background-image: linear-gradient(160deg, hsl(var(--hue) 20% 95%) 40%, hsl(var(--hue) 20% 65%) 70%);
-  transition: all var(--duration) var(--easing);
-  box-shadow: 2px 2px 3px hsl(var(--hue) 18% 50% / 80%),
-    2px 2px 6px hsl(var(--hue) 18% 50% / 40%),
-    10px 20px 10px hsl(var(--hue) 18% 50% / 40%),
-    20px 30px 30px hsl(var(--hue) 18% 50% / 60%);
-}
-
-
-.togglesw:checked ~ .button {
-  left: 40%;
-}
-
-.togglesw:not(:checked) ~ .indicator.left,
-.togglesw:checked ~ .indicator.right {
-  box-shadow: inset 0 0 5px hsl(var(--hue) 20% 15% / 100%),
-    inset 20px 20px 10px hsl(var(--hue) 20% 15% / 100%),
-    inset 20px 20px 15px hsl(var(--hue) 20% 45% / 100%);
-}
-
-/* 3D Rotating Cards Carousel */
-.wrapper {
-  width: 100%;
-  height: 300px;
-  position: relative;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
-.inner {
-  --w: 100px;
-  --h: 150px;
-  --translateZ: calc((var(--w) + var(--h)) + 0px);
-  --rotateX: -15deg;
-  --perspective: 1000px;
-  position: absolute;
-  width: var(--w);
-  height: var(--h);
-  z-index: 2;
-  transform-style: preserve-3d;
-  transform: perspective(var(--perspective));
-  animation: rotating 20s linear infinite;
-}
-
-@keyframes rotating {
-  from {
-    transform: perspective(var(--perspective)) rotateX(var(--rotateX))
-      rotateY(0);
-  }
-  to {
-    transform: perspective(var(--perspective)) rotateX(var(--rotateX))
-      rotateY(1turn);
-  }
-}
-
-.card {
-  position: absolute;
-  border: 2px solid rgba(var(--color-card), 0.8);
-  border-radius: 12px;
-  overflow: hidden;
-  inset: 0;
-  transform: rotateY(calc((360deg / var(--quantity)) * var(--index)))
-    translateZ(var(--translateZ));
-  box-shadow: 0 0 20px rgba(var(--color-card), 0.4);
-}
-
-.card .img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  background: radial-gradient(
-    circle,
-    rgba(var(--color-card), 0.2) 0%,
-    rgba(var(--color-card), 0.4) 50%,
-    rgba(var(--color-card), 0.6) 100%
-  );
-}
-
-/* Gradient Button */
 .gradient-button {
-  font-size: 14px;
-  padding: 0.6em 1.5em;
-  font-weight: 500;
-  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-  color: black;
-  border: none;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+  --tw-gradient-from: rgb(148 163 184);
+  --gradient: linear-gradient(135deg, var(--tw-gradient-stops));
+  --gradient-hover: linear-gradient(135deg, rgb(100 116 139) 0%, rgb(71 85 105) 100%);
+  --gradient-active: linear-gradient(135deg, rgb(51 65 85) 0%, rgb(30 41 59) 100%);
+
   position: relative;
-  overflow: hidden;
-  border-radius: 0.6em;
+  z-index: 0;
+  display: inline-block;
+  width: 6em;
+  height: 3.2em;
+  line-height: 3.2em;
+  text-align: center;
+  border: none;
+  border-radius: 9999px;
+  background-color: #334155;
+  background: var(--gradient);
+  color: white;
+  font-size: 1em;
+  font-weight: 500;
   cursor: pointer;
-  transition: background 300ms ease;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
 }
 
 .gradient-button:hover {
-  background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
+  --tw-gradient-from: rgb(100 116 139);
+  --tw-gradient-to: rgb(71 85 105);
 }
 
-.gradient-button .gradient {
+.gradient-button:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.gradient-button::before {
+  content: '';
   position: absolute;
-  width: 100%;
-  height: 100%;
-  left: 0;
+  inset: 0;
+  z-index: -1;
+  border-radius: 9999px;
+  padding: 2px;
+  background: linear-gradient(135deg, rgb(148 163 184 / 0.5) 0%, rgb(71 85 105 / 0.5) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+.gradient-button::after {
+  position: absolute;
+  content: '';
   top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background-color: transparent;
   border-radius: 0.6em;
   margin-top: -0.25em;
   background-image: linear-gradient(
@@ -948,5 +586,193 @@
   }
   100% {
     transform: scale3d(1, 1, 1);
+  }
+}
+
+/* --- JELLY SWITCH CONTAINER --- */
+.jelly-switch {
+  position: relative;
+  width: 110px;
+  height: 50px;
+  -webkit-tap-highlight-color: transparent;
+  display: flex;
+  align-items: center;
+  transform-style: preserve-3d;
+}
+
+/* Hide default checkbox */
+.jelly-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+/* The Track (Big & Visible) */
+.track {
+  position: absolute;
+  cursor: pointer;
+  left: 0;
+  right: 0;
+  height: 32px;
+  background-color: #333;
+  border-radius: 20px;
+  box-shadow: 
+      inset 0 2px 6px rgba(0,0,0,0.8),
+      inset 0 -1px 2px rgba(255, 255, 255, 0.2),
+      0 0 0 2px rgba(30,30,30, 0.5);
+  transition: all 0.4s ease;
+}
+
+/* The Knob (Translucent Jelly Block) */
+.knob {
+  position: absolute;
+  content: "";
+  height: 48px;
+  width: 48px;
+  left: 0;
+  top: 50%;
+  margin-top: -24px;
+  
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.65) 0%, rgba(255, 170, 0, 0.7) 100%);
+  
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  
+  border-radius: 14px;
+  
+  box-shadow: 
+      inset 2px 2px 5px rgba(255, 255, 255, 0.6),
+      inset -3px -3px 8px rgba(200, 100, 0, 0.4),
+      0 8px 0 rgba(179, 116, 0, 0.8),
+      0 15px 20px rgba(0, 0, 0, 0.6),
+      0 0 15px rgba(255, 215, 0, 0.3);
+  
+  transform-origin: center;
+  z-index: 2;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transform: translateZ(10px);
+}
+
+/* Glossy Reflection (The "Wet" Look) */
+.knob::after {
+  content: '';
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  right: 5px;
+  height: 18px;
+  background: linear-gradient(180deg, 
+      rgba(255, 255, 255, 0.8) 0%, 
+      rgba(255, 255, 255, 0.1) 100%);
+  border-radius: 8px 8px 12px 12px;
+  opacity: 0.9;
+}
+
+/* Bottom Caustic Reflection */
+.knob::before {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 10px;
+  background: radial-gradient(ellipse at center, rgba(255, 165, 0, 0.5) 0%, rgba(0,0,0,0) 70%);
+  filter: blur(5px);
+  z-index: -1;
+  opacity: 0.4;
+  transition: opacity 0.4s;
+}
+
+/* --- STATES & ANIMATION --- */
+
+.jelly-switch input:checked ~ .track {
+  background-color: #3a3a3a;
+  box-shadow: 
+      inset 0 2px 6px rgba(0,0,0,0.8),
+      inset 0 -1px 2px rgba(255, 255, 255, 0.2),
+      0 0 20px rgba(255, 160, 0, 0.15);
+}
+
+.jelly-switch input:checked ~ .knob {
+  animation: jelly-on 0.8s cubic-bezier(0.6, -0.28, 0.735, 0.045) forwards;
+  
+  background: linear-gradient(135deg, rgba(255, 235, 59, 0.7) 0%, rgba(255, 145, 0, 0.75) 100%);
+  
+  box-shadow: 
+      inset 2px 2px 5px rgba(255, 255, 255, 0.8),
+      inset -3px -3px 8px rgba(255, 100, 0, 0.3),
+      0 8px 0 rgba(204, 132, 0, 0.8),
+      0 20px 25px rgba(255, 165, 0, 0.4),
+      0 0 30px rgba(255, 215, 0, 0.5);
+}
+
+.jelly-switch input:checked ~ .knob::before {
+  opacity: 0.8;
+  background: radial-gradient(ellipse at center, rgba(255, 215, 0, 0.7) 0%, rgba(0,0,0,0) 70%);
+}
+
+.jelly-switch input:not(:checked) ~ .knob {
+  animation: jelly-off 0.8s cubic-bezier(0.6, -0.28, 0.735, 0.045) forwards;
+}
+
+.jelly-switch input:not(.interacted) ~ .knob {
+  animation: none;
+  left: 0;
+}
+
+@keyframes jelly-on {
+  0% {
+    left: 0;
+    transform: scale(1, 1);
+  }
+  25% {
+    transform: scale(1.35, 0.75);
+  }
+  50% {
+    left: 62px;
+    transform: scale(0.8, 1.2);
+  }
+  60% {
+    transform: scale(1.15, 0.85);
+  }
+  75% {
+    transform: scale(0.95, 1.05);
+  }
+  85% {
+    transform: scale(1.05, 0.95);
+  }
+  100% {
+    left: 62px;
+    transform: scale(1, 1);
+  }
+}
+
+@keyframes jelly-off {
+  0% {
+    left: 62px;
+    transform: scale(1, 1);
+  }
+  25% {
+    transform: scale(1.35, 0.75);
+  }
+  50% {
+    left: 0;
+    transform: scale(0.8, 1.2);
+  }
+  60% {
+    transform: scale(1.15, 0.85);
+  }
+  75% {
+    transform: scale(0.95, 1.05);
+  }
+  85% {
+    transform: scale(1.05, 0.95);
+  }
+  100% {
+    left: 0;
+    transform: scale(1, 1);
   }
 }
