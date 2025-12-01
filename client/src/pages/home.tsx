@@ -62,6 +62,10 @@ export default function Home() {
   const [infographic, setInfographic] = useState<InfographicData | null>(null);
   const [isInfographicLoading, setIsInfographicLoading] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
+  
+  // Upload Progress
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [isUploading, setIsUploading] = useState(false);
 
   // Download as PDF with structured text - optimized
   const downloadNotesAsPDF = async () => {
@@ -374,7 +378,38 @@ export default function Home() {
           >
              <label className="p-4 rounded-full hover:bg-white/10 text-neutral-400 hover:text-white cursor-pointer transition-all relative group">
                 <Upload className="w-6 h-6" />
-                <input type="file" multiple accept="image/*" onChange={handleFileUpload} className="hidden" />
+                <input 
+                  type="file" 
+                  multiple 
+                  accept="image/*" 
+                  onChange={(e) => {
+                    setIsUploading(true);
+                    setUploadProgress(0);
+                    
+                    // Simulate progress
+                    const interval = setInterval(() => {
+                      setUploadProgress(prev => {
+                        if (prev >= 90) {
+                          clearInterval(interval);
+                          return prev;
+                        }
+                        return prev + Math.random() * 30;
+                      });
+                    }, 100);
+                    
+                    handleFileUpload(e);
+                    
+                    // Complete after actual upload
+                    setTimeout(() => {
+                      setUploadProgress(100);
+                      setTimeout(() => {
+                        setIsUploading(false);
+                        setUploadProgress(0);
+                      }, 500);
+                    }, 800);
+                  }}
+                  className="hidden" 
+                />
                 <span className="absolute left-14 bg-black px-2 py-1 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity border border-white/10 pointer-events-none">
                   Upload Material
                 </span>
@@ -435,6 +470,18 @@ export default function Home() {
                 {/* Voice Button with Visualizer */}
                 <div className="relative z-20 flex flex-col items-center gap-8 pt-12">
                    <div className="relative">
+                      {/* Upload Progress Bar */}
+                      {isUploading && (
+                        <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-40 h-1 bg-neutral-700 rounded-full overflow-hidden">
+                          <motion.div
+                            className="h-full bg-gradient-to-r from-yellow-400 to-yellow-300"
+                            initial={{ width: 0 }}
+                            animate={{ width: `${uploadProgress}%` }}
+                            transition={{ type: 'spring', stiffness: 100, damping: 20 }}
+                          />
+                        </div>
+                      )}
+                      
                       {isListening && (
                         <div className="absolute inset-0 flex items-center justify-center gap-2 pointer-events-none" style={{ top: '-60px' }}>
                           {visualizerBars.map((height, idx) => (
