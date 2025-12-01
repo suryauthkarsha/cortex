@@ -40,8 +40,15 @@ export function useAudioVisualizer(isListening: boolean) {
         const numBars = 40;
         const barWidth = Math.floor(bufferLength / numBars);
 
+        let lastUpdateTime = Date.now();
+        const updateInterval = 50; // Update every 50ms instead of every frame
+
         const animate = () => {
           animationRef.current = requestAnimationFrame(animate);
+          const now = Date.now();
+
+          if (now - lastUpdateTime < updateInterval) return;
+          lastUpdateTime = now;
 
           analyser.getByteFrequencyData(dataArray);
 
@@ -49,7 +56,10 @@ export function useAudioVisualizer(isListening: boolean) {
           for (let i = 0; i < numBars; i++) {
             const start = i * barWidth;
             const end = start + barWidth;
-            const sum = dataArray.slice(start, end).reduce((a, b) => a + b, 0);
+            let sum = 0;
+            for (let j = start; j < end; j++) {
+              sum += dataArray[j];
+            }
             const average = sum / barWidth;
             newBars.push((average / 255) * 100);
           }
