@@ -146,7 +146,7 @@ const LandingPage = () => {
           </motion.div>
 
           {/* Main Heading */}
-          <h1 className="text-7xl md:text-8xl text-center leading-tight mb-6" style={{ 
+          <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl text-center leading-tight mb-4 sm:mb-6" style={{ 
             fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif',
             fontWeight: 700,
             background: 'linear-gradient(180deg, #FFFFFF 10%, #5a5a5a 100%)',
@@ -161,13 +161,13 @@ const LandingPage = () => {
           </h1>
 
           {/* Subheading in Frosted Glass Box */}
-          <div className="px-4 py-3 rounded-lg border border-white/20 max-w-xl mx-auto mb-12" style={{
+          <div className="px-3 py-2 sm:px-4 sm:py-3 rounded-lg border border-white/20 max-w-2xl mx-auto mb-8 sm:mb-12" style={{
             background: 'rgba(255, 255, 255, 0.05)',
             backdropFilter: 'blur(20px)',
             WebkitBackdropFilter: 'blur(20px)',
             boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 8px 32px rgba(0, 0, 0, 0.3)',
           }}>
-            <p className="text-base text-white text-center" style={{ fontFamily: 'Arial, sans-serif', letterSpacing: '0.3px' }}>
+            <p className="text-sm sm:text-base text-white text-center" style={{ fontFamily: 'Arial, sans-serif', letterSpacing: '0.3px' }}>
               Voice-based learning. No excuses. No coddling. Just results.
             </p>
           </div>
@@ -180,44 +180,45 @@ const LandingPage = () => {
           </div>
 
           {/* Hero Stats */}
-          <div className="grid grid-cols-3 gap-8 mt-20 pt-16 border-t border-yellow-600/20">
+          <div className="grid grid-cols-3 gap-4 sm:gap-8 mt-10 sm:mt-20 pt-8 sm:pt-16 border-t border-yellow-600/20">
             <div className="text-center">
-              <div className="text-6xl md:text-7xl font-bold text-yellow-400">500+</div>
-              <p className="text-neutral-400 text-lg mt-3">Students</p>
+              <div className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-yellow-400">500+</div>
+              <p className="text-neutral-400 text-xs sm:text-lg mt-1 sm:mt-3">Students</p>
             </div>
             <div className="text-center">
-              <div className="text-6xl md:text-7xl font-bold text-yellow-400">98%</div>
-              <p className="text-neutral-400 text-lg mt-3">Satisfaction</p>
+              <div className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-yellow-400">98%</div>
+              <p className="text-neutral-400 text-xs sm:text-lg mt-1 sm:mt-3">Satisfaction</p>
             </div>
             <div className="text-center">
-              <div className="text-6xl md:text-7xl font-bold text-yellow-400">2000+</div>
-              <p className="text-neutral-400 text-lg mt-3">Hours Studied</p>
+              <div className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-yellow-400">2000+</div>
+              <p className="text-neutral-400 text-xs sm:text-lg mt-1 sm:mt-3">Hours Studied</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* Features Book Section */}
-      <section className="py-20 px-6 border-t border-yellow-600/20">
+      <section className="py-12 sm:py-20 px-4 sm:px-6 border-t border-yellow-600/20">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-5xl font-bold text-center mb-20">What You Get</h2>
+          <h2 className="text-3xl sm:text-5xl font-bold text-center mb-12 sm:mb-20">What You Get</h2>
 
-          <div className="flex items-center justify-center gap-16">
+          <div className="flex items-center justify-center gap-4 sm:gap-16">
             {/* Left Arrow */}
             <button
               onClick={() => setCurrentFeature((prev) => (prev === 0 ? features.length - 1 : prev - 1))}
-              className="p-4 rounded-full border border-yellow-600/40 hover:border-yellow-500 hover:bg-yellow-500/10 transition flex-shrink-0"
+              className="hidden sm:flex p-3 sm:p-4 rounded-full border border-yellow-600/40 hover:border-yellow-500 hover:bg-yellow-500/10 transition flex-shrink-0"
             >
-              <ChevronLeft className="w-6 h-6 text-yellow-500" />
+              <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-500" />
             </button>
 
             {/* Book Container */}
-            <div className="flex-1 max-w-5xl" style={{ perspective: '1400px' }}>
+            <div className="flex-1 max-w-5xl w-full" style={{ perspective: '1400px' }}>
               <div style={{
                 position: 'relative',
-                height: '480px',
+                height: 'auto',
+                minHeight: '300px',
                 transformStyle: 'preserve-3d',
-              }}>
+              }} className="sm:min-h-[480px]">
                 {/* Book Outer Container */}
                 <div style={{
                   display: 'flex',
@@ -239,7 +240,7 @@ const LandingPage = () => {
                     animate={{ rotateY: 0, opacity: 1, x: 0 }}
                     exit={{ rotateY: -60, opacity: 0, x: 30 }}
                     transition={{ duration: 0.7, ease: "easeOut" }}
-                    className="flex-1 p-10 flex flex-col justify-center relative"
+                    className="flex-1 p-6 sm:p-10 flex flex-col justify-center relative"
                     style={{
                       background: 'linear-gradient(135deg, rgba(40, 40, 40, 0.8) 0%, rgba(20, 20, 20, 0.9) 100%)',
                       borderLeft: '1px solid rgba(251, 191, 36, 0.15)',
@@ -257,11 +258,11 @@ const LandingPage = () => {
                       height: '1px',
                       background: 'linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.2), transparent)',
                     }} />
-                    <div className="mb-6">
-                      <div className="text-xs text-yellow-600/40 mb-3 uppercase tracking-widest font-medium">Chapter {currentFeature + 1}</div>
-                      <h3 className="text-4xl font-bold text-yellow-400 leading-tight">{features[currentFeature].title}</h3>
+                    <div className="mb-4 sm:mb-6">
+                      <div className="text-xs text-yellow-600/40 mb-2 sm:mb-3 uppercase tracking-widest font-medium">Chapter {currentFeature + 1}</div>
+                      <h3 className="text-2xl sm:text-4xl font-bold text-yellow-400 leading-tight">{features[currentFeature].title}</h3>
                     </div>
-                    <p className="text-lg text-neutral-300 leading-relaxed font-light">{features[currentFeature].description}</p>
+                    <p className="text-sm sm:text-lg text-neutral-300 leading-relaxed font-light">{features[currentFeature].description}</p>
                   </motion.div>
 
                   {/* Right Page */}
@@ -271,7 +272,7 @@ const LandingPage = () => {
                     animate={{ rotateY: 0, opacity: 1, x: 0 }}
                     exit={{ rotateY: 60, opacity: 0, x: -30 }}
                     transition={{ duration: 0.7, ease: "easeOut" }}
-                    className="flex-1 p-10 flex flex-col justify-center relative"
+                    className="hidden sm:flex flex-1 p-10 flex-col justify-center relative"
                     style={{
                       background: 'linear-gradient(135deg, rgba(20, 20, 20, 0.9) 0%, rgba(40, 40, 40, 0.8) 100%)',
                       borderRight: '1px solid rgba(251, 191, 36, 0.15)',
@@ -331,28 +332,28 @@ const LandingPage = () => {
             {/* Right Arrow */}
             <button
               onClick={() => setCurrentFeature((prev) => (prev === features.length - 1 ? 0 : prev + 1))}
-              className="p-4 rounded-full border border-yellow-600/40 hover:border-yellow-500 hover:bg-yellow-500/10 transition flex-shrink-0"
+              className="hidden sm:flex p-3 sm:p-4 rounded-full border border-yellow-600/40 hover:border-yellow-500 hover:bg-yellow-500/10 transition flex-shrink-0"
             >
-              <ChevronRight className="w-6 h-6 text-yellow-500" />
+              <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-500" />
             </button>
           </div>
         </div>
       </section>
 
       {/* Comparison Section */}
-      <section className="py-20 px-6 border-t border-yellow-600/20">
+      <section className="py-12 sm:py-20 px-4 sm:px-6 border-t border-yellow-600/20">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-5xl font-bold text-center mb-16">Why We Win</h2>
+          <h2 className="text-3xl sm:text-5xl font-bold text-center mb-10 sm:mb-16">Why We Win</h2>
 
           <div className="overflow-x-auto">
-            <table className="w-full">
+            <table className="w-full text-sm sm:text-base">
               <thead>
                 <tr className="border-b border-yellow-600/20">
-                  <th className="text-left py-4 px-6 font-bold">Feature</th>
+                  <th className="text-left py-3 sm:py-4 px-3 sm:px-6 font-bold text-xs sm:text-sm">Feature</th>
                   {comparisonData.map((tool) => (
                     <th
                       key={tool.name}
-                      className="text-center py-4 px-6 font-bold text-sm"
+                      className="text-center py-3 sm:py-4 px-2 sm:px-6 font-bold text-xs sm:text-sm"
                     >
                       {tool.name}
                     </th>
@@ -365,13 +366,13 @@ const LandingPage = () => {
                     key={feature}
                     className="border-b border-yellow-600/10 hover:bg-yellow-500/5 transition"
                   >
-                    <td className="py-4 px-6 font-medium">{feature}</td>
+                    <td className="py-3 sm:py-4 px-3 sm:px-6 font-medium text-xs sm:text-base">{feature}</td>
                     {comparisonData.map((tool, toolIdx) => (
-                      <td key={toolIdx} className="text-center py-4 px-6">
+                      <td key={toolIdx} className="text-center py-3 sm:py-4 px-2 sm:px-6">
                         {tool.enabled[idx] ? (
-                          <CheckCircle2 className="w-6 h-6 text-yellow-500 mx-auto" />
+                          <CheckCircle2 className="w-4 h-4 sm:w-6 sm:h-6 text-yellow-500 mx-auto" />
                         ) : (
-                          <X className="w-6 h-6 text-neutral-700 mx-auto" />
+                          <X className="w-4 h-4 sm:w-6 sm:h-6 text-neutral-700 mx-auto" />
                         )}
                       </td>
                     ))}
@@ -384,14 +385,14 @@ const LandingPage = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-20 px-6 border-t border-yellow-600/20">
+      <section className="py-12 sm:py-20 px-4 sm:px-6 border-t border-yellow-600/20">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-5xl font-bold text-center mb-4">Real Students</h2>
-          <p className="text-neutral-400 text-center mb-16 max-w-2xl mx-auto">
+          <h2 className="text-3xl sm:text-5xl font-bold text-center mb-2 sm:mb-4">Real Students</h2>
+          <p className="text-neutral-400 text-center mb-10 sm:mb-16 max-w-2xl mx-auto text-sm sm:text-base">
             People who actually use Cortex.
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-16 perspective" style={{ perspective: '1500px' }}>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-16 perspective" style={{ perspective: '1500px' }}>
             {testimonials.map((testimonial, i) => (
               <motion.div
                 key={i}
@@ -471,27 +472,27 @@ const LandingPage = () => {
       </section>
 
       {/* Final CTA */}
-      <section className="py-20 px-6 border-t border-yellow-600/20">
+      <section className="py-12 sm:py-20 px-4 sm:px-6 border-t border-yellow-600/20">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-5xl font-bold mb-6">Stop Settling</h2>
-          <p className="text-xl text-neutral-400 mb-12">
+          <h2 className="text-3xl sm:text-5xl font-bold mb-4 sm:mb-6">Stop Settling</h2>
+          <p className="text-base sm:text-xl text-neutral-400 mb-8 sm:mb-12">
             Your grades. Your future. Your responsibility.
           </p>
           <Link href="/app">
-            <button className="px-8 py-4 rounded-lg bg-yellow-500 text-black font-bold text-lg hover:bg-yellow-400 transition flex items-center gap-2 group cursor-pointer mx-auto">
+            <button className="px-6 sm:px-8 py-3 sm:py-4 rounded-lg bg-yellow-500 text-black font-bold text-base sm:text-lg hover:bg-yellow-400 transition flex items-center gap-2 group cursor-pointer mx-auto">
               Get Started
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition" />
+              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition" />
             </button>
           </Link>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-black/50 border-t border-gray-700/50 py-32 px-6">
+      <footer className="bg-black/50 border-t border-gray-700/50 py-16 sm:py-32 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto">
           {/* CORTEX Logo Text */}
-          <div className="text-center mb-16">
-            <h3 className="text-9xl md:text-10xl font-bold leading-tight" style={{
+          <div className="text-center mb-10 sm:mb-16">
+            <h3 className="text-5xl sm:text-9xl md:text-10xl font-bold leading-tight" style={{
               fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif',
               background: 'linear-gradient(180deg, #FFFFFF 5%, #4a4a4a 100%)',
               WebkitBackgroundClip: 'text',
@@ -506,11 +507,11 @@ const LandingPage = () => {
           </div>
 
           {/* Separator Line */}
-          <div className="border-t border-gray-600/40 my-12" />
+          <div className="border-t border-gray-600/40 my-8 sm:my-12" />
 
           {/* Footer Navigation */}
-          <div className="flex items-center justify-between text-neutral-400 text-sm">
-            <div className="flex gap-8">
+          <div className="flex flex-col sm:flex-row items-center justify-between text-neutral-400 text-xs sm:text-sm gap-4 sm:gap-0">
+            <div className="flex gap-4 sm:gap-8">
               <a href="#" className="hover:text-white transition">Home</a>
               <a href="#" className="hover:text-white transition">Contact us</a>
               <a href="#" className="hover:text-white transition">Policies</a>
