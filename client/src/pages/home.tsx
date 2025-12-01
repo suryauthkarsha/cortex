@@ -374,10 +374,10 @@ export default function Home() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="flex items-center justify-center gap-6 px-6 py-4 bg-neutral-900/30 rounded-3xl border border-white/5 backdrop-blur-xl w-fit mx-auto"
+            className="flex items-center justify-center gap-4 px-5 py-3 bg-black/40 rounded-2xl border border-white/5 backdrop-blur-xl w-fit mx-auto transition-all hover:border-white/10"
           >
-             <label className="p-4 rounded-full hover:bg-white/10 text-neutral-400 hover:text-white cursor-pointer transition-all relative group">
-                <Upload className="w-6 h-6" />
+             <label className="p-2.5 rounded-lg hover:bg-white/5 text-neutral-400 hover:text-white cursor-pointer transition-all relative group">
+                <Upload className="w-5 h-5" />
                 <input 
                   type="file" 
                   multiple 
@@ -410,8 +410,8 @@ export default function Home() {
                   }}
                   className="hidden" 
                 />
-                <span className="absolute -bottom-10 left-1/2 -translate-x-1/2 bg-black px-2 py-1 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity border border-white/10 pointer-events-none">
-                  Upload Material
+                <span className="absolute -bottom-9 left-1/2 -translate-x-1/2 bg-black/90 px-2 py-1 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity border border-white/10 pointer-events-none">
+                  Upload
                 </span>
              </label>
              
@@ -421,21 +421,21 @@ export default function Home() {
                   setIsSelfieMode(newState);
                   setUseCamera(newState);
                }}
-               className={`p-4 rounded-full transition-all relative group ${isSelfieMode ? 'bg-white text-black' : 'hover:bg-white/10 text-neutral-400 hover:text-white'}`}
+               className={`p-2.5 rounded-lg transition-all relative group ${isSelfieMode ? 'bg-white/10 text-white' : 'hover:bg-white/5 text-neutral-400 hover:text-white'}`}
              >
-                <Video className="w-6 h-6" />
-                <span className="absolute -bottom-10 left-1/2 -translate-x-1/2 bg-black px-2 py-1 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity border border-white/10 pointer-events-none">
-                  Toggle Camera
+                <Video className="w-5 h-5" />
+                <span className="absolute -bottom-9 left-1/2 -translate-x-1/2 bg-black/90 px-2 py-1 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity border border-white/10 pointer-events-none">
+                  Camera
                 </span>
              </button>
 
-             <div className="w-[1px] h-8 bg-white/10" />
+             {images.length > 0 && <div className="w-[1px] h-6 bg-white/5" />}
 
              {images.map((img, idx) => (
-               <div key={idx} className="w-12 h-12 rounded-xl overflow-hidden border border-white/10 relative group">
-                 <img src={img} alt="" className="w-full h-full object-cover opacity-50 group-hover:opacity-100 transition-opacity" />
-                 <button onClick={() => removeImage(idx)} className="absolute inset-0 bg-red-500/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
-                   <X className="w-4 h-4 text-white" />
+               <div key={idx} className="w-10 h-10 rounded-lg overflow-hidden border border-white/10 relative group flex-shrink-0">
+                 <img src={img} alt="" className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" />
+                 <button onClick={() => removeImage(idx)} className="absolute inset-0 bg-red-500/60 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                   <X className="w-3.5 h-3.5 text-white" />
                  </button>
                </div>
              ))}
