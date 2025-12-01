@@ -366,15 +366,15 @@ export default function Home() {
         </div>
       </header>
 
-      <main className="relative z-10 flex-1 container mx-auto px-6 py-4 flex flex-col lg:flex-row gap-8 h-[calc(100vh-100px)]">
+      <main className="relative z-10 flex-1 container mx-auto px-6 py-4 flex flex-col gap-8 h-[calc(100vh-100px)]">
         
-        {/* LEFT COLUMN: Tools (Collapsible/Minimal) - Hidden in Results Mode */}
+        {/* TOP: Upload Toolbar - Hidden in Results Mode */}
         {viewState !== 'results' && viewState !== 'infographic' && (
           <motion.div 
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            className="hidden lg:flex flex-col gap-4 w-20 items-center py-8 bg-neutral-900/30 rounded-3xl border border-white/5 h-fit self-center backdrop-blur-xl"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="flex items-center justify-center gap-6 px-6 py-4 bg-neutral-900/30 rounded-3xl border border-white/5 backdrop-blur-xl w-fit mx-auto"
           >
              <label className="p-4 rounded-full hover:bg-white/10 text-neutral-400 hover:text-white cursor-pointer transition-all relative group">
                 <Upload className="w-6 h-6" />
@@ -410,7 +410,7 @@ export default function Home() {
                   }}
                   className="hidden" 
                 />
-                <span className="absolute left-14 bg-black px-2 py-1 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity border border-white/10 pointer-events-none">
+                <span className="absolute -bottom-10 left-1/2 -translate-x-1/2 bg-black px-2 py-1 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity border border-white/10 pointer-events-none">
                   Upload Material
                 </span>
              </label>
@@ -424,12 +424,12 @@ export default function Home() {
                className={`p-4 rounded-full transition-all relative group ${isSelfieMode ? 'bg-white text-black' : 'hover:bg-white/10 text-neutral-400 hover:text-white'}`}
              >
                 <Video className="w-6 h-6" />
-                <span className="absolute left-14 bg-black px-2 py-1 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity border border-white/10 pointer-events-none">
+                <span className="absolute -bottom-10 left-1/2 -translate-x-1/2 bg-black px-2 py-1 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity border border-white/10 pointer-events-none">
                   Toggle Camera
                 </span>
              </button>
 
-             <div className="w-8 h-[1px] bg-white/10 my-2" />
+             <div className="w-[1px] h-8 bg-white/10" />
 
              {images.map((img, idx) => (
                <div key={idx} className="w-12 h-12 rounded-xl overflow-hidden border border-white/10 relative group">
@@ -444,7 +444,7 @@ export default function Home() {
 
         {/* MIDDLE: Stage - Shrinks/Disappears in Results Mode */}
         {viewState !== 'results' && viewState !== 'infographic' && (
-          <div className="flex-1 flex flex-col gap-8 justify-center relative">
+          <div className="flex-1 flex flex-col gap-8 justify-center relative lg:flex-row">
              
              {/* Central Visualizer */}
              <div className="relative flex-1 flex flex-col items-center justify-center min-h-[400px]">
