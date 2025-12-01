@@ -61,110 +61,110 @@ export default function Home() {
   // Infographic State
   const [infographic, setInfographic] = useState<InfographicData | null>(null);
   const [isInfographicLoading, setIsInfographicLoading] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
 
-  // Download as PDF with structured text
-  const downloadNotesAsPDF = () => {
+  // Download as PDF with structured text - optimized
+  const downloadNotesAsPDF = async () => {
     if (!infographic) return;
-
+    
+    setIsDownloading(true);
+    
     try {
+      // Use setTimeout to make it non-blocking
+      await new Promise(resolve => setTimeout(resolve, 0));
+      
       const pdf = new jsPDF('p', 'mm', 'a4');
       let yPosition = 20;
       const pageHeight = pdf.internal.pageSize.getHeight();
       const margin = 15;
-      const maxWidth = 180;
+      const lineHeight = 5;
 
       // Title
-      pdf.setFontSize(24);
+      pdf.setFontSize(20);
       pdf.setTextColor(0, 0, 0);
       pdf.text(infographic.title, margin, yPosition);
-      yPosition += 15;
+      yPosition += 12;
 
-      // Subtitle
+      // Subtitle (skip text wrapping for speed)
       if (infographic.subtitle) {
-        pdf.setFontSize(12);
+        pdf.setFontSize(11);
         pdf.setTextColor(80, 80, 80);
-        const subtitleLines = pdf.splitTextToSize(infographic.subtitle, maxWidth);
-        pdf.text(subtitleLines, margin, yPosition);
-        yPosition += subtitleLines.length * 5 + 10;
+        pdf.text(infographic.subtitle, margin, yPosition);
+        yPosition += 8;
       }
 
       // Concepts
-      pdf.setFontSize(14);
+      pdf.setFontSize(12);
       pdf.setTextColor(0, 0, 0);
       pdf.text('CONCEPTS', margin, yPosition);
-      yPosition += 10;
+      yPosition += 8;
 
       infographic.concepts.forEach((concept) => {
-        if (yPosition > pageHeight - margin) {
+        if (yPosition > pageHeight - 20) {
           pdf.addPage();
           yPosition = margin;
         }
 
-        pdf.setFontSize(12);
+        pdf.setFontSize(11);
         pdf.setTextColor(0, 0, 0);
-        pdf.text(`• ${concept.title}`, margin + 5, yPosition);
-        yPosition += 7;
+        pdf.text(`${concept.title}`, margin + 3, yPosition);
+        yPosition += 5;
 
-        pdf.setFontSize(10);
+        pdf.setFontSize(9);
         pdf.setTextColor(60, 60, 60);
-        const descLines = pdf.splitTextToSize(concept.description, maxWidth - 10);
-        pdf.text(descLines, margin + 10, yPosition);
-        yPosition += descLines.length * 4 + 5;
+        pdf.text(concept.description, margin + 5, yPosition);
+        yPosition += 6;
       });
 
       // Key Takeaways
       if (infographic.keyStats && infographic.keyStats.length > 0) {
-        if (yPosition > pageHeight - margin - 20) {
+        if (yPosition > pageHeight - 20) {
           pdf.addPage();
           yPosition = margin;
         }
 
-        yPosition += 5;
-        pdf.setFontSize(14);
+        yPosition += 4;
+        pdf.setFontSize(12);
         pdf.setTextColor(0, 0, 0);
         pdf.text('KEY TAKEAWAYS', margin, yPosition);
-        yPosition += 10;
+        yPosition += 8;
 
         infographic.keyStats.forEach((stat) => {
-          if (yPosition > pageHeight - margin) {
+          if (yPosition > pageHeight - 20) {
             pdf.addPage();
             yPosition = margin;
           }
 
-          pdf.setFontSize(10);
-          pdf.setTextColor(0, 0, 0);
-          pdf.text(`• ${stat.value}`, margin + 5, yPosition);
-
           pdf.setFontSize(9);
-          pdf.setTextColor(80, 80, 80);
-          const statLines = pdf.splitTextToSize(stat.label, maxWidth - 15);
-          pdf.text(statLines, margin + 15, yPosition + 3);
-          yPosition += Math.max(5, statLines.length * 4) + 4;
+          pdf.setTextColor(0, 0, 0);
+          pdf.text(`${stat.value} - ${stat.label}`, margin + 3, yPosition);
+          yPosition += 5;
         });
       }
 
       // Summary
       if (infographic.summary) {
-        if (yPosition > pageHeight - margin - 20) {
+        if (yPosition > pageHeight - 20) {
           pdf.addPage();
           yPosition = margin;
         }
 
-        yPosition += 5;
-        pdf.setFontSize(14);
+        yPosition += 4;
+        pdf.setFontSize(12);
         pdf.setTextColor(0, 0, 0);
         pdf.text('SUMMARY', margin, yPosition);
-        yPosition += 10;
+        yPosition += 8;
 
-        pdf.setFontSize(10);
+        pdf.setFontSize(9);
         pdf.setTextColor(60, 60, 60);
-        const summaryLines = pdf.splitTextToSize(infographic.summary, maxWidth);
-        pdf.text(summaryLines, margin, yPosition);
+        pdf.text(infographic.summary, margin, yPosition);
       }
 
       pdf.save(`${infographic.title.replace(/\s+/g, '-')}.pdf`);
     } catch (error) {
       console.error('Error generating PDF:', error);
+    } finally {
+      setIsDownloading(false);
     }
   };
 
@@ -615,10 +615,17 @@ export default function Home() {
                    <div className="flex gap-2">
                      <button
                        onClick={downloadNotesAsPDF}
-                       className="p-2 hover:bg-white/10 rounded-full transition-colors text-white"
+                       disabled={isDownloading}
+                       className="p-2 hover:bg-white/10 rounded-full transition-colors text-white disabled:opacity-50"
                        title="Download as PDF"
                      >
-                       <Download className="w-5 h-5" />
+                       {isDownloading ? (
+                         <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity }}>
+                           <Download className="w-5 h-5" />
+                         </motion.div>
+                       ) : (
+                         <Download className="w-5 h-5" />
+                       )}
                      </button>
                    </div>
                  </div>
