@@ -366,7 +366,7 @@ export default function Home() {
         </div>
       </header>
 
-      <main className="relative z-10 flex-1 container mx-auto px-6 py-4 flex flex-col gap-8 h-[calc(100vh-100px)]">
+      <main className="relative z-10 flex-1 container mx-auto px-6 py-2 flex flex-col gap-8 h-[calc(100vh-100px)]">
         
         {/* TOP: Upload Toolbar */}
         {viewState !== 'results' && viewState !== 'infographic' && (
@@ -374,7 +374,7 @@ export default function Home() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="flex items-center justify-center gap-4 px-5 py-3 bg-black/40 rounded-2xl border border-white/5 backdrop-blur-xl w-fit mx-auto transition-all hover:border-white/10"
+            className="flex items-center justify-center gap-4 px-5 py-3 bg-black/40 rounded-2xl border border-white/5 backdrop-blur-xl w-fit mx-auto transition-all hover:border-white/10 max-w-sm -mt-2"
           >
              <label className="p-2.5 rounded-lg hover:bg-white/5 text-neutral-400 hover:text-white cursor-pointer transition-all relative group">
                 <Upload className="w-5 h-5" />
