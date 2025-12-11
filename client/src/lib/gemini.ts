@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const API_KEY = 'AIzaSyD8UMYVloXa0WMbxAulqBCtYd-b2rz-vtE'; // Provided by user
+const API_KEY = 'AIzaSyB00wCuPyf9UdGsb8kyv3DRA3MfM3tQzAU'; // Provided by user
 
 export interface GeminiResponse {
   score: number;
