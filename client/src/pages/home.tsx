@@ -34,7 +34,6 @@ export default function Home() {
     useCamera,
     setUseCamera,
     videoRef,
-    fullscreenVideoRef,
     handleFileUpload,
     removeImage,
     isFullscreenCamera,
@@ -423,6 +422,9 @@ export default function Home() {
                   const newState = !isSelfieMode;
                   setIsSelfieMode(newState);
                   setUseCamera(newState);
+                  if (newState) {
+                    setIsFullscreenCamera(true);
+                  }
                }}
                className={`p-2.5 rounded-lg transition-all relative group ${isSelfieMode ? 'bg-white/10 text-white' : 'hover:bg-white/5 text-neutral-400 hover:text-white'}`}
              >
@@ -862,51 +864,49 @@ export default function Home() {
       </AnimatePresence>
 
       {/* Fullscreen Camera Modal */}
-      <AnimatePresence>
-        {isFullscreenCamera && isSelfieMode && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black z-50"
+      {isFullscreenCamera && isSelfieMode && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black z-50"
+        >
+          <video 
+            ref={videoRef} 
+            autoPlay 
+            playsInline 
+            muted 
+            className="w-full h-full object-cover" 
+          />
+          
+          {/* Close Button */}
+          <button
+            onClick={() => setIsFullscreenCamera(false)}
+            className="absolute top-6 right-6 p-3 bg-black/60 hover:bg-black/80 rounded-full transition-colors z-50 border border-white/20"
+            data-testid="button-close-camera"
           >
-            <video 
-              ref={fullscreenVideoRef} 
-              autoPlay 
-              playsInline 
-              muted 
-              className="w-full h-full object-cover" 
-            />
-            
-            {/* Close Button */}
-            <button
-              onClick={() => setIsFullscreenCamera(false)}
-              className="absolute top-6 right-6 p-3 bg-black/60 hover:bg-black/80 rounded-full transition-colors z-50 border border-white/20"
-              data-testid="button-close-camera"
-            >
-              <X className="w-6 h-6 text-white" />
-            </button>
+            <X className="w-6 h-6 text-white" />
+          </button>
 
-            {/* Mic Button - Always Accessible */}
-            {isListening && (
-              <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 z-50">
-                <div className="flex items-center justify-center gap-2">
-                  {visualizerBars.map((height, idx) => (
-                    <motion.div
-                      key={idx}
-                      className="w-1 bg-gradient-to-t from-red-500 to-red-300 rounded-full"
-                      initial={{ height: 4 }}
-                      animate={{ height: Math.max(4, (height / 100) * 60) }}
-                      transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-                    />
-                  ))}
-                </div>
-                <div className="text-white text-sm font-medium">Listening...</div>
+          {/* Mic Button - Always Accessible */}
+          {isListening && (
+            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 z-50">
+              <div className="flex items-center justify-center gap-2">
+                {visualizerBars.map((height, idx) => (
+                  <motion.div
+                    key={idx}
+                    className="w-1 bg-gradient-to-t from-red-500 to-red-300 rounded-full"
+                    initial={{ height: 4 }}
+                    animate={{ height: Math.max(4, (height / 100) * 60) }}
+                    transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                  />
+                ))}
               </div>
-            )}
-          </motion.div>
-        )}
-      </AnimatePresence>
+              <div className="text-white text-sm font-medium">Listening...</div>
+            </div>
+          )}
+        </motion.div>
+      )}
     </div>
   );
 }
