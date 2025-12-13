@@ -69,7 +69,18 @@ export function useSpeech() {
 
     recognition.onend = () => {
       console.log("Speech recognition ended");
-      setIsListening(false);
+      // Auto-restart if user is still listening
+      if (listeningRef.current) {
+        console.log("Auto-restarting speech recognition...");
+        try {
+          recognitionRef.current.start();
+        } catch (e) {
+          console.warn("Auto-restart error:", e);
+          setIsListening(false);
+        }
+      } else {
+        setIsListening(false);
+      }
     };
 
     recognitionRef.current = recognition;
