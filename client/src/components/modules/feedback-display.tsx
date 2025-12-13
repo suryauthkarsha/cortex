@@ -7,9 +7,10 @@ interface FeedbackDisplayProps {
   response: GeminiResponse | null;
   isProcessing: boolean;
   error: string | null;
+  onExpandFullscreen?: () => void;
 }
 
-export function FeedbackDisplay({ response, isProcessing, error }: FeedbackDisplayProps) {
+export function FeedbackDisplay({ response, isProcessing, error, onExpandFullscreen }: FeedbackDisplayProps) {
 
   if (isProcessing) {
     return (
@@ -87,6 +88,22 @@ export function FeedbackDisplay({ response, isProcessing, error }: FeedbackDispl
       animate={{ opacity: 1, y: 0 }}
       className="space-y-8 h-full overflow-y-auto pr-4 pb-8 custom-scrollbar"
     >
+      {/* Expand Button - Only show in side panel, not in fullscreen */}
+      {onExpandFullscreen && (
+        <div className="flex justify-end">
+          <button
+            onClick={onExpandFullscreen}
+            className="p-2 hover:bg-white/10 rounded-full transition-colors text-neutral-400 hover:text-white"
+            title="Expand to fullscreen"
+            data-testid="button-expand-feedback"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6v12h12v-4m4-8v8m0 0V6m0 8H6" />
+            </svg>
+          </button>
+        </div>
+      )}
+
       {/* Score Section - Interactive */}
       <motion.div 
         whileHover={{ scale: 1.02 }}

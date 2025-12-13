@@ -68,6 +68,7 @@ export default function Home() {
   // Upload Progress
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
+  const [isFullscreenFeedback, setIsFullscreenFeedback] = useState(false);
 
   // Download as PDF with structured text - optimized
   const downloadNotesAsPDF = async () => {
@@ -447,8 +448,8 @@ export default function Home() {
           </motion.div>
         )}
 
-        {/* MAIN LAYOUT: Left (Mic) and Right (Results) */}
-        <div className="flex flex-col lg:flex-row gap-8 flex-1">
+        {/* MAIN LAYOUT: Left (Mic) and Right (Results) - Hidden when fullscreen feedback */}
+        <div className={`flex flex-col lg:flex-row gap-8 flex-1 ${isFullscreenFeedback ? 'hidden' : ''}`}>
           {/* MIDDLE: Stage - Stays Visible */}
           <div className={`flex-1 flex flex-col gap-8 justify-center relative transition-all duration-500 ${(viewState === 'results' || viewState === 'infographic') ? 'opacity-50 pointer-events-none' : ''}`}>
              
@@ -786,7 +787,8 @@ export default function Home() {
                      response={aiResponse}
                      isProcessing={isProcessing && viewState !== 'analyzing'}
                      error={error}
-                   />
+                    onExpandFullscreen={() => setIsFullscreenFeedback(true)}
+                  />
                  </div>
                </>
              ) : (
@@ -862,6 +864,37 @@ export default function Home() {
           />
         )}
       </AnimatePresence>
+
+      {/* Fullscreen Feedback Modal */}
+      {isFullscreenFeedback && viewState === 'results' && aiResponse && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black z-50 flex flex-col overflow-hidden"
+        >
+          {/* Header with Close Button */}
+          <div className="flex items-center justify-between px-8 py-6 border-b border-white/10 flex-shrink-0">
+            <h2 className="text-2xl font-bold text-white">Analysis Results</h2>
+            <button
+              onClick={() => setIsFullscreenFeedback(false)}
+              className="p-3 hover:bg-white/10 rounded-full transition-colors text-white"
+              data-testid="button-collapse-feedback"
+            >
+              <X className="w-6 h-6" />
+            </button>
+          </div>
+          
+          {/* Feedback Content */}
+          <div className="flex-1 overflow-y-auto px-8 py-6 custom-scrollbar">
+            <FeedbackDisplay 
+              response={aiResponse}
+              isProcessing={false}
+              error={null}
+            />
+          </div>
+        </motion.div>
+      )}
 
       {/* Fullscreen Camera Modal */}
       {isFullscreenCamera && isSelfieMode && (
