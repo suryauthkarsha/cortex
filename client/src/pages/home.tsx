@@ -34,6 +34,7 @@ export default function Home() {
     useCamera,
     setUseCamera,
     videoRef,
+    fullscreenVideoRef,
     handleFileUpload,
     removeImage,
     isFullscreenCamera,
@@ -870,7 +871,7 @@ export default function Home() {
             className="fixed inset-0 bg-black z-50"
           >
             <video 
-              ref={videoRef} 
+              ref={fullscreenVideoRef} 
               autoPlay 
               playsInline 
               muted 

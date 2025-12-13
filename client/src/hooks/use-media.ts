@@ -5,16 +5,22 @@ export function useMedia() {
   const [useCamera, setUseCamera] = useState(false);
   const [isFullscreenCamera, setIsFullscreenCamera] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const fullscreenVideoRef = useRef<HTMLVideoElement>(null);
+  const [stream, setStream] = useState<MediaStream | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    let stream: MediaStream | null = null;
+    let mediaStream: MediaStream | null = null;
     if (useCamera) {
       navigator.mediaDevices.getUserMedia({ video: true })
         .then(s => {
-          stream = s;
+          mediaStream = s;
+          setStream(s);
           if (videoRef.current) {
-            videoRef.current.srcObject = stream;
+            videoRef.current.srcObject = s;
+          }
+          if (fullscreenVideoRef.current) {
+            fullscreenVideoRef.current.srcObject = s;
           }
         })
         .catch(err => {
@@ -30,9 +36,13 @@ export function useMedia() {
         }
         videoRef.current.srcObject = null;
       }
+      if (fullscreenVideoRef.current) {
+        fullscreenVideoRef.current.srcObject = null;
+      }
+      setStream(null);
     }
     return () => {
-      if (stream) stream.getTracks().forEach(track => track.stop());
+      if (mediaStream) mediaStream.getTracks().forEach(track => track.stop());
     };
   }, [useCamera]);
 
@@ -85,6 +95,7 @@ export function useMedia() {
     isFullscreenCamera,
     setIsFullscreenCamera,
     videoRef,
+    fullscreenVideoRef,
     handleFileUpload,
     removeImage,
     capturePhoto,
