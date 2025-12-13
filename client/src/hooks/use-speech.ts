@@ -9,6 +9,7 @@ export function useSpeech() {
   const recognitionRef = useRef<any>(null);
   const synthRef = useRef(window.speechSynthesis);
   const listeningRef = useRef(false);
+  const startingRef = useRef(false);
 
   // Initialize speech recognition once
   useEffect(() => {
@@ -26,6 +27,7 @@ export function useSpeech() {
 
     recognition.onstart = () => {
       console.log("Speech recognition started");
+      startingRef.current = false;
       setError(null);
     };
 
@@ -61,9 +63,11 @@ export function useSpeech() {
       } else if (event.error === 'audio-capture') {
         setError("Microphone not available");
         setIsListening(false);
+        listeningRef.current = false;
       } else if (event.error === 'not-allowed') {
         setError("Microphone permission denied");
         setIsListening(false);
+        listeningRef.current = false;
       }
     };
 
@@ -72,10 +76,13 @@ export function useSpeech() {
       // Auto-restart if user is still listening
       if (listeningRef.current) {
         console.log("Auto-restarting speech recognition...");
+        startingRef.current = true;
         try {
           recognitionRef.current.start();
         } catch (e) {
           console.warn("Auto-restart error:", e);
+          startingRef.current = false;
+          listeningRef.current = false;
           setIsListening(false);
         }
       } else {
@@ -105,16 +112,24 @@ export function useSpeech() {
       }
     } else {
       console.log("Starting listening");
+      // Prevent starting if we're already in the process of starting
+      if (startingRef.current) {
+        console.log("Already starting, skipping");
+        return;
+      }
       listeningRef.current = true;
+      startingRef.current = true;
       setTranscript('');
       setError(null);
+      setIsListening(true);
       try {
         recognitionRef.current.start();
-        setIsListening(true);
       } catch (e) {
         console.warn("Start error:", e);
         setError("Could not start listening");
         listeningRef.current = false;
+        startingRef.current = false;
+        setIsListening(false);
       }
     }
   }, [isListening]);
