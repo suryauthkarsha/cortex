@@ -46,3 +46,9 @@ waitForPort = 5000
 [agent]
 mockupState = "FULLSTACK"
 expertMode = true
+integrations = ["javascript_gemini:1.0.0"]
+
+[userenv]
+
+[userenv.development]
+VITE_GEMINI_API_KEY = "placeholder_will_use_secret"

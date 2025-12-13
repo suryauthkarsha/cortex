@@ -77,7 +77,7 @@ export async function registerRoutes(
       }
 
       // Build request with images
-      const imageParts = images.map(img => ({
+      const imageParts = images.map((img: string) => ({
         inlineData: {
           mimeType: "image/jpeg",
           data: img.split(',')[1]
