@@ -881,7 +881,11 @@ export default function Home() {
           
           {/* Close Button */}
           <button
-            onClick={() => setIsFullscreenCamera(false)}
+            onClick={() => {
+              setIsFullscreenCamera(false);
+              setIsSelfieMode(false);
+              setUseCamera(false);
+            }}
             className="absolute top-6 right-6 p-3 bg-black/60 hover:bg-black/80 rounded-full transition-colors z-50 border border-white/20"
             data-testid="button-close-camera"
           >
