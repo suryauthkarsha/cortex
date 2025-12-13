@@ -36,6 +36,8 @@ export default function Home() {
     videoRef,
     handleFileUpload,
     removeImage,
+    isFullscreenCamera,
+    setIsFullscreenCamera,
   } = useMedia();
 
   const visualizerBars = useAudioVisualizer(isListening);
@@ -573,7 +575,8 @@ export default function Home() {
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="mb-4 rounded-3xl overflow-hidden border border-white/10 bg-neutral-900/30 h-32 flex-shrink-0"
+              className="mb-4 rounded-3xl overflow-hidden border border-white/10 bg-neutral-900/30 h-32 flex-shrink-0 cursor-pointer"
+              onClick={() => setIsFullscreenCamera(true)}
             >
               <video ref={videoRef} autoPlay playsInline muted className="w-full h-full object-cover" />
               <div className="absolute top-2 right-2 flex items-center gap-2 text-xs text-red-400 font-semibold bg-black/60 px-2 py-1 rounded">
@@ -854,6 +857,53 @@ export default function Home() {
             nextQuestion={nextQuestion}
             prevQuestion={prevQuestion}
           />
+        )}
+      </AnimatePresence>
+
+      {/* Fullscreen Camera Modal */}
+      <AnimatePresence>
+        {isFullscreenCamera && isSelfieMode && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black z-50 flex items-center justify-center"
+          >
+            <video 
+              ref={videoRef} 
+              autoPlay 
+              playsInline 
+              muted 
+              className="w-full h-full object-cover" 
+            />
+            
+            {/* Close Button */}
+            <button
+              onClick={() => setIsFullscreenCamera(false)}
+              className="absolute top-6 right-6 p-3 bg-black/60 hover:bg-black/80 rounded-full transition-colors z-50 border border-white/20"
+              data-testid="button-close-camera"
+            >
+              <X className="w-6 h-6 text-white" />
+            </button>
+
+            {/* Mic Button - Always Accessible */}
+            {isListening && (
+              <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 z-50">
+                <div className="flex items-center justify-center gap-2">
+                  {visualizerBars.map((height, idx) => (
+                    <motion.div
+                      key={idx}
+                      className="w-1 bg-gradient-to-t from-red-500 to-red-300 rounded-full"
+                      initial={{ height: 4 }}
+                      animate={{ height: Math.max(4, (height / 100) * 60) }}
+                      transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                    />
+                  ))}
+                </div>
+                <div className="text-white text-sm font-medium">Listening...</div>
+              </div>
+            )}
+          </motion.div>
         )}
       </AnimatePresence>
     </div>

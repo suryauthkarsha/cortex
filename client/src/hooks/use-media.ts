@@ -3,6 +3,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 export function useMedia() {
   const [images, setImages] = useState<string[]>([]);
   const [useCamera, setUseCamera] = useState(false);
+  const [isFullscreenCamera, setIsFullscreenCamera] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -81,6 +82,8 @@ export function useMedia() {
     setImages,
     useCamera,
     setUseCamera,
+    isFullscreenCamera,
+    setIsFullscreenCamera,
     videoRef,
     handleFileUpload,
     removeImage,
